@@ -1,0 +1,76 @@
+import Wishlist from "./TabsContent/Wishlist";
+import Calendar from "./TabsContent/Calendar";
+import Calculator from "./TabsContent/Calculator";
+import { useState } from "react";
+import { Budget, Wallet } from "./TabsContent/Budget-and-Wallet";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+
+export const TabsSecLarge = () => {
+  return (
+    <div className="">
+      <h1>TabsSecLarge</h1>
+    </div>
+  );
+};
+
+export const TabsSecMedium = () => {
+  return (
+    <div>
+      <h1>TabsSecMedium</h1>
+    </div>
+  );
+};
+
+export const TabsSecSmall = () => {
+  const [activeTab, setActiveTab] = useState("Budget");
+  const tabs = [
+    { id: 1, value: "Budget", content: <Budget /> },
+    { id: 2, value: "Wallet", content: <Wallet /> },
+    { id: 3, value: "Wishlist", content: <Wishlist /> },
+    { id: 4, value: "Calendar", content: <Calendar /> },
+    { id: 5, value: "Calculator", content: <Calculator /> },
+  ];
+  return (
+    <Tabs value={activeTab} className="bg-white-0 p-2 rounded-lg mb-2">
+      <TabsHeader
+        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        indicatorProps={{
+          className:
+            "bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
+        }}
+      >
+        {tabs.map((el) => {
+          return (
+            <Tab
+              className={
+                activeTab === el.value
+                  ? "text-darkapricot text-xs sm:text-sm md:text-base  rounded-t-md py-1.5 xs:py-2"
+                  : "py-2 px-1 text-xs sm:text-sm md:text-base"
+              }
+              key={el.id}
+              value={el.value}
+              onClick={() => setActiveTab(el.value)}
+            >
+              {el.value}
+            </Tab>
+          );
+        })}
+      </TabsHeader>
+      <TabsBody>
+        {tabs.map((el) => {
+          return (
+            <TabPanel key={el.id} value={el.value}>
+              {el.content}
+            </TabPanel>
+          );
+        })}
+      </TabsBody>
+    </Tabs>
+  );
+};
