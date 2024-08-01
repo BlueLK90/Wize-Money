@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
 const Calculator = () => {
-  const scrollableRef = useRef(null);
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+  const scrollableRef = useRef();
 
   useEffect(() => {
     if (scrollableRef.current) {
@@ -9,47 +11,27 @@ const Calculator = () => {
     }
   }, []); // Empty dependency array to run only once on mount
 
-  return (
-    <div
-      ref={scrollableRef}
-      className="w-96 h-48 overflow-auto border border-gray-300 p-2"
-    >
-      <p>Content that overflows and will be scrollable.</p>
-      <p>Additional content to demonstrate scrolling...</p>
-      <p>Even more content...</p>
-      <p>Scroll to the bottom...</p>
-      <p>Last section to be visible.1</p>
-      <p>Scroll to the bottom...</p>
-      <p>Last section to be visible.2</p>
-      <p>Scroll to the bottom...</p>
-      <p>Last section to be visible.3</p>
-    </div>
-  );
-};
-
-export default Calculator;
-
-const Apptwo = () => {
-  const [input, setInput] = useState(0);
-  const [result, setResult] = useState(0);
-
   const calculationSigns = ["+", "-", "*", "/"];
   const handleClick = (value) => {
-    setInput((prev) => {
-      let checker = prev.toString();
-      let lastChar = checker.slice(-1);
-      if (
-        calculationSigns.includes(lastChar) &&
-        calculationSigns.includes(value)
-      ) {
-        return Number(checker), "", value, "";
-      } else if (calculationSigns.includes(value)) {
-        return prev, "", value, "";
-      } else {
-        return prev, value;
-        //??? will it work with no paras?
-      }
-    });
+    if (input === 0) {
+      setInput(value);
+    } else {
+      setInput((prev) => {
+        let checker = prev.toString();
+        let lastChar = checker.slice(-1);
+        if (
+          calculationSigns.includes(lastChar) &&
+          calculationSigns.includes(value)
+        ) {
+          return Number(checker) + "" + value + "";
+        } else if (calculationSigns.includes(value)) {
+          return prev + "" + value + "";
+        } else {
+          return prev + value;
+          //??? will it work with no paras?
+        }
+      });
+    }
     setResult(input); //check if it updates with every input!
   };
 
@@ -62,14 +44,14 @@ const Apptwo = () => {
   };
 
   const clearResult = () => {
-    setInput(0);
-    setResult(0);
+    setInput("");
+    setResult("");
   };
 
   const calculate = () => {
     try {
       setResult(eval(input));
-      setInput(result); //check if it updates with the last result!
+      setInput(""); //check if it updates with the last result!
     } catch (error) {
       setResult("Error");
     }
@@ -79,7 +61,10 @@ const Apptwo = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
         <div className="mb-4">
-          <div className="text-right w-full h-20 scr text-xl mt-2">
+          <div
+            ref={scrollableRef}
+            className="text-right w-full h-20 overflow-auto scr text-xl mt-2"
+          >
             {result}
           </div>
           <input
@@ -90,39 +75,73 @@ const Apptwo = () => {
           />
         </div>
         <div className="grid grid-cols-4 gap-2">
-          {["7", "8", "9", "/"].map((value) => (
+          <button
+            className="p-4 bg-black text-white hover:bg-gray-800 rounded text-lg md:text-xl lg:text-2xl"
+            onClick={clearResult}
+          >
+            AC
+          </button>
+          <button
+            className="p-4 bg-darkapricot text-white hover:bg-apricot rounded text-lg md:text-xl lg:text-2xl"
+            onClick={backSpace}
+          >
+            Del
+          </button>
+          <button
+            key={"+/-"}
+            className="p-4 bg-apricot hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
+            onClick={() => setResult(result * -1)}
+          >
+            +/-
+          </button>
+          <button
+            key={"/"}
+            className="p-4 bg-apricot hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
+            onClick={() => handleClick("/")}
+          >
+            /
+          </button>
+          {["7", "8", "9", "*"].map((value) => (
             <button
               key={value}
-              className="p-4 bg-gray-200 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
+              className={`p-4
+              ${value === "*" ? "bg-apricot" : "bg-gray-200"}
+               hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
               onClick={() => handleClick(value)}
             >
               {value}
             </button>
           ))}
-          {["4", "5", "6", "*"].map((value) => (
+          {["4", "5", "6", "-"].map((value) => (
             <button
               key={value}
-              className="p-4 bg-gray-200 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
+              className={`p-4
+                ${value === "-" ? "bg-apricot" : "bg-gray-200"}
+                 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
               onClick={() => handleClick(value)}
             >
               {value}
             </button>
           ))}
-          {["1", "2", "3", "-"].map((value) => (
+          {["1", "2", "3", "+"].map((value) => (
             <button
               key={value}
-              className="p-4 bg-gray-200 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
+              className={`p-4
+                ${value === "+" ? "bg-apricot" : "bg-gray-200"}
+                 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
               onClick={() => handleClick(value)}
             >
               {value}
             </button>
           ))}
-          {["0", ".", "=", "+"].map((value) => (
+          {[".", "0", "="].map((value) => (
             <button
               key={value}
               className={`p-4 ${
                 value === "="
-                  ? "bg-blue-500 text-white"
+                  ? "bg-darkapricot text-white col-span-2"
+                  : value === "."
+                  ? "bg-gray-200 hover:bg-gray-300 font-bold"
                   : "bg-gray-200 hover:bg-gray-300"
               } rounded text-lg md:text-xl lg:text-2xl`}
               onClick={() => (value === "=" ? calculate() : handleClick(value))}
@@ -130,20 +149,10 @@ const Apptwo = () => {
               {value}
             </button>
           ))}
-          <button
-            className="col-span-2 p-4 bg-red-500 text-white hover:bg-red-600 rounded text-lg md:text-xl lg:text-2xl"
-            onClick={clearResult}
-          >
-            C
-          </button>
-          <button
-            className="col-span-2 p-4 bg-yellow-500 text-white hover:bg-yellow-600 rounded text-lg md:text-xl lg:text-2xl"
-            onClick={backSpace}
-          >
-            ⌫
-          </button>
         </div>
       </div>
     </div>
   );
 };
+
+export default Calculator;
