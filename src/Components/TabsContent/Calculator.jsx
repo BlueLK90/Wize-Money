@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { FiDelete } from "react-icons/fi";
 
 const Calculator = () => {
   const [input, setInput] = useState("");
@@ -10,37 +11,28 @@ const Calculator = () => {
       scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
     }
   }, []); // Empty dependency array to run only once on mount
-
-  const calculationSigns = ["+", "-", "*", "/"];
-  const handleClick = (value) => {
-    if (input === 0) {
-      setInput(value);
+  var calSignClicked;
+  const handleClickNum = (val) => {
+    if (input === (0 || NaN) || calSignClicked === true) {
+      setInput(val);
+      calSignClicked = false;
     } else {
-      setInput((prev) => {
-        let checker = prev.toString();
-        let lastChar = checker.slice(-1);
-        if (
-          calculationSigns.includes(lastChar) &&
-          calculationSigns.includes(value)
-        ) {
-          return Number(checker) + "" + value + "";
-        } else if (calculationSigns.includes(value)) {
-          return prev + "" + value + "";
-        } else {
-          return prev + value;
-          //??? will it work with no paras?
-        }
-      });
+      setInput((prev) => prev + val);
     }
-    setResult(input); //check if it updates with every input!
+  };
+  const handleClickSign = (val) => {
+    calSignClicked = true;
+    setResult((prev) => {
+      if (prev.slice(-1) !== val) {
+        return prev.slice(0, -1) + val;
+      } else {
+        return prev + input + val;
+      }
+    });
   };
 
   const backSpace = () => {
-    setInput((prev) => {
-      let str = prev.toString();
-      let str2 = str.slice(0, -1);
-      return str === "" ? "" : Number(str);
-    });
+    setInput(input.slice(0, -1));
   };
 
   const clearResult = () => {
@@ -50,64 +42,67 @@ const Calculator = () => {
 
   const calculate = () => {
     try {
-      setResult(eval(input));
-      setInput(""); //check if it updates with the last result!
+      setInput(eval(result));
+      setResult(result + "=");
     } catch (error) {
       setResult("Error");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
+    <div className="flex justify-center min-h-screen rounded-lg bg-transparent">
+      <div className="bg-transparent p-4 shadow-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
         <div className="mb-4">
           <div
             ref={scrollableRef}
-            className="text-right w-full h-20 overflow-auto scr text-xl mt-2"
+            className=" text-right w-full h-32 overflow-auto text-xl mt-2 border border-b-0 border-gray-400 rounded"
           >
             {result}
           </div>
           <input
             type="text"
-            className="w-full p-2 text-right text-2xl border border-gray-300 rounded"
+            className="w-full p-2 text-right text-2xl border border-gray-400 rounded"
             value={input}
             readOnly
           />
         </div>
         <div className="grid grid-cols-4 gap-2">
           <button
-            className="p-4 bg-black text-white hover:bg-gray-800 rounded text-lg md:text-xl lg:text-2xl"
+            className="p-4 bg-gray-600 shadow-sm shadow-black text-white rounded text-lg md:text-xl lg:text-2xl"
             onClick={clearResult}
           >
-            AC
+            C
           </button>
           <button
-            className="p-4 bg-darkapricot text-white hover:bg-apricot rounded text-lg md:text-xl lg:text-2xl"
+            className="p-4 bg-darkapricot shadow-sm shadow-black text-white rounded"
             onClick={backSpace}
           >
-            Del
+            <FiDelete className="static text-xl" />
           </button>
           <button
             key={"+/-"}
-            className="p-4 bg-apricot hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
-            onClick={() => setResult(result * -1)}
+            className="p-4 bg-apricot shadow-sm shadow-black rounded text-lg md:text-xl lg:text-2xl"
+            onClick={() => setInput(input * -1)}
           >
             +/-
           </button>
           <button
             key={"/"}
-            className="p-4 bg-apricot hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl"
-            onClick={() => handleClick("/")}
+            className="p-4 bg-apricot shadow-sm shadow-black rounded text-lg md:text-xl lg:text-2xl"
+            onClick={() => handleClickSign("/")}
           >
             /
           </button>
           {["7", "8", "9", "*"].map((value) => (
             <button
               key={value}
-              className={`p-4
-              ${value === "*" ? "bg-apricot" : "bg-gray-200"}
-               hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() => handleClick(value)}
+              className={`p-4 shadow-sm shadow-black
+              ${
+                value === "*" ? "bg-apricot" : "bg-gray-200"
+              } rounded text-lg md:text-xl lg:text-2xl`}
+              onClick={() =>
+                value === "*" ? handleClickSign(value) : handleClickNum(value)
+              }
             >
               {value}
             </button>
@@ -115,10 +110,13 @@ const Calculator = () => {
           {["4", "5", "6", "-"].map((value) => (
             <button
               key={value}
-              className={`p-4
-                ${value === "-" ? "bg-apricot" : "bg-gray-200"}
-                 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() => handleClick(value)}
+              className={`p-4 shadow-sm shadow-black
+                ${
+                  value === "-" ? "bg-apricot" : "bg-gray-200"
+                } rounded text-lg md:text-xl lg:text-2xl`}
+              onClick={() =>
+                value === "-" ? handleClickSign(value) : handleClickNum(value)
+              }
             >
               {value}
             </button>
@@ -127,9 +125,12 @@ const Calculator = () => {
             <button
               key={value}
               className={`p-4
-                ${value === "+" ? "bg-apricot" : "bg-gray-200"}
-                 hover:bg-gray-300 rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() => handleClick(value)}
+                ${
+                  value === "+" ? "bg-apricot" : "bg-gray-200"
+                } rounded text-lg md:text-xl lg:text-2xl shadow-sm shadow-black`}
+              onClick={() =>
+                value === "+" ? handleClickSign(value) : handleClickNum(value)
+              }
             >
               {value}
             </button>
@@ -137,14 +138,16 @@ const Calculator = () => {
           {[".", "0", "="].map((value) => (
             <button
               key={value}
-              className={`p-4 ${
+              className={`p-4 shadow-sm shadow-black ${
                 value === "="
-                  ? "bg-darkapricot text-white col-span-2"
+                  ? "bg-darkapricot text-white col-span-2 "
                   : value === "."
-                  ? "bg-gray-200 hover:bg-gray-300 font-bold"
-                  : "bg-gray-200 hover:bg-gray-300"
+                  ? "bg-gray-200 font-bold "
+                  : "bg-gray-200 border "
               } rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() => (value === "=" ? calculate() : handleClick(value))}
+              onClick={() =>
+                value === "=" ? calculate() : handleClickNum(value)
+              }
             >
               {value}
             </button>
