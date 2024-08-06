@@ -3,7 +3,6 @@ import {
   Collapse,
   Button,
   Card,
-  Typography,
   CardBody,
   Tabs,
   TabsHeader,
@@ -11,6 +10,7 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
+import { FiEdit3 } from "react-icons/fi";
 
 const Wishlist = () => {
   const [open, setOpen] = React.useState(false);
@@ -30,14 +30,13 @@ const Wishlist = () => {
           </TabsHeader>
         </div>
         <div>
-          <TabsBody className="">
+          <TabsBody className="border border-red-100">
             <TabPanel key={"Pending"} value="Pending">
-              <p>Pending</p>
               <div
                 onClick={toggleOpen}
                 className="border border-gray-400 bg-gray-100 w-full rounded-md p-2"
               >
-                Open Collapse
+                Wish No.1
                 <Collapse open={open}>
                   <Card className="w-full rounded-tl-none rounded-tr-none">
                     <CardBody className="p-2 rounded-tl-none">
@@ -48,6 +47,13 @@ const Wishlist = () => {
                     </CardBody>
                   </Card>
                 </Collapse>
+              </div>
+              <br />
+              <div className="grid justify-center">
+                <Button className="flex gap-2 bg-transparent shadow-none hover:shadow-sm capitalize text-darkapricot text-sm">
+                  <FiEdit3 className="static" />
+                  add new wish
+                </Button>
               </div>
             </TabPanel>
             <TabPanel key={"Done"} value="Done">
