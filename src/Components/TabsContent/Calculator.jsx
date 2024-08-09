@@ -13,7 +13,7 @@ const Calculator = () => {
   }, []); // Empty dependency array to run only once on mount
   var calSignClicked;
   const handleClickNum = (val) => {
-    if (input === (0 || NaN) || calSignClicked === true) {
+    if (input === 0 || calSignClicked === true) {
       setInput(val);
       calSignClicked = false;
     } else {

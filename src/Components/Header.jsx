@@ -88,8 +88,8 @@ function Header() {
           </div>
           {menuItems.map((el, i) => (
             <>
-              {/* accordion */}
               <Accordion
+                key={el.title}
                 open={open === i + 1}
                 icon={
                   <FiChevronDown
@@ -100,7 +100,6 @@ function Header() {
                 }
               >
                 <ListItem
-                  key={i}
                   className="p-0 text-sm cursor-pointer rounded hover:bg-orange-100"
                   selected={open === i + 1}
                 >
@@ -128,7 +127,6 @@ function Header() {
                   </List>
                 </AccordionBody>
               </Accordion>
-              {/* accordion end */}
               <hr className="my-2 border-blue-gray-50" />
             </>
           ))}
