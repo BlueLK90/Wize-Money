@@ -5,43 +5,14 @@ import { FiEdit, FiEdit3, FiX } from "react-icons/fi";
 import monitor from "../../assets/monitor.jpg";
 import { numberWithCommas } from "../../Utils/index";
 
-const WishListData = [
-  {
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    img: "",
-    details: "",
-    price: "",
-    dateAdded: "Aug. 1, 2024",
-  },
-  {
-    title: "Lorem ipsum dolor sit amet",
-    img: "",
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    price: "100000",
-    dateAdded: "Aug. 2, 2024",
-  },
-  {
-    title: "Lorem ipsum dolor sit amet",
-    img: monitor,
-    details:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    price: "100000",
-    dateAdded: "Aug. 3, 2024",
-  },
-];
-
-const WishCard = ({ element }) => {
+const WishCard = ({ element, deleteCard }) => {
   const [open, setOpen] = useState(false);
   const toggleOpen = () => setOpen((prev) => !prev);
+
   return (
     <div>
-      <div
-        onClick={toggleOpen}
-        className="border border-gray-200 bg-gray-100 w-full my-2 rounded-md p-2 shadow-md"
-      >
-        <section className="grid">
+      <div className="border border-gray-200 bg-gray-100 w-full my-2 rounded-md p-2 shadow-md">
+        <section className="grid" onClick={toggleOpen}>
           <p className="text-xs">{element.dateAdded}</p>
           <div className="flex items-center gap-2 px-2">
             <p
@@ -68,7 +39,7 @@ const WishCard = ({ element }) => {
           )}
         </section>
 
-        <Collapse open={open}>
+        <Collapse open={open} onClick={() => setOpen(true)}>
           <Card>
             <CardBody className="text-sm text-gray-900 bg-gray-100 px-1 py-0">
               {element.details ? (
@@ -80,10 +51,13 @@ const WishCard = ({ element }) => {
               <div className="flex">
                 <div className="ml-auto">
                   <button>
-                    <FiEdit className="static text-darkapricot mx-1 text-lg hover:text-green-400" />
+                    <FiEdit className="static text-darkapricot mx-1 text-base hover:text-green-400" />
                   </button>
                   <button>
-                    <FiX className="static text-darkapricot mx-1 text-lg hover:text-green-400" />
+                    <FiX
+                      onClick={deleteCard}
+                      className="static text-darkapricot mx-1 text-base hover:text-green-400"
+                    />
                   </button>
                 </div>
               </div>
@@ -95,19 +69,192 @@ const WishCard = ({ element }) => {
   );
 };
 
+const inputStyle =
+  "col-span-2 border border-gray-300 bg-gray-50 rounded-md p-1";
 const Wishlist = () => {
   //const [imageLoader, setLoader] = useState(null);
   //const [error, setError] = useState(null);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [dateSubmitted, setDateSubmitted] = useState(new Date());
+
+  const [WishListData, setWishListData] = useState([
+    {
+      title:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+      img: "",
+      details: "",
+      price: "",
+      dateAdded: "Aug. 1, 2024",
+    },
+    {
+      title: "Lorem ipsum dolor sit amet",
+      img: "",
+      details:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+      price: "100000",
+      dateAdded: "Aug. 2, 2024",
+    },
+    {
+      title: "Lorem ipsum dolor sit amet",
+      img: monitor,
+      details:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+      price: "100000",
+      dateAdded: "Aug. 3, 2024",
+    },
+  ]);
+  const [newWish, setNewWish] = useState({
+    title: "",
+    img: "",
+    details: "",
+    price: "",
+    dateAdded: "",
+  });
+
+  const addCard = () => {
+    setOpenAdd(!openAdd);
+  };
+  const deleteCard = (i) => {
+    const arr = [...WishListData];
+    arr.splice(i, 1);
+    setWishListData(arr);
+  };
+  const submitbtn = (e, newWish) => {
+    e.preventDefault();
+    setWishListData([...WishListData, newWish]);
+    setNewWish({ title: "", img: "", details: "", price: "", dateAdded: "" });
+  };
 
   return (
-    <div className="max-w-[450px]">
-      <Button className="flex ml-auto mr-2 p-0 gap-2 bg-transparent shadow-none hover:text-green-400 hover:shadow-none hover:underline hover:underline-offset-4 capitalize text-darkapricot text-sm">
+    <div className="max-w-[450px] min-h-[75dvh] relative">
+      {openAdd && (
+        <div className="absolute z-10 w-full h-[80dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+          <form
+            className="grid grid-cols-3 gap-2 items-center"
+            onSubmit={(e) => submitbtn(e)}
+          >
+            {/* title input */}
+            <label htmlFor="title" className="text-gray-900">
+              Title:
+            </label>
+            <input
+              type="text"
+              name="title"
+              className={inputStyle}
+              value={newWish.name}
+              onChange={(e) =>
+                setNewWish({
+                  ...newWish,
+                  title: e.target.value,
+                })
+              }
+              required
+            />
+            {/* price input */}
+            <label htmlFor="price" className="text-gray-900">
+              Price:
+            </label>
+            <input
+              type="text"
+              name="price"
+              className={inputStyle}
+              value={newWish.price}
+              onChange={(e) =>
+                setNewWish({
+                  ...newWish,
+                  price: e.target.value,
+                })
+              }
+              required
+            />
+            {/* details input */}
+            <label htmlFor="title" className="text-gray-900">
+              Details:
+            </label>
+            <input
+              type="text"
+              name="title"
+              className={inputStyle}
+              value={newWish.details}
+              onChange={(e) =>
+                setNewWish({
+                  ...newWish,
+                  details: e.target.value,
+                })
+              }
+            />
+            {/*  date input */}
+            <label htmlFor="dateAdded" className="text-gray-900">
+              Date:
+            </label>
+            <input
+              type="date"
+              name="date"
+              className={inputStyle}
+              defaultValue={dateSubmitted}
+              value={newWish.dateAdded}
+              onChange={(e) =>
+                setNewWish({
+                  ...newWish,
+                  dateAdded: setDateSubmitted(e.target.value),
+                })
+              }
+            />
+            {/* image input */}
+            <label htmlFor="img" className="text-gray-900">
+              Image:
+            </label>
+            <label className="block">
+              <input
+                type="file"
+                name="img"
+                className="block w-max text-gray-500
+                py-1 px-0
+                rounded-lg border-0
+                text-sm file:rounded-lg file:px-4 file:py-1.5 file:mr-6
+                hover:bg-violet-100
+              "
+                value={newWish.img}
+                onChange={(e) =>
+                  setNewWish({
+                    ...newWish,
+                    img: e.target.value,
+                  })
+                }
+              />
+            </label>
+            <br />
+            <div className="h-16 col-span-3"></div>
+            <div className="col-span-3 h-10 flex justify-center gap-8">
+              <button
+                type="submit"
+                className="bg-blue-gray-900 text-sm w-32 rounded-full text-white font-semibold"
+                onClick={() => addCard()}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-pale text-sm w-32 rounded-full text-darkapricot font-semibold"
+                onClick={() => addCard()}
+              >
+                Done
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      <Button
+        onClick={() => addCard()}
+        className={`flex ml-auto mr-2 p-0 gap-2 bg-transparent shadow-none hover:text-green-400 hover:shadow-none hover:underline hover:underline-offset-4 capitalize text-darkapricot text-sm ${
+          openAdd && "opacity-0"
+        }`}
+      >
         <FiEdit3 className="static" />
         add new wish
       </Button>
-
       {WishListData.map((el, i) => (
-        <WishCard element={el} key={i} />
+        <WishCard element={el} key={i} deleteCard={() => deleteCard(i)} />
       ))}
       <br />
     </div>
