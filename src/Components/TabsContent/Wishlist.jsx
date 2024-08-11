@@ -27,7 +27,7 @@ const WishCard = ({ element, deleteCard }) => {
                 <img
                   src={element.img}
                   alt={element.title}
-                  className="w-[75%] object-cover p-3 ml-auto"
+                  className="w-[75%] object-cover aspect-[4/3] p-3 ml-auto"
                 />
               </div>
             )}
@@ -73,8 +73,6 @@ const inputStyle =
   "col-span-2 border border-gray-300 bg-gray-50 rounded-md p-1";
 
 const Wishlist = () => {
-  //const [imageLoader, setLoader] = useState(null);
-  //const [error, setError] = useState(null);
   const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
 
   //date formatting
@@ -232,13 +230,16 @@ const Wishlist = () => {
                 file:sm:mr-6 file:sm:px-4
                 hover:bg-violet-100
               "
-                value={newWish.img}
-                onChange={(e) =>
-                  setNewWish({
-                    ...newWish,
-                    img: e.target.value,
-                  })
-                }
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const imgUrl = URL.createObjectURL(file);
+                    setNewWish({
+                      ...newWish,
+                      img: imgUrl,
+                    });
+                  }
+                }}
               />
             </label>
             <br />
