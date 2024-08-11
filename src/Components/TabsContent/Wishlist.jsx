@@ -13,7 +13,7 @@ const WishCard = ({ element, deleteCard }) => {
     <div>
       <div className="border border-gray-200 bg-gray-100 w-full my-2 rounded-md p-2 shadow-md">
         <section className="grid" onClick={toggleOpen}>
-          <p className="text-xs">{element.dateAdded}</p>
+          <p className="text-xs pl-1">{element.dateAdded}</p>
           <div className="flex items-center gap-2 px-2">
             <p
               className={`flex-1 text-gray-900 text-sm ${
@@ -33,7 +33,7 @@ const WishCard = ({ element, deleteCard }) => {
             )}
           </div>
           {element.price && (
-            <p className="text-xs pt-1">
+            <p className="text-xs pt-1 pl-1">
               {numberWithCommas(element.price)} IQD
             </p>
           )}
@@ -71,12 +71,36 @@ const WishCard = ({ element, deleteCard }) => {
 
 const inputStyle =
   "col-span-2 border border-gray-300 bg-gray-50 rounded-md p-1";
+
 const Wishlist = () => {
   //const [imageLoader, setLoader] = useState(null);
   //const [error, setError] = useState(null);
-  const [openAdd, setOpenAdd] = useState(false);
-  const [dateSubmitted, setDateSubmitted] = useState(new Date());
+  const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
 
+  //date formatting
+  const months = [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "June",
+    "July",
+    "Aug.",
+    "Sep.",
+    "Oct.",
+    "Nov.",
+    "Dec.",
+  ];
+  const formattedDate = () => {
+    let date = new Date().toISOString().split("T")[0];
+    const [year, month, day] = date.split("-");
+    let monthFormatted = months[month - 1];
+    return `${monthFormatted} ${day}, ${year}`;
+  };
+  const dateSubmitted = formattedDate(); //default date
+
+  // main data arr
   const [WishListData, setWishListData] = useState([
     {
       title:
@@ -103,35 +127,45 @@ const Wishlist = () => {
       dateAdded: "Aug. 3, 2024",
     },
   ]);
+
   const [newWish, setNewWish] = useState({
     title: "",
     img: "",
     details: "",
     price: "",
-    dateAdded: "",
-  });
+    dateAdded: dateSubmitted,
+  }); // sec data state
 
   const addCard = () => {
     setOpenAdd(!openAdd);
-  };
+  }; //open/close add screen
+
   const deleteCard = (i) => {
     const arr = [...WishListData];
     arr.splice(i, 1);
     setWishListData(arr);
-  };
+  }; //delete card
+
   const submitbtn = (e, newWish) => {
     e.preventDefault();
     setWishListData([...WishListData, newWish]);
-    setNewWish({ title: "", img: "", details: "", price: "", dateAdded: "" });
-  };
+    setNewWish({
+      title: "",
+      img: "",
+      details: "",
+      price: "",
+      dateAdded: dateSubmitted,
+    });
+    setOpenAdd(false);
+  }; //submit form
 
   return (
     <div className="max-w-[450px] min-h-[75dvh] relative">
       {openAdd && (
-        <div className="absolute z-10 w-full h-[80dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+        <div className="absolute z-10 w-full h-[90dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
           <form
             className="grid grid-cols-3 gap-2 items-center"
-            onSubmit={(e) => submitbtn(e)}
+            onSubmit={(e) => submitbtn(e, newWish)}
           >
             {/* title input */}
             <label htmlFor="title" className="text-gray-900">
@@ -183,23 +217,7 @@ const Wishlist = () => {
                 })
               }
             />
-            {/*  date input */}
-            <label htmlFor="dateAdded" className="text-gray-900">
-              Date:
-            </label>
-            <input
-              type="date"
-              name="date"
-              className={inputStyle}
-              defaultValue={dateSubmitted}
-              value={newWish.dateAdded}
-              onChange={(e) =>
-                setNewWish({
-                  ...newWish,
-                  dateAdded: setDateSubmitted(e.target.value),
-                })
-              }
-            />
+
             {/* image input */}
             <label htmlFor="img" className="text-gray-900">
               Image:
@@ -209,9 +227,9 @@ const Wishlist = () => {
                 type="file"
                 name="img"
                 className="block w-max text-gray-500
-                py-1 px-0
-                rounded-lg border-0
-                text-sm file:rounded-lg file:px-4 file:py-1.5 file:mr-6
+                py-1 px-0 rounded-lg border-0
+                text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1
+                file:sm:mr-6 file:sm:px-4
                 hover:bg-violet-100
               "
                 value={newWish.img}
@@ -227,7 +245,7 @@ const Wishlist = () => {
             <div className="h-16 col-span-3"></div>
             <div className="col-span-3 h-10 flex justify-center gap-8">
               <button
-                type="submit"
+                type="button"
                 className="bg-blue-gray-900 text-sm w-32 rounded-full text-white font-semibold"
                 onClick={() => addCard()}
               >
@@ -236,7 +254,6 @@ const Wishlist = () => {
               <button
                 type="submit"
                 className="bg-pale text-sm w-32 rounded-full text-darkapricot font-semibold"
-                onClick={() => addCard()}
               >
                 Done
               </button>
@@ -263,6 +280,26 @@ const Wishlist = () => {
 
 export default Wishlist;
 
+//date input
+/*  date input
+  <label htmlFor="dateAdded" className="text-gray-900">
+    Date:
+  </label>
+  <input
+    type="date"
+    name="date"
+    className={inputStyle}
+    defaultValue={dateSubmitted}
+    value={newWish.dateAdded}
+    onChange={(e) =>
+      setNewWish({
+        ...newWish,
+        dateAdded: setDateSubmitted(e.target.value),
+      })
+    }
+  />*/
+
+//for pending and done ... upgrading stage
 /*import {
   Tabs,
   TabsHeader,
