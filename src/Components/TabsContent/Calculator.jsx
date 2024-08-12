@@ -47,7 +47,7 @@ const Calculator = () => {
   };
 
   return (
-    <div className="bg-gray-100 w-[80%] mx-auto pb-4 rounded-md">
+    <div className="bg-gray-100 w-[95%] lg:w-[80%] mx-auto pb-4 rounded-md">
       <div className="bg-transparent px-4 pt-4 w-full max-w-xs sm:max-w-md md:max-w-lg">
         {/* screens div */}
         <div className="mb-1">
