@@ -51,7 +51,7 @@ function Header() {
   ];
 
   return (
-    <header className="flex justify-between items-center mt-2 mb-2 sm:mb-4 ">
+    <header className="flex justify-between items-center mt-4 mb-2 sm:mb-4 md:mb-8">
       <div>
         <img
           src={LogoImg}

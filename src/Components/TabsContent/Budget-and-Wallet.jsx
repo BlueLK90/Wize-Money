@@ -4,15 +4,16 @@ import AddButton from "./../Other/AddButton";
 import DetailsCard from "./../Other/DetailsCard";
 
 const mainSec =
-  "grid gap-y-4 text-center text-xs sm:text-sm bg-gray-100 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
+  "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
 const budgetMeter = "flex justify-around items-center";
 const spendingDetails = "flex justify-between";
-const SecondarySec = "grid grid-cols-10 gap-1 text-center text-xs sm:text-sm ";
+const SecondarySec =
+  "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
 const one =
-  "bg-gray-100 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
-const two = "bg-gray-100 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
+  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
+const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
 const three =
-  "bg-gray-100 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
+  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
 
 export const Budget = ({ size }) => {
   return (

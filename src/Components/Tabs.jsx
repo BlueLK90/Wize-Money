@@ -28,7 +28,7 @@ export const TabsSecLarge = () => {
         className="bg-white-0 col-span-2 w-[64vw] max-w-[78rem] min-h-[85dvh] p-2 rounded-lg mb-2"
       >
         <TabsHeader
-          className="rounded-none border-b bg-transparent p-0 "
+          className="rounded-none border-b bg-transparent p-0 ml-2"
           indicatorProps={{
             className:
               "text-white bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
@@ -40,8 +40,8 @@ export const TabsSecLarge = () => {
                 <Tab
                   className={
                     activeTabOne === el.value
-                      ? "w-[15vw] text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
-                      : "w-[15vw] text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                      ? "w-[15vw] max-w-44 text-darkapricot text-md lg:text-lg font-semibold rounded-t-md py-2.5 "
+                      : "w-[15vw] max-w-44 text-gray-500 text-md lg:text-lg py-2.5 px-1 "
                   }
                   key={el.id}
                   value={el.value}
@@ -84,8 +84,8 @@ export const TabsSecLarge = () => {
                 <Tab
                   className={
                     activeTabTwo === el.value
-                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
-                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                      ? "text-darkapricot text-base lg:text-lg font-semibold rounded-t-md py-2.5"
+                      : "text-gray-500 text-base lg:text-lg py-2.5 px-1"
                   }
                   key={el.id}
                   value={el.value}
@@ -142,8 +142,8 @@ export const TabsSecMedium = () => {
                 <Tab
                   className={
                     activeTabOne === el.value
-                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
-                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                      ? "text-darkapricot text-base lg:text-lg font-semibold rounded-t-md py-2.5 lg:py-3.5"
+                      : "text-gray-500 text-base lg:text-lg py-2.5 px-1 lg:py-3.5"
                   }
                   key={el.id}
                   value={el.value}
@@ -186,8 +186,8 @@ export const TabsSecMedium = () => {
                 <Tab
                   className={
                     activeTabTwo === el.value
-                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
-                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                      ? "text-darkapricot text-base lg:text-lg font-semibold rounded-t-md py-2.5 lg:py-3.5"
+                      : "text-gray-500 text-base lg:text-lg py-2.5 px-1 lg:py-3.5"
                   }
                   key={el.id}
                   value={el.value}
@@ -242,7 +242,7 @@ export const TabsSecSmall = () => {
               className={
                 activeTab === el.value
                   ? "text-darkapricot text-xs sm:text-sm md:text-base font-semibold rounded-t-md py-1.5"
-                  : "py-2 px-1 text-xs sm:text-sm md:text-base"
+                  : "text-gray-500 py-2 px-1 text-xs sm:text-sm md:text-base"
               }
               key={el.id}
               value={el.value}

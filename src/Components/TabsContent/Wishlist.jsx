@@ -11,12 +11,14 @@ const WishCard = ({ element, deleteCard }) => {
 
   return (
     <div>
-      <div className="border border-gray-200 bg-gray-100 w-full my-2 rounded-md p-2 shadow-md">
+      <div className="border border-gray-300 bg-gray-100 w-full my-2 rounded-md p-2 shadow-sm">
         <section className="grid" onClick={toggleOpen}>
-          <p className="text-xs text-green-500 pl-1">{element.dateAdded}</p>
+          <p className="text-xs lg:text-sm text-green-500 pl-1">
+            {element.dateAdded}
+          </p>
           <div className="flex items-center gap-2 px-2">
             <p
-              className={`flex-1 text-gray-900 text-sm ${
+              className={`flex-1 text-gray-900 md:text-sm lg:text-base ${
                 element.img ? "py-0" : "py-2"
               }`}
             >
@@ -33,7 +35,7 @@ const WishCard = ({ element, deleteCard }) => {
             )}
           </div>
           {element.price && (
-            <p className="text-xs text-darkapricot pt-1 pl-1">
+            <p className="text-xs lg:text-sm text-darkapricot pt-1 pl-1">
               {numberWithCommas(element.price)} IQD
             </p>
           )}

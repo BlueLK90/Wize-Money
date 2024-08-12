@@ -1,16 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FiDelete } from "react-icons/fi";
+
+const btnStyle =
+  "flex justify-center items-center h-12 w-12 p-4 shadow-sm shadow-gray-400 rounded-full text-xs md:text-sm lg:text-base font-medium text-darkapricot";
 
 const Calculator = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
-  const scrollableRef = useRef();
 
-  useEffect(() => {
-    if (scrollableRef.current) {
-      scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
-    }
-  }, []); // Empty dependency array to run only once on mount
   var calSignClicked;
   const handleClickNum = (val) => {
     if (input === 0 || calSignClicked === true) {
@@ -50,108 +47,100 @@ const Calculator = () => {
   };
 
   return (
-    <div className="flex justify-center rounded-lg bg-transparent">
-      <div className="bg-transparent p-4 shadow-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
-        <div className="mb-4">
-          <div
-            ref={scrollableRef}
-            className=" text-right w-full h-32 overflow-auto text-xl mt-2 border border-b-0 border-gray-400 rounded"
-          >
+    <div className="bg-gray-100 w-[80%] mx-auto pb-4 rounded-md">
+      <div className="bg-transparent px-4 pt-4 w-full max-w-xs sm:max-w-md md:max-w-lg">
+        {/* screens div */}
+        <div className="mb-1">
+          <div className="text-right w-full h-40 xl:h-24 p-2 overflow-auto text-xl mt-2 border border-b-0 border-gray-300 rounded">
             {result}
           </div>
           <input
             type="text"
-            className="w-full p-2 text-right text-2xl border border-gray-400 rounded"
+            className="w-full p-2 text-right text-2xl border border-gray-300 rounded"
             value={input}
             readOnly
           />
         </div>
-        <div className="grid grid-cols-4 gap-2">
-          <button
-            className="p-4 bg-gray-600 shadow-sm shadow-black text-white rounded text-lg md:text-xl lg:text-2xl"
-            onClick={clearResult}
-          >
-            C
-          </button>
-          <button
-            className="p-4 bg-darkapricot shadow-sm shadow-black text-white rounded"
-            onClick={backSpace}
-          >
-            <FiDelete className="static text-xl" />
-          </button>
-          <button
-            key={"+/-"}
-            className="p-4 bg-apricot shadow-sm shadow-black rounded text-lg md:text-xl lg:text-2xl"
-            onClick={() => setInput(input * -1)}
-          >
-            +/-
-          </button>
-          <button
-            key={"/"}
-            className="p-4 bg-apricot shadow-sm shadow-black rounded text-lg md:text-xl lg:text-2xl"
-            onClick={() => handleClickSign("/")}
-          >
-            /
-          </button>
-          {["7", "8", "9", "*"].map((value) => (
+        {/* buttons div */}
+        <div className="w-[95%] mx-auto">
+          <div className="grid grid-cols-4 gap-2.5 p-4">
             <button
-              key={value}
-              className={`p-4 shadow-sm shadow-black
-              ${
-                value === "*" ? "bg-apricot" : "bg-gray-200"
-              } rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() =>
-                value === "*" ? handleClickSign(value) : handleClickNum(value)
-              }
+              className={`${btnStyle} bg-gray-600 text-white`}
+              onClick={clearResult}
             >
-              {value}
+              C
             </button>
-          ))}
-          {["4", "5", "6", "-"].map((value) => (
             <button
-              key={value}
-              className={`p-4 shadow-sm shadow-black
-                ${
-                  value === "-" ? "bg-apricot" : "bg-gray-200"
-                } rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() =>
-                value === "-" ? handleClickSign(value) : handleClickNum(value)
-              }
+              className={`${btnStyle} bg-darkapricot text-white`}
+              onClick={backSpace}
             >
-              {value}
+              <FiDelete className="static text-xl" />
             </button>
-          ))}
-          {["1", "2", "3", "+"].map((value) => (
             <button
-              key={value}
-              className={`p-4
-                ${
-                  value === "+" ? "bg-apricot" : "bg-gray-200"
-                } rounded text-lg md:text-xl lg:text-2xl shadow-sm shadow-black`}
-              onClick={() =>
-                value === "+" ? handleClickSign(value) : handleClickNum(value)
-              }
+              key={"+/-"}
+              className={btnStyle}
+              onClick={() => setInput(input * -1)}
             >
-              {value}
+              +/-
             </button>
-          ))}
-          {[".", "0", "="].map((value) => (
             <button
-              key={value}
-              className={`p-4 shadow-sm shadow-black ${
-                value === "="
-                  ? "bg-darkapricot text-white col-span-2 "
-                  : value === "."
-                  ? "bg-gray-200 font-bold "
-                  : "bg-gray-200 border "
-              } rounded text-lg md:text-xl lg:text-2xl`}
-              onClick={() =>
-                value === "=" ? calculate() : handleClickNum(value)
-              }
+              key={"/"}
+              className={btnStyle}
+              onClick={() => handleClickSign("/")}
             >
-              {value}
+              /
             </button>
-          ))}
+            {["7", "8", "9", "*"].map((value) => (
+              <button
+                key={value}
+                className={btnStyle}
+                onClick={() =>
+                  value === "*" ? handleClickSign(value) : handleClickNum(value)
+                }
+              >
+                {value}
+              </button>
+            ))}
+            {["4", "5", "6", "-"].map((value) => (
+              <button
+                key={value}
+                className={btnStyle}
+                onClick={() =>
+                  value === "-" ? handleClickSign(value) : handleClickNum(value)
+                }
+              >
+                {value}
+              </button>
+            ))}
+            {["1", "2", "3", "+"].map((value) => (
+              <button
+                key={value}
+                className={btnStyle}
+                onClick={() =>
+                  value === "+" ? handleClickSign(value) : handleClickNum(value)
+                }
+              >
+                {value}
+              </button>
+            ))}
+            {[".", "0", "="].map((value) => (
+              <button
+                key={value}
+                className={`${btnStyle} ${
+                  value === "="
+                    ? "bg-darkapricot text-white ml-1 w-[90%] col-span-2"
+                    : value === "."
+                    ? "font-extrabold"
+                    : ""
+                }`}
+                onClick={() =>
+                  value === "=" ? calculate() : handleClickNum(value)
+                }
+              >
+                {value}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
