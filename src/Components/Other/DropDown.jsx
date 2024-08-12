@@ -6,10 +6,10 @@ import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 export const DropDownBudget = ({ el }) => {
   return (
     <div>
-      <button className=" p-1 w-80 flex items-center justify-between rounded-lg">
-        {el.date}
-        <p className=" text-orange-700">{el.Amount}</p>
-      </button>
+      <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between">
+        <p>{el.date}</p>
+        <p className=" text-darkapricot">{numberWithCommas(el.Amount)}</p>
+      </div>
     </div>
   );
 };
@@ -20,36 +20,35 @@ export const DropDownWallet = ({ el, data }) => {
   return (
     <div>
       <div
-        className="border border-red-500 p-1 w-full flex items-center justify-between"
+        className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <div className="border border-green-500">{el.date}</div>
+        <div>{el.date}</div>
 
         <div>
-          {!isOpen ? (
-            <>
-              <div className="text-orange-700 border border-blue-500 flex items-center gap-1">
+          <div className="text-darkapricot flex items-center gap-1">
+            {!isOpen ? (
+              <>
                 <p>{numberWithCommas(el.Amount)} </p>
-
                 <FiChevronDown className="static" />
-              </div>
-            </>
-          ) : (
-            <div>
-              <FiChevronUp className="static text-orange-700" />
-            </div>
-          )}
+              </>
+            ) : (
+              <FiChevronUp className="static text-darkapricot" />
+            )}
+          </div>
         </div>
       </div>
       {isOpen && (
-        <div className=" relative top-18 flex flex-col items-start rounded-lg p-1 w-80 ">
+        <div className=" relative top-18 flex flex-col items-start rounded-lg p-1 w-full ">
           {data.map((element, i) => (
             <div
               key={i}
               className="flex w-full justify-between hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2"
             >
               <p>{element.date}</p>
-              <p className="text-orange-700">{element.Amount} IQD</p>
+              <p className="text-darkapricot">
+                {numberWithCommas(element.Amount)} IQD
+              </p>
             </div>
           ))}
         </div>

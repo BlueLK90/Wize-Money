@@ -14,7 +14,7 @@ const walletData = [
   { date: "March, 2024", Amount: "1000" },
 ];
 const detailsCard =
-  "grid bg-gray-100 w-[100%] border border-gray-300 rounded-lg py-2 px-2 my-2";
+  "text-xs sm:text-sm grid bg-gray-100 border border-gray-300 rounded-lg py-2 px-2 my-2";
 
 const DetailsCard = ({ windowView }) => {
   return (

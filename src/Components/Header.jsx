@@ -50,29 +50,20 @@ function Header() {
     },
   ];
 
-  //click outside to cancel
-  // const menuRef = useRef();
-  // const UserIconRef = useRef();
-  // window.addEventListener("click", (e) => {
-  //   if (e.target !== menuRef.current && e.target !== UserIconRef.current) {
-  //     closeDrawer;
-  //   }
-  // });
-
   return (
-    <header className="flex justify-between align-baseline my-2">
+    <header className="flex justify-between items-center mt-2 mb-2 sm:mb-4 ">
       <div>
         <img
           src={LogoImg}
           alt="Logo"
-          className="h-10 drop-shadow-[1px_2px_3px_rgba(0,0,0,0.75)]"
+          className="h-10 md:h-10 drop-shadow-[1px_2px_3px_rgba(0,0,0,0.75)]"
         />
       </div>
       <img
         onClick={openDrawer}
         src={UserIcon}
         alt="user icon and options"
-        className="h-9 w-9 object-cover border-2 border-orange-100 rounded-full cursor-pointer shadow-md"
+        className="h-9 w-9 md:h-11 md:w-11 object-cover border-2 border-orange-100 rounded-full cursor-pointer shadow-md"
       />
 
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>

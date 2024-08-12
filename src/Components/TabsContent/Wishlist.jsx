@@ -13,7 +13,7 @@ const WishCard = ({ element, deleteCard }) => {
     <div>
       <div className="border border-gray-200 bg-gray-100 w-full my-2 rounded-md p-2 shadow-md">
         <section className="grid" onClick={toggleOpen}>
-          <p className="text-xs pl-1">{element.dateAdded}</p>
+          <p className="text-xs text-green-500 pl-1">{element.dateAdded}</p>
           <div className="flex items-center gap-2 px-2">
             <p
               className={`flex-1 text-gray-900 text-sm ${
@@ -33,7 +33,7 @@ const WishCard = ({ element, deleteCard }) => {
             )}
           </div>
           {element.price && (
-            <p className="text-xs pt-1 pl-1">
+            <p className="text-xs text-darkapricot pt-1 pl-1">
               {numberWithCommas(element.price)} IQD
             </p>
           )}
@@ -158,9 +158,9 @@ const Wishlist = () => {
   }; //submit form
 
   return (
-    <div className="max-w-[450px] min-h-[75dvh] relative">
+    <div className="relative">
       {openAdd && (
-        <div className="absolute z-10 w-full h-[90dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+        <div className="absolute z-10 w-full h-[80dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
           <form
             className="grid grid-cols-3 gap-2 items-center"
             onSubmit={(e) => submitbtn(e, newWish)}

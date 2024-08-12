@@ -50,7 +50,7 @@ const Calculator = () => {
   };
 
   return (
-    <div className="flex justify-center min-h-screen rounded-lg bg-transparent">
+    <div className="flex justify-center rounded-lg bg-transparent">
       <div className="bg-transparent p-4 shadow-lg w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
         <div className="mb-4">
           <div

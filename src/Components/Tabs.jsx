@@ -12,17 +12,205 @@ import {
 } from "@material-tailwind/react";
 
 export const TabsSecLarge = () => {
+  const [activeTabOne, setActiveTabOne] = useState("Budget");
+  const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
+  const tabs = [
+    { id: 1, value: "Budget", content: <Budget size="isLarge" /> },
+    { id: 2, value: "Wallet", content: <Wallet size="isLarge" /> },
+    { id: 3, value: "Wishlist", content: <Wishlist /> },
+    { id: 4, value: "Calendar", content: <Calendar /> },
+    { id: 5, value: "Calculator", content: <Calculator /> },
+  ];
   return (
-    <div className="">
-      <h1>TabsSecLarge</h1>
+    <div className="grid grid-cols-3 gap-4">
+      <Tabs
+        value={activeTabOne}
+        className="bg-white-0 col-span-2 w-[64vw] max-w-[78rem] min-h-[85dvh] p-2 rounded-lg mb-2"
+      >
+        <TabsHeader
+          className="rounded-none border-b bg-transparent p-0 "
+          indicatorProps={{
+            className:
+              "text-white bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
+          }}
+        >
+          {tabs.map((el, i) => {
+            if (i < 2) {
+              return (
+                <Tab
+                  className={
+                    activeTabOne === el.value
+                      ? "w-[15vw] text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
+                      : "w-[15vw] text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                  }
+                  key={el.id}
+                  value={el.value}
+                  onClick={() => setActiveTabOne(el.value)}
+                >
+                  {el.value}
+                </Tab>
+              );
+            }
+          })}
+        </TabsHeader>
+        <TabsBody className="pt-4">
+          {tabs.map((el, i) => {
+            if (i < 2) {
+              return (
+                <TabPanel key={el.id} value={el.value}>
+                  {el.content}
+                </TabPanel>
+              );
+            }
+          })}
+        </TabsBody>
+      </Tabs>
+      {/* ---------------- */}
+      {/* ---------------- */}
+      <Tabs
+        value={activeTabTwo}
+        className="bg-white-0 w-[32vw] max-w-[38rem] min-h-[85dvh] p-2 rounded-lg mb-2"
+      >
+        <TabsHeader
+          className="rounded-none border-b bg-transparent p-0"
+          indicatorProps={{
+            className:
+              "bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
+          }}
+        >
+          {tabs.map((el, i) => {
+            if (i > 1) {
+              return (
+                <Tab
+                  className={
+                    activeTabTwo === el.value
+                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
+                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                  }
+                  key={el.id}
+                  value={el.value}
+                  onClick={() => setActiveTabTwo(el.value)}
+                >
+                  {el.value}
+                </Tab>
+              );
+            }
+          })}
+        </TabsHeader>
+        <TabsBody className="pt-4">
+          {tabs.map((el, i) => {
+            if (i > 1) {
+              return (
+                <TabPanel key={el.id} value={el.value}>
+                  {el.content}
+                </TabPanel>
+              );
+            }
+          })}
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };
 
 export const TabsSecMedium = () => {
+  const [activeTabOne, setActiveTabOne] = useState("Budget");
+  const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
+  const tabs = [
+    { id: 1, value: "Budget", content: <Budget size="isMedium" /> },
+    { id: 2, value: "Wallet", content: <Wallet size="isMedium" /> },
+    { id: 3, value: "Wishlist", content: <Wishlist /> },
+    { id: 4, value: "Calendar", content: <Calendar /> },
+    { id: 5, value: "Calculator", content: <Calculator /> },
+  ];
   return (
-    <div>
-      <h1>TabsSecMedium</h1>
+    <div className="grid grid-cols-2 gap-4">
+      <Tabs
+        value={activeTabOne}
+        className="bg-white-0 w-[47vw] max-w-[550px] min-h-[85dvh] p-2 rounded-lg mb-2"
+      >
+        <TabsHeader
+          className="rounded-none border-b bg-transparent p-0"
+          indicatorProps={{
+            className:
+              "bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
+          }}
+        >
+          {tabs.map((el, i) => {
+            if (i < 2) {
+              return (
+                <Tab
+                  className={
+                    activeTabOne === el.value
+                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
+                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                  }
+                  key={el.id}
+                  value={el.value}
+                  onClick={() => setActiveTabOne(el.value)}
+                >
+                  {el.value}
+                </Tab>
+              );
+            }
+          })}
+        </TabsHeader>
+        <TabsBody>
+          {tabs.map((el, i) => {
+            if (i < 2) {
+              return (
+                <TabPanel key={el.id} value={el.value}>
+                  {el.content}
+                </TabPanel>
+              );
+            }
+          })}
+        </TabsBody>
+      </Tabs>
+      {/* ---------------- */}
+      {/* ---------------- */}
+      <Tabs
+        value={activeTabTwo}
+        className="bg-white-0 w-[47vw] max-w-[550px] min-h-[85dvh] p-2 rounded-lg mb-2"
+      >
+        <TabsHeader
+          className="rounded-none border-b bg-transparent p-0"
+          indicatorProps={{
+            className:
+              "bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
+          }}
+        >
+          {tabs.map((el, i) => {
+            if (i > 1) {
+              return (
+                <Tab
+                  className={
+                    activeTabTwo === el.value
+                      ? "text-darkapricot text-lg lg:text-xl font-semibold rounded-t-md py-2.5 lg:py-4"
+                      : "text-lg lg:text-xl py-2.5 px-1 lg:py-4"
+                  }
+                  key={el.id}
+                  value={el.value}
+                  onClick={() => setActiveTabTwo(el.value)}
+                >
+                  {el.value}
+                </Tab>
+              );
+            }
+          })}
+        </TabsHeader>
+        <TabsBody>
+          {tabs.map((el, i) => {
+            if (i > 1) {
+              return (
+                <TabPanel key={el.id} value={el.value}>
+                  {el.content}
+                </TabPanel>
+              );
+            }
+          })}
+        </TabsBody>
+      </Tabs>
     </div>
   );
 };
@@ -30,16 +218,19 @@ export const TabsSecMedium = () => {
 export const TabsSecSmall = () => {
   const [activeTab, setActiveTab] = useState("Budget");
   const tabs = [
-    { id: 1, value: "Budget", content: <Budget /> },
-    { id: 2, value: "Wallet", content: <Wallet /> },
+    { id: 1, value: "Budget", content: <Budget size="isSmall" /> },
+    { id: 2, value: "Wallet", content: <Wallet size="isSmall" /> },
     { id: 3, value: "Wishlist", content: <Wishlist /> },
     { id: 4, value: "Calendar", content: <Calendar /> },
     { id: 5, value: "Calculator", content: <Calculator /> },
   ];
   return (
-    <Tabs value={activeTab} className="bg-white-0 p-2 rounded-lg mb-2">
+    <Tabs
+      value={activeTab}
+      className="bg-white-0 w-[94vw] max-w-[500px] min-h-[85dvh] p-2 rounded-lg mb-2"
+    >
       <TabsHeader
-        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        className="rounded-none border-b bg-transparent p-0"
         indicatorProps={{
           className:
             "bg-transparent border-b-2 border-darkapricot shadow-none rounded-none",
@@ -50,7 +241,7 @@ export const TabsSecSmall = () => {
             <Tab
               className={
                 activeTab === el.value
-                  ? "text-darkapricot text-xs sm:text-sm md:text-base  rounded-t-md py-1.5 xs:py-2"
+                  ? "text-darkapricot text-xs sm:text-sm md:text-base font-semibold rounded-t-md py-1.5"
                   : "py-2 px-1 text-xs sm:text-sm md:text-base"
               }
               key={el.id}
