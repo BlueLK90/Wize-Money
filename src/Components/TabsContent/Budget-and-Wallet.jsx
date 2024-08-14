@@ -43,18 +43,24 @@ export const Budget = ({ size }) => {
     setBudgets([...budgets, newBudget]);
     setNewBudget({
       title: "",
-      img: "",
+      category: "",
       details: "",
-      price: "",
+      amount: "",
       dateAdded: dateSubmitted,
     });
     setOpenAdd(false);
   }; //submit form
-  const fields = ["Title", "Price", "Date", "Details"];
+  const fields = ["Title", "Category", "Amount", "Date", "Details"];
   let sizer = size === "isLarge" && openAdd;
 
   return (
-    <div className={size === "isLarge" ? "grid grid-cols-2 gap-12 mt-2 " : ""}>
+    <div
+      className={
+        size === "isLarge"
+          ? "grid grid-cols-2 gap-12 mt-2  text-gray-800"
+          : " text-gray-800"
+      }
+    >
       {/* {sizer === true ? (
         ""
       ) : (
@@ -111,7 +117,8 @@ export const Budget = ({ size }) => {
             role="button"
             style={{ cursor: "pointer" }}
           >
-            Edit My Budget
+            Edit <br />
+            My Budget
           </div>
           <div className={`${three} col-span-4`}>
             <p>Exceeded Budget</p>
@@ -137,7 +144,13 @@ export const Budget = ({ size }) => {
 
 export const Wallet = ({ size }) => {
   return (
-    <div className={size === "isLarge" ? "grid grid-cols-2 gap-12 mt-2 " : ""}>
+    <div
+      className={
+        size === "isLarge"
+          ? "grid grid-cols-2 gap-12 mt-2  text-gray-800"
+          : " text-gray-800"
+      }
+    >
       <div>
         <div className={mainSec}>
           <div className={budgetMeter}>
@@ -184,7 +197,7 @@ export const Wallet = ({ size }) => {
       <div>
         <div className="flex items-center">
           <hr className="flex-grow border-t border-greentea ml-2" />
-          <button className="grid justify-center content-center w-12 h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer">
+          <button className="grid justify-center content-center w-10 h-10 md:w-12 md:h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer">
             +
           </button>
         </div>
