@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import ProgressBar from "./../Other/RadialBar";
-import AddButton from "./../Other/AddButton";
 import DetailsCard from "./../Other/DetailsCard";
+import AddWindow from "../Other/AddWindow";
+import { useState } from "react";
+import { formattedDate } from "../../Utils";
 
 const mainSec =
   "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
@@ -16,8 +18,56 @@ const three =
   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
 
 export const Budget = ({ size }) => {
+  const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
+
+  //date formatting
+  const dateSubmitted = formattedDate(); //default date
+
+  // main data arr
+  const [budgets, setBudgets] = useState(budgetData);
+
+  const [newBudget, setNewBudget] = useState({
+    title: "",
+    img: "",
+    details: "",
+    price: "",
+    dateAdded: dateSubmitted,
+  }); // sec data state
+
+  const addBudget = () => {
+    setOpenAdd(!openAdd);
+  }; //open/close add screen
+
+  const submitbtn = (e, newBudget) => {
+    e.preventDefault();
+    setBudgets([...budgets, newBudget]);
+    setNewBudget({
+      title: "",
+      img: "",
+      details: "",
+      price: "",
+      dateAdded: dateSubmitted,
+    });
+    setOpenAdd(false);
+  }; //submit form
+  const fields = ["Title", "Price", "Date", "Details"];
+  let sizer = size === "isLarge" && openAdd;
+
   return (
     <div className={size === "isLarge" ? "grid grid-cols-2 gap-12 mt-2 " : ""}>
+      {/* {sizer === true ? (
+        ""
+      ) : (
+        <div className="w-96 h-96">
+          <AddWindow
+            newItem={newBudget}
+            setNewItem={setNewBudget}
+            submitbtn={submitbtn}
+            open={addBudget}
+            items={fields}
+          />
+        </div>
+      )} */}
       <div>
         <div className={mainSec}>
           <div className={budgetMeter}>
@@ -72,9 +122,12 @@ export const Budget = ({ size }) => {
       <div>
         <div className="flex items-center">
           <hr className="flex-grow border-t border-greentea ml-2" />
-          <span className="mx-2">
-            <AddButton />
-          </span>
+          <button
+            onClick={addBudget}
+            className="grid justify-center content-center w-10 h-10 md:w-12 md:h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
+          >
+            +
+          </button>
         </div>
         <DetailsCard windowView="budget" />
       </div>
@@ -131,12 +184,25 @@ export const Wallet = ({ size }) => {
       <div>
         <div className="flex items-center">
           <hr className="flex-grow border-t border-greentea ml-2" />
-          <span className="mx-2">
-            <AddButton />
-          </span>
+          <button className="grid justify-center content-center w-12 h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer">
+            +
+          </button>
         </div>
         <DetailsCard windowView="wallet" />
       </div>
     </div>
   );
 };
+
+const budgetData = [
+  { date: "June, 10, 2024", Amount: "1000" },
+  { date: "June, 9, 2024", Amount: "1000" },
+  { date: "June, 8, 2024", Amount: "1000" },
+  { date: "June, 7, 2024", Amount: "1000" },
+];
+const walletData = [
+  { date: "June, 2024", Amount: "1000" },
+  { date: "May, 2024", Amount: "1000" },
+  { date: "April, 2024", Amount: "1000" },
+  { date: "March, 2024", Amount: "1000" },
+];

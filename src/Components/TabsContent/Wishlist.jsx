@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Collapse, Button, Card, CardBody } from "@material-tailwind/react";
 import { FiEdit, FiEdit3, FiX } from "react-icons/fi";
 import monitor from "../../assets/monitor.jpg";
-import { numberWithCommas } from "../../Utils/index";
+import { formattedDate, numberWithCommas } from "../../Utils/index";
+import AddWindow from "../Other/AddWindow";
 
 const WishCard = ({ element, deleteCard }) => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ const WishCard = ({ element, deleteCard }) => {
           </p>
           <div className="flex items-center gap-2 px-2">
             <p
-              className={`flex-1 text-gray-900 md:text-sm lg:text-base ${
+              className={`flex-1 text-gray-900 text-sm lg:text-base ${
                 element.img ? "py-0" : "py-2"
               }`}
             >
@@ -71,33 +72,10 @@ const WishCard = ({ element, deleteCard }) => {
   );
 };
 
-const inputStyle =
-  "col-span-2 border border-gray-300 bg-gray-50 rounded-md p-1";
-
 const Wishlist = () => {
   const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
 
   //date formatting
-  const months = [
-    "Jan.",
-    "Feb.",
-    "Mar.",
-    "Apr.",
-    "May",
-    "June",
-    "July",
-    "Aug.",
-    "Sep.",
-    "Oct.",
-    "Nov.",
-    "Dec.",
-  ];
-  const formattedDate = () => {
-    let date = new Date().toISOString().split("T")[0];
-    const [year, month, day] = date.split("-");
-    let monthFormatted = months[month - 1];
-    return `${monthFormatted} ${day}, ${year}`;
-  };
   const dateSubmitted = formattedDate(); //default date
 
   // main data arr
@@ -159,111 +137,21 @@ const Wishlist = () => {
     setOpenAdd(false);
   }; //submit form
 
+  const fields = ["Title", "Price", "Details", "Image"];
+
   return (
     <div className="relative">
+      {/* Add new data window */}
       {openAdd && (
-        <div className="absolute z-10 w-full h-[80dvh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
-          <form
-            className="grid grid-cols-3 gap-2 items-center"
-            onSubmit={(e) => submitbtn(e, newWish)}
-          >
-            {/* title input */}
-            <label htmlFor="title" className="text-gray-900">
-              Title:
-            </label>
-            <input
-              type="text"
-              name="title"
-              className={inputStyle}
-              value={newWish.name}
-              onChange={(e) =>
-                setNewWish({
-                  ...newWish,
-                  title: e.target.value,
-                })
-              }
-              required
-            />
-            {/* price input */}
-            <label htmlFor="price" className="text-gray-900">
-              Price:
-            </label>
-            <input
-              type="text"
-              name="price"
-              className={inputStyle}
-              value={newWish.price}
-              onChange={(e) =>
-                setNewWish({
-                  ...newWish,
-                  price: e.target.value,
-                })
-              }
-              required
-            />
-            {/* details input */}
-            <label htmlFor="title" className="text-gray-900">
-              Details:
-            </label>
-            <input
-              type="text"
-              name="title"
-              className={inputStyle}
-              value={newWish.details}
-              onChange={(e) =>
-                setNewWish({
-                  ...newWish,
-                  details: e.target.value,
-                })
-              }
-            />
-
-            {/* image input */}
-            <label htmlFor="img" className="text-gray-900">
-              Image:
-            </label>
-            <label className="block">
-              <input
-                type="file"
-                name="img"
-                className="block w-max text-gray-500
-                py-1 px-0 rounded-lg border-0
-                text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1
-                file:sm:mr-6 file:sm:px-4
-                hover:bg-violet-100
-              "
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const imgUrl = URL.createObjectURL(file);
-                    setNewWish({
-                      ...newWish,
-                      img: imgUrl,
-                    });
-                  }
-                }}
-              />
-            </label>
-            <br />
-            <div className="h-16 col-span-3"></div>
-            <div className="col-span-3 h-10 flex justify-center gap-8">
-              <button
-                type="button"
-                className="bg-blue-gray-900 text-sm w-32 rounded-full text-white font-semibold"
-                onClick={() => addCard()}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="bg-pale text-sm w-32 rounded-full text-darkapricot font-semibold"
-              >
-                Done
-              </button>
-            </div>
-          </form>
-        </div>
+        <AddWindow
+          newItem={newWish}
+          setNewItem={setNewWish}
+          submitbtn={submitbtn}
+          open={addCard}
+          items={fields}
+        />
       )}
+      {/* Add new data btn */}
       <Button
         onClick={() => addCard()}
         className={`flex ml-auto mr-2 p-0 gap-2 bg-transparent shadow-none hover:text-green-400 hover:shadow-none hover:underline hover:underline-offset-4 capitalize text-darkapricot text-sm ${
@@ -273,6 +161,7 @@ const Wishlist = () => {
         <FiEdit3 className="static" />
         add new wish
       </Button>
+      {/* main list */}
       {WishListData.map((el, i) => (
         <WishCard element={el} key={i} deleteCard={() => deleteCard(i)} />
       ))}

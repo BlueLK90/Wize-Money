@@ -9,7 +9,7 @@ const Calculator = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
   //const [reset, setReset] = useState(false); //startover
-  const [calculating, setCalculating] = useState(""); //manage the sizes of input screens
+  const [calculating, setCalculating] = useState(""); //secondary screen
 
   const mathSigns = ["+", "-", "*", "/", "."];
 
@@ -59,7 +59,7 @@ const Calculator = () => {
 
   return (
     <div className="bg-gray-100 w-[95%] lg:w-[80%] mx-auto pb-4 rounded-md">
-      <div className="bg-transparent px-4 pt-4 w-full max-w-xs sm:max-w-md md:max-w-lg">
+      <div className="bg-transparent px-4 pt-4 mx-auto w-full max-w-xs sm:max-w-md md:max-w-lg">
         {/* screens div */}
         <div className="mb-1">
           <div className="bg-white/50 border border-b-0 border-gray-300 rounded p-2 mt-2 text-xl text-right w-full h-40 xl:h-24 overflow-auto">
@@ -76,7 +76,7 @@ const Calculator = () => {
           />
         </div>
         {/* buttons div */}
-        <div className="w-[95%] mx-auto">
+        <div className="ml-1">
           <div className="grid grid-cols-4 gap-2.5 p-4">
             <button
               className={`${btnStyle} bg-gray-600 text-white`}
