@@ -31,10 +31,11 @@ const three =
   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
 
 export const Budget = ({ screenSize }) => {
-  const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
-  const [open, setOpen] = useState(false); //state for open/close dialog
+  const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
+  const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
+  const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const [budgetAmount, setBudgetAmount] = useState(0);
+  const [open, setOpen] = useState(false); //state for open/close dialog
 
   //date formatting
   const dateSubmitted = formattedDate(); //default date
@@ -51,7 +52,7 @@ export const Budget = ({ screenSize }) => {
   }); // sec data state
 
   const addBudget = () => {
-    setOpenAdd(!openAdd);
+    setOpnAdd(!opnAdd);
   }; //open/close add screen
 
   const submitbtn = (e, newBudget) => {
@@ -64,38 +65,30 @@ export const Budget = ({ screenSize }) => {
       amount: "",
       dateAdded: dateSubmitted,
     });
-    setOpenAdd(false);
+    setOpnAdd(false);
   }; //submit form
   const fields = ["Title", "Category", "Amount", "Date", "Details"];
-  let screenSizer = screenSize === "isLarge" && openAdd;
-  const labelProps = {
-    variant: "small",
-    color: "blue-gray",
-    className:
-      "bg-gray-100 absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal",
-  };
 
   return (
     <div
       className={
         screenSize === "isLarge"
-          ? "grid grid-cols-2 gap-12 mt-2  text-gray-800"
-          : " text-gray-800"
+          ? "grid grid-cols-2 gap-12 mt-2 text-gray-800"
+          : "relative text-gray-800 min-h-[75vh]"
       }
     >
-      {/* {screenSizer === true ? (
-        ""
-      ) : (
-        <div className="w-96 h-96">
-          <AddWindow
-            newItem={newBudget}
-            setNewItem={setNewBudget}
-            submitbtn={submitbtn}
-            open={addBudget}
-            items={fields}
-          />
+      {/* add section for phone and tablet */}
+      {opnAddScreenSmall && (
+        <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+          Hello
+          <button
+            onClick={() => setOpnAdd(!opnAdd)}
+            className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
+          >
+            close
+          </button>
         </div>
-      )} */}
+      )}
       <div>
         <div className={mainSec}>
           <div className={budgetMeter}>
@@ -134,62 +127,60 @@ export const Budget = ({ screenSize }) => {
             <p>maintained Budget</p>
             <p>0 Days</p>
           </div>
-          <>
-            <div
-              className={`${two} col-span-2 md:text-sm lg:text-sm`}
-              role="button"
-              style={{ cursor: "pointer" }}
-              onClick={() => setOpen(!open)}
-            >
-              Edit <br />
-              My Budget
-            </div>
-            <Dialog
-              open={open}
-              size="xs"
-              handler={() => setOpen(!open)}
-              className="py-4 px-2 md:py-8 md:px-4"
-            >
-              <DialogBody className="flex justify-between items-center text-xs md:text-sm">
-                <label htmlFor="setBudget">Enter Amount:</label>
-                <input
-                  type="number"
-                  name="setBudget"
-                  className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
-                />
-              </DialogBody>
-              <DialogFooter className="mt-2 md:mt-4">
-                <button
-                  className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
-                  onClick={() => setOpen(!open)}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setOpen(!open)}
-                  className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
-                >
-                  Confirm
-                </button>
-              </DialogFooter>
-            </Dialog>
-          </>
+          {/* edit budget btn */}
+          <div
+            className={`${two} col-span-2 md:text-sm lg:text-sm`}
+            role="button"
+            style={{ cursor: "pointer" }}
+            onClick={() => setOpen(!open)}
+          >
+            Edit <br />
+            My Budget
+          </div>
+          <Dialog
+            open={open}
+            size="xs"
+            handler={() => setOpen(!open)}
+            className="py-4 px-2 md:py-8 md:px-4"
+          >
+            <DialogBody className="flex justify-between items-center text-xs md:text-sm">
+              <label htmlFor="setBudget">Enter Amount:</label>
+              <input
+                type="number"
+                name="setBudget"
+                className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
+              />
+            </DialogBody>
+            <DialogFooter className="mt-2 md:mt-4">
+              <button
+                className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
+                onClick={() => setOpen(!open)}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => setOpen(!open)}
+                className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
+              >
+                Confirm
+              </button>
+            </DialogFooter>
+          </Dialog>
+          {/* enf of edit budget btn */}
           <div className={`${three} col-span-4`}>
             <p>Exceeded Budget</p>
             <p>0 Days</p>
           </div>
         </div>
       </div>
-      <div>
-        <div className="flex items-center">
+      {/* add and details section */}
+      <div
+        className={`relative h-max ${
+          screenSize === "isLarge" ? "min-h-[70vh]" : ""
+        }`}
+      >
+        <div className={`flex items-center ${opnAdd ? "hidden" : ""}`}>
           <hr className="flex-grow border-t border-greentea ml-2" />
-          {/* <button
-            onClick={addBudget}
-            className="grid justify-center content-center w-10 h-10 md:w-12 md:h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
-          >
-            +
-          </button> */}
-
           <SpeedDial placement="right">
             <SpeedDialHandler>
               <IconButton
@@ -200,17 +191,35 @@ export const Budget = ({ screenSize }) => {
               </IconButton>
             </SpeedDialHandler>
             <SpeedDialContent>
-              <SpeedDialAction className="bg-greentea">
+              <SpeedDialAction
+                className="bg-greentea"
+                onClick={() => setOpnAdd(!opnAdd)}
+              >
                 <GiMoneyStack className="h-5 w-5" />
                 <Typography {...labelProps}>Income</Typography>
               </SpeedDialAction>
-              <SpeedDialAction className="bg-red-100">
+              <SpeedDialAction
+                className="bg-red-100"
+                onClick={() => setOpnAdd(!opnAdd)}
+              >
                 <GiMoneyStack className="h-5 w-5" />
                 <Typography {...labelProps}>Expenses</Typography>
               </SpeedDialAction>
             </SpeedDialContent>
           </SpeedDial>
         </div>
+        {/* add section for desktop */}
+        {opnAddScreenLarge && (
+          <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+            Hello
+            <button
+              onClick={() => setOpnAdd(!opnAdd)}
+              className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
+            >
+              close
+            </button>
+          </div>
+        )}
         <DetailsCard windowView="budget" />
       </div>
     </div>
@@ -218,20 +227,31 @@ export const Budget = ({ screenSize }) => {
 };
 
 export const Wallet = ({ screenSize }) => {
-  const labelProps = {
-    variant: "small",
-    color: "blue-gray",
-    className:
-      "bg-gray-100 absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal",
-  };
+  const [opnAdd, setOpnAdd] = useState(false);
+
+  const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
+  const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
+
   return (
     <div
       className={
         screenSize === "isLarge"
-          ? "grid grid-cols-2 gap-12 mt-2  text-gray-800"
-          : " text-gray-800"
+          ? "grid grid-cols-2 gap-12 mt-2 text-gray-800"
+          : "relative text-gray-800 min-h-[75vh]"
       }
     >
+      {/* add section for phone and tablet */}
+      {opnAddScreenSmall && (
+        <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+          Hello
+          <button
+            onClick={() => setOpnAdd(!opnAdd)}
+            className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
+          >
+            close
+          </button>
+        </div>
+      )}
       <div>
         <div className={mainSec}>
           <div className={budgetMeter}>
@@ -275,12 +295,14 @@ export const Wallet = ({ screenSize }) => {
           </div>
         </div>
       </div>
-      <div>
-        <div className="flex items-center">
+      {/* add and detail section */}
+      <div
+        className={`relative h-max ${
+          screenSize === "isLarge" ? "min-h-[70vh]" : ""
+        }`}
+      >
+        <div className={`flex items-center ${opnAdd ? "hidden" : ""}`}>
           <hr className="flex-grow border-t border-greentea ml-2" />
-          {/* <button className="grid justify-center content-center w-10 h-10 md:w-12 md:h-12 rounded-full p-3 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer">
-            +
-          </button> */}
           <SpeedDial placement="right">
             <SpeedDialHandler>
               <IconButton
@@ -291,17 +313,40 @@ export const Wallet = ({ screenSize }) => {
               </IconButton>
             </SpeedDialHandler>
             <SpeedDialContent>
-              <SpeedDialAction className="bg-red-100">
+              <SpeedDialAction
+                className="bg-red-100"
+                onClick={() => setOpnAdd(!opnAdd)}
+              >
                 <GiMoneyStack className="h-5 w-5" />
                 <Typography {...labelProps}>Expenses</Typography>
               </SpeedDialAction>
             </SpeedDialContent>
           </SpeedDial>
         </div>
+        {/* add section for desktop */}
+        {opnAddScreenLarge && (
+          <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+            Hello
+            <button
+              onClick={() => setOpnAdd(!opnAdd)}
+              className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
+            >
+              close
+            </button>
+          </div>
+        )}
         <DetailsCard windowView="wallet" />
       </div>
     </div>
   );
+};
+
+//speed dial label props
+const labelProps = {
+  variant: "small",
+  color: "blue-gray",
+  className:
+    "bg-gray-100 absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal",
 };
 
 const budgetData = [
