@@ -28,12 +28,12 @@ rgb(201, 229, 171)
 body {
   background: linear-gradient(
     180deg,
-    rgb(39, 51, 68) 40%,
+    rgb(23, 40, 65) 40%,
     rgba(243, 244, 246, 1) 40%
   );
 }
 
 .bg-white-0 {
-  background-color: rgb(237, 237, 238);
+  background-color: rgb(240, 240, 246);
   min-height: 90vh;
 }

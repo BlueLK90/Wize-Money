@@ -15,8 +15,8 @@ export const TabsSecLarge = () => {
   const [activeTabOne, setActiveTabOne] = useState("Budget");
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
-    { id: 1, value: "Budget", content: <Budget size="isLarge" /> },
-    { id: 2, value: "Wallet", content: <Wallet size="isLarge" /> },
+    { id: 1, value: "Budget", content: <Budget screenSize="isLarge" /> },
+    { id: 2, value: "Wallet", content: <Wallet screenSize="isLarge" /> },
     { id: 3, value: "Wishlist", content: <Wishlist /> },
     { id: 4, value: "Calendar", content: <Calendar /> },
     { id: 5, value: "Calculator", content: <Calculator /> },
@@ -117,8 +117,8 @@ export const TabsSecMedium = () => {
   const [activeTabOne, setActiveTabOne] = useState("Budget");
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
-    { id: 1, value: "Budget", content: <Budget size="isMedium" /> },
-    { id: 2, value: "Wallet", content: <Wallet size="isMedium" /> },
+    { id: 1, value: "Budget", content: <Budget screenSize="isMedium" /> },
+    { id: 2, value: "Wallet", content: <Wallet screenSize="isMedium" /> },
     { id: 3, value: "Wishlist", content: <Wishlist /> },
     { id: 4, value: "Calendar", content: <Calendar /> },
     { id: 5, value: "Calculator", content: <Calculator /> },
@@ -218,8 +218,8 @@ export const TabsSecMedium = () => {
 export const TabsSecSmall = () => {
   const [activeTab, setActiveTab] = useState("Budget");
   const tabs = [
-    { id: 1, value: "Budget", content: <Budget size="isSmall" /> },
-    { id: 2, value: "Wallet", content: <Wallet size="isSmall" /> },
+    { id: 1, value: "Budget", content: <Budget screenSize="isSmall" /> },
+    { id: 2, value: "Wallet", content: <Wallet screenSize="isSmall" /> },
     { id: 3, value: "Wishlist", content: <Wishlist /> },
     { id: 4, value: "Calendar", content: <Calendar /> },
     { id: 5, value: "Calculator", content: <Calculator /> },

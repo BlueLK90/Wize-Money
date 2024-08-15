@@ -1,9 +1,80 @@
+import { useState } from "react";
+import { DayPicker } from "react-day-picker";
+import { BiArrowToLeft, BiArrowToRight } from "react-icons/bi";
+import { numberWithCommas } from "./../../Utils/index";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
+import { IoIosHome } from "react-icons/io";
+
 const Calendar = () => {
+  const [date, setDate] = useState(new Date());
   return (
     <div>
-      <div className="flex items-center">
+      <div className="grid justify-center my-8 border border-darkapricot shadow-sm p-4 rounded-lg bg-gray-100">
+        <DayPicker
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          showOutsideDays
+          className="border-0"
+          classNames={{
+            caption: "flex justify-center py-2 mb-4 relative items-center",
+            caption_label: "text-sm font-medium text-gray-900",
+            nav: "flex items-center",
+            nav_button:
+              "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+            nav_button_previous: "absolute left-1.5",
+            nav_button_next: "absolute right-1.5",
+            table: "w-full border-collapse",
+            head_row: "flex font-medium text-gray-900",
+            head_cell: "m-0.5 w-9 font-normal text-sm",
+            row: "flex w-full mt-2",
+            cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+            day: "h-9 w-9 p-0 font-normal",
+            day_range_end: "day-range-end",
+            day_selected:
+              "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+            day_today: "rounded-md bg-gray-200 text-gray-900",
+            day_outside:
+              "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+            day_disabled: "text-gray-500 opacity-50",
+            day_hidden: "invisible",
+          }}
+          components={{
+            IconLeft: ({ ...props }) => (
+              <BiArrowToLeft {...props} className="h-4 w-4 stroke-2" />
+            ),
+            IconRight: ({ ...props }) => (
+              <BiArrowToRight {...props} className="h-4 w-4 stroke-2" />
+            ),
+          }}
+        />
+      </div>
+      <div className="flex items-center my-4">
+        <span className="mr-4 whitespace-nowrap">Expenses:</span>
         <hr className="flex-grow border-t border-gray-400" />
-        <span className="ml-2 whitespace-nowrap">Text on the right</span>
+      </div>
+      <div className="bg-gray-100 rounded-md border border-gray-300 h-14 p-2">
+        <Popover placement="top-end">
+          <PopoverHandler>
+            <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
+              <div className="flex gap-6 items-center">
+                <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
+                  <IoIosHome />
+                </p>
+                <p>Something</p>
+              </div>
+              <p className="text-darkapricot">{numberWithCommas(1000)} IQD</p>
+            </div>
+          </PopoverHandler>
+          <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-5 shadow-md shadow-[#f0dcd174]">
+            <p className="text-darkapricot mb-1">June, 10, 2024</p>
+            <p>some details here</p>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

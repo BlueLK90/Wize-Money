@@ -31,22 +31,22 @@ function Header() {
     {
       title: "Profile",
       icon: <CgProfile className="static text-orange-700 text-lg" />,
-      options: "1",
+      options: "User 1",
     },
     {
       title: "Theme",
       icon: <MdOutlineColorLens className="static text-orange-700 text-lg" />,
-      options: "1",
+      options: "-----",
     },
     {
       title: "Settings",
       icon: <LuSettings className="static text-orange-700 text-lg" />,
-      options: "1",
+      options: "-----",
     },
     {
       title: "About",
       icon: <FcAbout className="static text-orange-700 text-lg" />,
-      options: "1",
+      options: "-----",
     },
   ];
 

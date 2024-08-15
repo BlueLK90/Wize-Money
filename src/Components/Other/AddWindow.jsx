@@ -79,7 +79,6 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
               />
             </>
           )}
-
           {/* image input */}
           {inputFields.includes("Image") && (
             <>
