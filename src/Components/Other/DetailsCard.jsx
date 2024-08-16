@@ -1,43 +1,7 @@
 /* eslint-disable react/prop-types */
-import { IoIosHome } from "react-icons/io";
 import DropDownWallet, { DropDownBudget } from "./DropDown";
-import { MdPets, MdSportsBasketball } from "react-icons/md";
-import { FaCar } from "react-icons/fa";
+import { budgetData } from "../../MainData";
 
-const budgetData = [
-  {
-    date: "June, 10, 2024",
-    amount: 1000,
-    title: "Something",
-    details: "some details here",
-    category: "home",
-    categoryIcon: <IoIosHome />,
-  },
-  {
-    date: "June, 9, 2024",
-    amount: 1000,
-    title: "Something",
-    details: "some details here",
-    category: "car",
-    categoryIcon: <FaCar />,
-  },
-  {
-    date: "June, 8, 2024",
-    amount: 1000,
-    title: "Something",
-    details: "some details here",
-    category: "pet",
-    categoryIcon: <MdPets />,
-  },
-  {
-    date: "June, 7, 2024",
-    amount: 1000,
-    title: "Something",
-    details: "some details here",
-    category: "sports",
-    categoryIcon: <MdSportsBasketball />,
-  },
-];
 const walletData = [
   { date: "June, 2024", amount: 1000 },
   { date: "May, 2024", amount: 1000 },

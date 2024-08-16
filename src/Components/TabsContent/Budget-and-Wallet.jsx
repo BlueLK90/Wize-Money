@@ -17,6 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { PiPlusBold } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
+import { budgetData } from "../../MainData";
 
 const mainSec =
   "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
@@ -45,15 +46,11 @@ export const Budget = ({ screenSize }) => {
 
   const [newBudget, setNewBudget] = useState({
     title: "",
-    img: "",
+    category: "",
     details: "",
-    price: "",
+    amount: "",
     dateAdded: dateSubmitted,
   }); // sec data state
-
-  const addBudget = () => {
-    setOpnAdd(!opnAdd);
-  }; //open/close add screen
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
@@ -79,15 +76,13 @@ export const Budget = ({ screenSize }) => {
     >
       {/* add section for phone and tablet */}
       {opnAddScreenSmall && (
-        <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
-          Hello
-          <button
-            onClick={() => setOpnAdd(!opnAdd)}
-            className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
-          >
-            close
-          </button>
-        </div>
+        <AddWindow
+          newItem={newBudget}
+          setNewItem={setNewBudget}
+          submitbtn={submitbtn}
+          open={() => setOpnAdd(!opnAdd)}
+          items={fields}
+        />
       )}
       <div>
         <div className={mainSec}>
@@ -147,7 +142,7 @@ export const Budget = ({ screenSize }) => {
               <label htmlFor="setBudget">Enter Amount:</label>
               <input
                 type="number"
-                name="setBudget"
+                id="setBudget"
                 className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
               />
             </DialogBody>
@@ -173,6 +168,7 @@ export const Budget = ({ screenSize }) => {
           </div>
         </div>
       </div>
+
       {/* add and details section */}
       <div
         className={`relative h-max ${
@@ -210,15 +206,13 @@ export const Budget = ({ screenSize }) => {
         </div>
         {/* add section for desktop */}
         {opnAddScreenLarge && (
-          <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
-            Hello
-            <button
-              onClick={() => setOpnAdd(!opnAdd)}
-              className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
-            >
-              close
-            </button>
-          </div>
+          <AddWindow
+            newItem={newBudget}
+            setNewItem={setNewBudget}
+            submitbtn={submitbtn}
+            open={() => setOpnAdd(!opnAdd)}
+            items={fields}
+          />
         )}
         <DetailsCard windowView="budget" />
       </div>
@@ -242,7 +236,7 @@ export const Wallet = ({ screenSize }) => {
     >
       {/* add section for phone and tablet */}
       {opnAddScreenSmall && (
-        <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+        <div className="absolute z-10 w-full min-h-[70vh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
           Hello
           <button
             onClick={() => setOpnAdd(!opnAdd)}
@@ -325,7 +319,7 @@ export const Wallet = ({ screenSize }) => {
         </div>
         {/* add section for desktop */}
         {opnAddScreenLarge && (
-          <div className="absolute z-10 w-full h-[70vh] border border-gray-200 bg-gray-100 rounded-md p-8 shadow-md">
+          <div className="absolute z-10 w-full min-h-[70vh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
             Hello
             <button
               onClick={() => setOpnAdd(!opnAdd)}
@@ -348,16 +342,3 @@ const labelProps = {
   className:
     "bg-gray-100 absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal",
 };
-
-const budgetData = [
-  { date: "June, 10, 2024", Amount: "1000" },
-  { date: "June, 9, 2024", Amount: "1000" },
-  { date: "June, 8, 2024", Amount: "1000" },
-  { date: "June, 7, 2024", Amount: "1000" },
-];
-const walletData = [
-  { date: "June, 2024", Amount: "1000" },
-  { date: "May, 2024", Amount: "1000" },
-  { date: "April, 2024", Amount: "1000" },
-  { date: "March, 2024", Amount: "1000" },
-];

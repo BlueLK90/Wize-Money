@@ -140,7 +140,7 @@ const Wishlist = () => {
   const fields = ["Title", "Price", "Details", "Image"];
 
   return (
-    <div className="relative">
+    <div className="relative min-h-[70dvh]">
       {/* Add new data window */}
       {openAdd && (
         <AddWindow
@@ -171,25 +171,6 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-
-//date input
-/*  date input
-  <label htmlFor="dateAdded" className="text-gray-900">
-    Date:
-  </label>
-  <input
-    type="date"
-    name="date"
-    className={inputStyle}
-    defaultValue={dateSubmitted}
-    value={newWish.dateAdded}
-    onChange={(e) =>
-      setNewWish({
-        ...newWish,
-        dateAdded: setDateSubmitted(e.target.value),
-      })
-    }
-  />*/
 
 //for pending and done ... upgrading stage
 /*import {

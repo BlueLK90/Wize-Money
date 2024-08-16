@@ -80,11 +80,11 @@ const ProgressBar = ({ remaining }) => {
         </defs>
       </svg>
       {/* Center text */}
-      <p className="absolute w-full text-center text-[.6rem] sm:text-sm">
+      <div className="absolute w-full text-center text-[.6rem] sm:text-sm">
         <p>Remaining:</p>
         <p>{remaining} IQD</p>
         {/* {amount} current: 70% */}
-      </p>
+      </div>
     </div>
   );
 };

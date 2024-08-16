@@ -78,9 +78,8 @@ function Header() {
             </Typography>
           </div>
           {menuItems.map((el, i) => (
-            <>
+            <div key={el.title}>
               <Accordion
-                key={el.title}
                 open={open === i + 1}
                 icon={
                   <FiChevronDown
@@ -119,7 +118,7 @@ function Header() {
                 </AccordionBody>
               </Accordion>
               <hr className="my-2 border-blue-gray-50" />
-            </>
+            </div>
           ))}
         </Card>
       </Drawer>
