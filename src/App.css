@@ -24,6 +24,12 @@ rgb(201, 229, 171)
   margin: 0;
   padding: 0;
   font-family: Roboto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 body {
   background: linear-gradient(
@@ -36,4 +42,16 @@ body {
 .bg-white-0 {
   background-color: rgb(240, 240, 246);
   min-height: 90vh;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

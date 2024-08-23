@@ -16,7 +16,7 @@ export const DropDownBudget = ({ el }) => {
           <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
             <div className="flex gap-6 items-center">
               <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
-                {el.categoryIcon}
+                {el.icon}
               </p>
               <p>{el.title}</p>
             </div>
@@ -26,7 +26,7 @@ export const DropDownBudget = ({ el }) => {
           </div>
         </PopoverHandler>
         <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-5 shadow-md shadow-[#f0dcd174]">
-          <p className="text-darkapricot mb-1">{el.date}</p>
+          <p className="text-darkapricot mb-1">{el.dateAdded}</p>
           <p>{el.details}</p>
         </PopoverContent>
       </Popover>
@@ -83,7 +83,7 @@ export const DropDownWallet = ({ el, i, data }) => {
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
                           <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
-                            {element.categoryIcon}
+                            {element.icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
@@ -93,7 +93,9 @@ export const DropDownWallet = ({ el, i, data }) => {
                       </div>
                     </PopoverHandler>
                     <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-2 shadow-md shadow-[#f0dcd174]">
-                      <p className="text-darkapricot mb-1">{element.date}</p>
+                      <p className="text-darkapricot mb-1">
+                        {element.dateAdded}
+                      </p>
                       <p>{element.details}</p>
                     </PopoverContent>
                   </Popover>
@@ -132,7 +134,7 @@ export const DropDownWallet = ({ el, i, data }) => {
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
                           <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
-                            {element.categoryIcon}
+                            {element.Icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
@@ -142,7 +144,9 @@ export const DropDownWallet = ({ el, i, data }) => {
                       </div>
                     </PopoverHandler>
                     <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-2 shadow-md shadow-[#f0dcd174]">
-                      <p className="text-darkapricot mb-1">{element.date}</p>
+                      <p className="text-darkapricot mb-1">
+                        {element.dateAdded}
+                      </p>
                       <p>{element.details}</p>
                     </PopoverContent>
                   </Popover>

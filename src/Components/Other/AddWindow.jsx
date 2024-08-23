@@ -1,187 +1,239 @@
 /* eslint-disable react/prop-types */
-const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
-  const inputStyle =
-    "col-span-2 border border-gray-300 bg-gray-50 rounded-md p-1";
+import { useCallback, useState } from "react";
+import { FaCar, FaLaughBeam } from "react-icons/fa";
+import { GiMedicalPack } from "react-icons/gi";
+import { IoGiftSharp, IoHome } from "react-icons/io5";
+import {
+  MdCategory,
+  MdChildCare,
+  MdFaceRetouchingNatural,
+  MdPets,
+  MdPhoneAndroid,
+  MdRestaurant,
+  MdSportsBasketball,
+  MdWork,
+} from "react-icons/md";
+import { PiPottedPlantFill } from "react-icons/pi";
 
-  let New = newItem;
-  let setNew = setNewItem;
-  let handleSubmit = submitbtn;
-  let add = open;
-  let inputFields = items;
+const categoryIcons = [
+  { value: "home", icon: <IoHome /> },
+  { value: "work", icon: <MdWork /> },
+  { value: "pets", icon: <MdPets /> },
+  { value: "car", icon: <FaCar /> },
+  { value: "phone", icon: <MdPhoneAndroid /> },
+  { value: "food", icon: <MdRestaurant /> },
+  { value: "health", icon: <GiMedicalPack /> },
+  { value: "fun", icon: <FaLaughBeam /> },
+  { value: "selfcare", icon: <MdFaceRetouchingNatural /> },
+  { value: "sports", icon: <MdSportsBasketball /> },
+  { value: "kids", icon: <MdChildCare /> },
+  { value: "gifts", icon: <IoGiftSharp /> },
+  { value: "plants", icon: <PiPottedPlantFill /> },
+  { value: "others", icon: <MdCategory /> },
+];
+const inputStyle =
+  "col-span-2 bg-blue-gray-50 rounded-md px-3 py-1 outline outline-0 focus:outline-0 shadow-sm";
+
+const CategoryInput = ({ setNew }) => {
+  const [open, setOpen] = useState(false);
+  const [categ, setCateg] = useState("");
+
+  const handleSelect = useCallback(
+    (el) => {
+      setCateg(el);
+      setOpen(false);
+      setNew(el);
+    },
+    [setNew]
+  );
 
   return (
-    <div className="absolute z-10 w-full min-h-[70dvh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
-      <form
-        className="grid grid-cols-3 gap-2 items-center"
-        onSubmit={(e) => handleSubmit(e, New)}
-      >
-        {/* category input */}
-        {inputFields.includes("Category") && (
-          <>
-            <label htmlFor="category" className="text-gray-900">
-              Category:
-            </label>
-            <input
-              type="text"
-              id="category"
-              placeholder="--Choose a Category--"
-              className={inputStyle}
-              value={New.category}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  category: e.target.value,
-                })
-              }
-              required
-            />
-          </>
-        )}
+    <div className="relative col-span-2 flex ">
+      <input
+        type="text"
+        id="category"
+        name="category"
+        placeholder="--Choose a Category--"
+        value={categ.value || ""}
+        readOnly
+        className={`w-full ${inputStyle}`}
+        onClick={() => setOpen(!open)}
+        required
+      />
+      {open && (
+        <div className="absolute z-30 top-full min-w-[180px] overflow-auto rounded-md border-t-0 border border-deep-orange-50 bg-gray-100 p-3 text-sm shadow-md shadow-blue-gray-500/10">
+          <ul className="grid grid-cols-3 gap-x-4 gap-y-1 outline-none outline-0">
+            {categoryIcons.map((el) => (
+              <div
+                key={el.value}
+                className="flex flex-col justify-center items-center"
+              >
+                <button
+                  className="relative font-medium text-center transition-all w-10 h-10 rounded-lg text-base bg-blue-500 text-white shadow-none hover:shadow-lg focus:opacity-[0.85] focus:shadow-none"
+                  value={el.value}
+                  onClick={() => handleSelect(el)}
+                >
+                  <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    {el.icon}
+                  </span>
+                </button>
+                <p>{el.value}</p>
+              </div>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
 
-        {/* title input */}
-        {inputFields.includes("Title") && (
-          <>
-            <label htmlFor="title" className="text-gray-900">
-              Title:
-            </label>
-            <input
-              type="text"
-              id="title"
-              className={inputStyle}
-              value={New.name}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  title: e.target.value,
-                })
-              }
-              required
-            />
-          </>
-        )}
+const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
+  const handleChange = useCallback(
+    (e) => {
+      setNewItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    },
+    [setNewItem]
+  );
 
-        {/* price input */}
-        {inputFields.includes("Price") && (
-          <>
-            <label htmlFor="price" className="text-gray-900">
-              Price:
-            </label>
-            <input
-              type="text"
-              id="price"
-              className={inputStyle}
-              value={New.price}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  price: e.target.value,
-                })
-              }
-              required
-            />
-          </>
-        )}
+  const handleCategoryChange = useCallback(
+    (el) => {
+      setNewItem((prev) => ({ ...prev, category: el.value, icon: el.icon }));
+    },
+    [setNewItem]
+  );
 
-        {/* amount input */}
-        {inputFields.includes("Amount") && (
-          <>
-            <label htmlFor="amount" className="text-gray-900">
-              Amount:
-            </label>
-            <input
-              type="number"
-              id="amount"
-              className={inputStyle}
-              value={New.amount}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  amount: e.target.value,
-                })
-              }
-              required
-            />
-          </>
-        )}
-
-        {/* date input */}
-        {inputFields.includes("Date") && (
-          <>
-            <label htmlFor="dateAdded" className="text-gray-900">
-              Date:
-            </label>
-            <input
-              type="date"
-              id="dateAdded"
-              className={inputStyle}
-              value={New.dateAdded}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  dateAdded: e.target.value,
-                })
-              }
-            />
-          </>
-        )}
-
-        {/* details input */}
-        {inputFields.includes("Details") && (
-          <>
-            <label htmlFor="title" className="text-gray-900">
-              Details:
-            </label>
-            <input
-              type="text"
-              id="details"
-              className={inputStyle}
-              value={New.details}
-              onChange={(e) =>
-                setNew({
-                  ...New,
-                  details: e.target.value,
-                })
-              }
-            />
-          </>
-        )}
-        {/* image input */}
-        {inputFields.includes("Image") && (
-          <>
-            <label htmlFor="img" className="text-gray-900">
-              Image:
-            </label>
-            <label className="block">
-              <input
-                type="file"
-                id="img"
-                className="block w-max text-gray-500
+  const inputFields = {
+    Title: (
+      <>
+        <label htmlFor="title" className="text-gray-900">
+          Title:
+        </label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          className={inputStyle}
+          value={newItem.name}
+          onChange={handleChange}
+          required
+        />
+      </>
+    ),
+    Details: (
+      <>
+        <label htmlFor="title" className="text-gray-900">
+          Details:
+        </label>
+        <textarea
+          id="details"
+          name="details"
+          className={inputStyle}
+          value={newItem.details}
+          onChange={handleChange}
+        />
+      </>
+    ),
+    Price: (
+      <>
+        <label htmlFor="price" className="text-gray-900">
+          Price:
+        </label>
+        <input
+          type="text"
+          id="price"
+          name="price"
+          className={inputStyle}
+          value={newItem.price}
+          onChange={handleChange}
+          required
+        />
+      </>
+    ),
+    Amount: (
+      <>
+        <label htmlFor="amount" className="text-gray-900">
+          Amount:
+        </label>
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          className={inputStyle}
+          value={newItem.amount}
+          onChange={handleChange}
+          required
+        />
+      </>
+    ),
+    Date: (
+      <>
+        <label htmlFor="dateAdded" className="text-gray-900">
+          Date:
+        </label>
+        <input
+          type="date"
+          id="dateAdded"
+          name="dateAdded"
+          className={inputStyle}
+          value={newItem.dateAdded}
+          onChange={handleChange}
+        />
+      </>
+    ),
+    Category: (
+      <>
+        <label htmlFor="category" className="text-gray-900">
+          Category:
+        </label>
+        <CategoryInput setNew={handleCategoryChange} />
+      </>
+    ),
+    Image: (
+      <>
+        <label htmlFor="img" className="text-gray-900">
+          Image:
+        </label>
+        <label className="block">
+          <input
+            type="file"
+            id="img"
+            className="block w-max text-gray-500
                 py-1 px-0 rounded-lg border-0
                 text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1
                 file:sm:mr-6 file:sm:px-4
                 hover:bg-violet-100
               "
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    const imgUrl = URL.createObjectURL(file);
-                    setNew({
-                      ...New,
-                      img: imgUrl,
-                    });
-                  }
-                }}
-              />
-            </label>
-          </>
-        )}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const imgUrl = URL.createObjectURL(file);
+                setNewItem((prev) => ({
+                  ...prev,
+                  img: imgUrl,
+                }));
+              }
+            }}
+          />
+        </label>
+      </>
+    ),
+  };
+
+  return (
+    <div className="absolute z-10 w-full min-h-[70dvh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
+      <form
+        className="grid grid-cols-3 gap-2 items-center"
+        onSubmit={(e) => submitbtn(e, newItem)}
+      >
+        {items.map((item) => inputFields[item])}
+
         <br />
         <div className="h-16 col-span-3"></div>
         <div className="col-span-3 h-10 flex justify-center gap-8">
           <button
             type="button"
             className="bg-blue-gray-900 text-sm w-32 rounded-full text-white font-semibold"
-            onClick={() => add()}
+            onClick={() => open()}
           >
             Cancel
           </button>

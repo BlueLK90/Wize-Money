@@ -58,7 +58,7 @@ const Calculator = () => {
   }; //clear all btn
 
   return (
-    <div className="bg-gray-100 w-[95%] lg:w-[80%] mx-auto pb-4 rounded-md">
+    <div className="bg-gray-100 border border-gray-300 shadow-sm w-[95%] lg:w-[80%] mx-auto pb-4 rounded-md">
       <div className="bg-transparent px-4 pt-4 mx-auto w-full max-w-xs sm:max-w-md md:max-w-lg">
         {/* screens div */}
         <div className="mb-1">
@@ -70,7 +70,8 @@ const Calculator = () => {
           </div>
           <input
             type="text"
-            className="w-full p-2 text-right text-2xl text-green-700 border border-gray-300 rounded"
+            id="text"
+            className="w-full p-2 text-right text-2xl text-green-700 border border-gray-300 rounded outline outline-0 focus:outline-0"
             value={numberWithCommas(input) || "0"}
             readOnly
           />

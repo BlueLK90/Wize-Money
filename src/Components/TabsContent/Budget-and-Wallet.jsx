@@ -2,7 +2,7 @@
 import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { formattedDate } from "../../Utils";
 import {
   Dialog,
@@ -17,36 +17,24 @@ import {
 } from "@material-tailwind/react";
 import { PiPlusBold } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
-import { budgetData } from "../../MainData";
-
-const mainSec =
-  "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
-const budgetMeter = "flex justify-around items-center";
-const spendingDetails = "flex justify-between";
-const SecondarySec =
-  "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
-const one =
-  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
-const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
-const three =
-  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
+import DataContext from "../../contexts/dataContext/DataContext";
 
 export const Budget = ({ screenSize }) => {
+  //data context
+  const { addData, totalIncome, totalExpenses, totalBalance } =
+    useContext(DataContext);
+
+  const [open, setOpen] = useState(false); //state for open/close dialog
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const [open, setOpen] = useState(false); //state for open/close dialog
-
-  //date formatting
   const dateSubmitted = formattedDate(); //default date
-
-  // main data arr
-  const [budgets, setBudgets] = useState(budgetData);
 
   const [newBudget, setNewBudget] = useState({
     title: "",
     category: "",
+    icon: "",
     details: "",
     amount: "",
     dateAdded: dateSubmitted,
@@ -54,17 +42,18 @@ export const Budget = ({ screenSize }) => {
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
-    setBudgets([...budgets, newBudget]);
+    addData(newBudget);
     setNewBudget({
       title: "",
       category: "",
+      icon: "",
       details: "",
       amount: "",
       dateAdded: dateSubmitted,
     });
     setOpnAdd(false);
   }; //submit form
-  const fields = ["Title", "Category", "Amount", "Date", "Details"];
+  const fields = ["Category", "Title", "Amount", "Date", "Details"];
 
   return (
     <div
@@ -188,13 +177,6 @@ export const Budget = ({ screenSize }) => {
             </SpeedDialHandler>
             <SpeedDialContent>
               <SpeedDialAction
-                className="bg-greentea"
-                onClick={() => setOpnAdd(!opnAdd)}
-              >
-                <GiMoneyStack className="h-5 w-5" />
-                <Typography {...labelProps}>Income</Typography>
-              </SpeedDialAction>
-              <SpeedDialAction
                 className="bg-red-100"
                 onClick={() => setOpnAdd(!opnAdd)}
               >
@@ -204,6 +186,7 @@ export const Budget = ({ screenSize }) => {
             </SpeedDialContent>
           </SpeedDial>
         </div>
+
         {/* add section for desktop */}
         {opnAddScreenLarge && (
           <AddWindow
@@ -308,6 +291,13 @@ export const Wallet = ({ screenSize }) => {
             </SpeedDialHandler>
             <SpeedDialContent>
               <SpeedDialAction
+                className="bg-greentea"
+                onClick={() => setOpnAdd(!opnAdd)}
+              >
+                <GiMoneyStack className="h-5 w-5" />
+                <Typography {...labelProps}>Income</Typography>
+              </SpeedDialAction>
+              <SpeedDialAction
                 className="bg-red-100"
                 onClick={() => setOpnAdd(!opnAdd)}
               >
@@ -342,3 +332,16 @@ const labelProps = {
   className:
     "bg-gray-100 absolute top-2/4 -left-2/4 -translate-y-2/4 -translate-x-3/4 font-normal",
 };
+
+//styles
+const mainSec =
+  "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
+const budgetMeter = "flex justify-around items-center";
+const spendingDetails = "flex justify-between";
+const SecondarySec =
+  "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
+const one =
+  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
+const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
+const three =
+  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
