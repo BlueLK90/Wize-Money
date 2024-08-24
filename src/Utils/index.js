@@ -27,5 +27,10 @@ export const formattedDate = () => {
   let monthFormatted = months[month - 1];
   return `${monthFormatted} ${day}, ${year}`;
 };
+export const formattedSubmittedDate = (date) => {
+  const [year, month, day] = date.split("-");
+  let monthFormatted = months[month - 1];
+  return `${monthFormatted} ${day}, ${year}`;
+};
 
 //

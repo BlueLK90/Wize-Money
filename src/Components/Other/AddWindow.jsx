@@ -14,7 +14,7 @@ import {
   MdWork,
 } from "react-icons/md";
 import { PiPottedPlantFill } from "react-icons/pi";
-import { formattedDate } from "../../Utils";
+import { formattedSubmittedDate } from "../../Utils";
 
 const categoryIcons = [
   { value: "home", icon: <IoHome /> },
@@ -90,13 +90,16 @@ const CategoryInput = ({ setNew }) => {
 
 const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
   const [amountInput, setAmountInput] = useState("");
+  const [dateInput, setDateInput] = useState("");
 
   const handleChange = useCallback(
     (e) => {
       if (e.target.name === "dateAdded") {
+        let dateS = e.target.value;
+        setDateInput(dateS);
         setNewItem((prev) => ({
           ...prev,
-          dateAdded: formattedDate(e.target.value),
+          dateAdded: formattedSubmittedDate(dateS),
         }));
       } else {
         setNewItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -217,7 +220,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           id="dateAdded"
           name="dateAdded"
           className={inputStyle}
-          value={newItem.dateAdded}
+          value={dateInput}
           onChange={handleChange}
         />
       </>
