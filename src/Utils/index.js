@@ -24,8 +24,11 @@ const months = [
 export const formattedDate = () => {
   let date = new Date().toISOString().split("T")[0];
   const [year, month, day] = date.split("-");
-  let monthFormatted = months[month - 1];
-  return `${monthFormatted} ${day}, ${year}`;
+  const monthFormatted = months[month - 1];
+
+  const fullDate = `${monthFormatted} ${day}, ${year}`;
+  const monthYear = `${monthFormatted}, ${year}`;
+  return { fullDate, monthYear };
 };
 export const formattedSubmittedDate = (date) => {
   const [year, month, day] = date.split("-");

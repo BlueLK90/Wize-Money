@@ -30,7 +30,8 @@ export const Budget = ({ screenSize }) => {
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const dateSubmitted = formattedDate(); //default date
+  const { fullDate, monthYear } = formattedDate();
+  const dateSubmitted = fullDate; //default date
 
   const [newBudget, setNewBudget] = useState({
     title: "",
