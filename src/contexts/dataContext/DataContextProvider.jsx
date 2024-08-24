@@ -25,7 +25,7 @@ function DataContextProvider({ children }) {
     },
     {
       dateAdded: "June, 8, 2024",
-      amount: 1000,
+      amount: 3000,
       title: "Something",
       details: "some details here",
       category: "pet",
@@ -40,6 +40,8 @@ function DataContextProvider({ children }) {
       icon: <MdSportsBasketball />,
     },
   ]);
+
+  const reversedData = data.slice().reverse();
 
   const addData = (newData) => {
     setData((prevData) => [...prevData, newData]);
@@ -62,7 +64,7 @@ function DataContextProvider({ children }) {
   }; // calculate total balance (incomes - expenses)
 
   const DataValues = {
-    data,
+    reversedData,
     addData,
     totalIncome,
     totalExpenses,

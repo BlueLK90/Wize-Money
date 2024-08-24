@@ -6,7 +6,7 @@ import monitor from "../../assets/monitor.jpg";
 import { formattedDate, numberWithCommas } from "../../Utils/index";
 import AddWindow from "../Other/AddWindow";
 
-const WishCard = ({ element, deleteCard }) => {
+const WishCard = ({ element, deleteCard, editCard }) => {
   const [open, setOpen] = useState(false);
   const toggleOpen = () => setOpen((prev) => !prev);
 
@@ -54,7 +54,10 @@ const WishCard = ({ element, deleteCard }) => {
               <div className="flex">
                 <div className="ml-auto">
                   <button>
-                    <FiEdit className="static text-darkapricot mx-1 text-base hover:text-green-400" />
+                    <FiEdit
+                      onClick={editCard}
+                      className="static text-darkapricot mx-1 text-base hover:text-green-400"
+                    />
                   </button>
                   <button>
                     <FiX
@@ -74,6 +77,7 @@ const WishCard = ({ element, deleteCard }) => {
 
 const Wishlist = () => {
   const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
+  const [editIndex, setEditIndex] = useState(null); //edit item index
 
   //date formatting
   const dateSubmitted = formattedDate(); //default date
@@ -93,7 +97,7 @@ const Wishlist = () => {
       img: "",
       details:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-      price: "100000",
+      price: "200000",
       dateAdded: "Aug. 2, 2024",
     },
     {
@@ -105,6 +109,7 @@ const Wishlist = () => {
       dateAdded: "Aug. 3, 2024",
     },
   ]);
+  const reversedWishListData = [...WishListData].reverse();
 
   const [newWish, setNewWish] = useState({
     title: "",
@@ -116,17 +121,39 @@ const Wishlist = () => {
 
   const addCard = () => {
     setOpenAdd(!openAdd);
+    setNewWish({
+      title: "",
+      img: "",
+      details: "",
+      price: "",
+      dateAdded: dateSubmitted,
+    });
   }; //open/close add screen
 
   const deleteCard = (i) => {
+    const RealIndex = WishListData.length - 1 - i;
     const arr = [...WishListData];
-    arr.splice(i, 1);
+    arr.splice(RealIndex, 1);
     setWishListData(arr);
   }; //delete card
 
+  const editCard = (i) => {
+    setOpenAdd(true);
+    setNewWish(WishListData[i]);
+    setEditIndex(i);
+  };
+
   const submitbtn = (e, newWish) => {
     e.preventDefault();
-    setWishListData([...WishListData, newWish]);
+    if (editIndex !== null) {
+      // Edit item
+      const updatedWishlist = [...WishListData];
+      updatedWishlist[editIndex] = newWish;
+      setWishListData(updatedWishlist);
+    } else {
+      // Adding a new item
+      setWishListData([...WishListData, newWish]);
+    }
     setNewWish({
       title: "",
       img: "",
@@ -135,6 +162,7 @@ const Wishlist = () => {
       dateAdded: dateSubmitted,
     });
     setOpenAdd(false);
+    setEditIndex(null);
   }; //submit form
 
   const fields = ["Title", "Price", "Details", "Image"];
@@ -146,11 +174,12 @@ const Wishlist = () => {
         <AddWindow
           newItem={newWish}
           setNewItem={setNewWish}
-          submitbtn={submitbtn}
+          submitbtn={(e) => submitbtn(e, newWish, editIndex)}
           open={addCard}
           items={fields}
         />
       )}
+
       {/* Add new data btn */}
       <Button
         onClick={() => addCard()}
@@ -161,9 +190,15 @@ const Wishlist = () => {
         <FiEdit3 className="static" />
         add new wish
       </Button>
+
       {/* main list */}
-      {WishListData.map((el, i) => (
-        <WishCard element={el} key={i} deleteCard={() => deleteCard(i)} />
+      {reversedWishListData.map((el, i) => (
+        <WishCard
+          element={el}
+          key={i}
+          deleteCard={() => deleteCard(i)}
+          editCard={() => editCard(i)}
+        />
       ))}
       <br />
     </div>

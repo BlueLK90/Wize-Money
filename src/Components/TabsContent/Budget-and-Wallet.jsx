@@ -18,6 +18,7 @@ import {
 import { PiPlusBold } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
 import DataContext from "../../contexts/dataContext/DataContext";
+import { BiEdit } from "react-icons/bi";
 
 export const Budget = ({ screenSize }) => {
   //data context
@@ -53,7 +54,7 @@ export const Budget = ({ screenSize }) => {
     });
     setOpnAdd(false);
   }; //submit form
-  const fields = ["Category", "Title", "Amount", "Date", "Details"];
+  const fields = ["Category", "Title", "AmountOut", "Date", "Details"];
 
   return (
     <div
@@ -101,17 +102,55 @@ export const Budget = ({ screenSize }) => {
               </div>
             </div>
           </div>
-          <p>
-            Keep a rate of 00000 /day to maintain
-            <br /> your budget goal!
-          </p>
+          <div className="flex justify-center items-center gap-6">
+            <p>
+              Keep a rate of 00000 /day to maintain
+              <br /> your budget goal!
+            </p>
+            {/* edit budget btn */}
+            <button
+              className="cursor-pointer bg-greentea border border-gray-200 w-fit p-2 shadow-lg shadow-green-50 rounded-xl"
+              onClick={() => setOpen(!open)}
+            >
+              <BiEdit className="text-sm md:text-base" />
+            </button>
+            <Dialog
+              open={open}
+              size="xs"
+              handler={() => setOpen(!open)}
+              className="py-4 px-2 md:py-8 md:px-4"
+            >
+              <DialogBody className="flex justify-between items-center text-xs md:text-sm">
+                <label htmlFor="setBudget">Enter Amount:</label>
+                <input
+                  type="number"
+                  id="setBudget"
+                  className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
+                />
+              </DialogBody>
+              <DialogFooter className="mt-2 md:mt-4">
+                <button
+                  className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
+                  onClick={() => setOpen(!open)}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => setOpen(!open)}
+                  className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
+                >
+                  Confirm
+                </button>
+              </DialogFooter>
+            </Dialog>
+          </div>
         </div>
-        <div className={SecondarySec}>
+        {/* <div className={SecondarySec}>
           <div className={`${one} col-span-4`}>
             <p>maintained Budget</p>
             <p>0 Days</p>
           </div>
-          {/* edit budget btn */}
+          {/* edit budget btn 
           <div
             className={`${two} col-span-2 md:text-sm lg:text-sm`}
             role="button"
@@ -150,12 +189,12 @@ export const Budget = ({ screenSize }) => {
               </button>
             </DialogFooter>
           </Dialog>
-          {/* enf of edit budget btn */}
+          {/* end of edit budget btn
           <div className={`${three} col-span-4`}>
             <p>Exceeded Budget</p>
             <p>0 Days</p>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* add and details section */}
@@ -237,7 +276,7 @@ export const Wallet = ({ screenSize }) => {
             </div>
             <div className="details">
               <div className={spendingDetails}>
-                <p>Expenses This month:</p>
+                <p>Incomes this Month</p>
                 <p>
                   0
                   <em>
@@ -246,7 +285,7 @@ export const Wallet = ({ screenSize }) => {
                 </p>
               </div>
               <div className={spendingDetails}>
-                <p>Total Expenses:</p>
+                <p>Expenses This month:</p>
                 <p>
                   0
                   <em>
@@ -257,7 +296,7 @@ export const Wallet = ({ screenSize }) => {
             </div>
           </div>
         </div>
-        <div className={SecondarySec}>
+        {/* <div className={SecondarySec}>
           <div className={`${one} col-span-4`}>
             <p>This Month Income:</p>
             <p>0 IQD</p>
@@ -270,7 +309,7 @@ export const Wallet = ({ screenSize }) => {
             <p>Due Payments:</p>
             <p>0 IQD</p>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* add and detail section */}
       <div

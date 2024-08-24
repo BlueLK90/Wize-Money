@@ -15,13 +15,13 @@ export const DropDownBudget = ({ el }) => {
         <PopoverHandler>
           <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
             <div className="flex gap-6 items-center">
-              <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
+              <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
                 {el.icon}
               </p>
               <p>{el.title}</p>
             </div>
             <p className="text-darkapricot">
-              {numberWithCommas(el.amount)} IQD
+              {numberWithCommas(Math.abs(el.amount))} IQD
             </p>
           </div>
         </PopoverHandler>
@@ -42,7 +42,7 @@ export const DropDownWallet = ({ el, i, data }) => {
   const accumlator = () => {
     let sum = 0;
     data.forEach((el) => {
-      sum += el.amount;
+      sum += Math.abs(Number(el.amount));
     });
     return sum;
   };
@@ -80,15 +80,15 @@ export const DropDownWallet = ({ el, i, data }) => {
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>
-                      <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
+                      <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
-                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
+                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
                             {element.icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
                         <p className="text-darkapricot">
-                          {numberWithCommas(element.amount)} IQD
+                          {numberWithCommas(Math.abs(element.amount))} IQD
                         </p>
                       </div>
                     </PopoverHandler>
@@ -133,13 +133,13 @@ export const DropDownWallet = ({ el, i, data }) => {
                     <PopoverHandler>
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
-                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-xs lg:text-sm flex justify-center items-center">
-                            {element.Icon}
+                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
+                            {element.icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
                         <p className="text-darkapricot">
-                          {numberWithCommas(element.amount)} IQD
+                          {numberWithCommas(Math.abs(element.amount))} IQD
                         </p>
                       </div>
                     </PopoverHandler>

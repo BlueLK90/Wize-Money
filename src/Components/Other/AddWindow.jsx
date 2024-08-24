@@ -14,6 +14,7 @@ import {
   MdWork,
 } from "react-icons/md";
 import { PiPottedPlantFill } from "react-icons/pi";
+import { formattedDate } from "../../Utils";
 
 const categoryIcons = [
   { value: "home", icon: <IoHome /> },
@@ -88,9 +89,30 @@ const CategoryInput = ({ setNew }) => {
 };
 
 const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
+  const [amountInput, setAmountInput] = useState("");
+
   const handleChange = useCallback(
     (e) => {
-      setNewItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      if (e.target.name === "dateAdded") {
+        setNewItem((prev) => ({
+          ...prev,
+          dateAdded: formattedDate(e.target.value),
+        }));
+      } else {
+        setNewItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      }
+    },
+    [setNewItem]
+  );
+
+  const handleChangeNumber = useCallback(
+    (e, multiplier) => {
+      let inputValue = e.target.value;
+      setAmountInput(inputValue);
+      setNewItem((prev) => ({
+        ...prev,
+        amount: Number(inputValue) * multiplier,
+      }));
     },
     [setNewItem]
   );
@@ -101,6 +123,11 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
     },
     [setNewItem]
   );
+
+  const handleSubmit = (e) => {
+    submitbtn(e, newItem);
+    setAmountInput("");
+  };
 
   const inputFields = {
     Title: (
@@ -113,7 +140,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           name="title"
           id="title"
           className={inputStyle}
-          value={newItem.name}
+          value={newItem.title}
           onChange={handleChange}
           required
         />
@@ -121,7 +148,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
     ),
     Details: (
       <>
-        <label htmlFor="title" className="text-gray-900">
+        <label htmlFor="details" className="text-gray-900">
           Details:
         </label>
         <textarea
@@ -145,22 +172,37 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           className={inputStyle}
           value={newItem.price}
           onChange={handleChange}
-          required
         />
       </>
     ),
-    Amount: (
+    AmountIn: (
       <>
         <label htmlFor="amount" className="text-gray-900">
           Amount:
         </label>
         <input
           type="number"
-          id="amount"
+          id="amountIn"
           name="amount"
           className={inputStyle}
-          value={newItem.amount}
-          onChange={handleChange}
+          value={amountInput}
+          onChange={(e) => handleChangeNumber(e, 1)}
+          required
+        />
+      </>
+    ),
+    AmountOut: (
+      <>
+        <label htmlFor="amount" className="text-gray-900">
+          Amount:
+        </label>
+        <input
+          type="number"
+          id="amountOut"
+          name="amount"
+          className={inputStyle}
+          value={amountInput}
+          onChange={(e) => handleChangeNumber(e, -1)}
           required
         />
       </>
@@ -197,11 +239,9 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           <input
             type="file"
             id="img"
-            className="block w-max text-gray-500
-                py-1 px-0 rounded-lg border-0
-                text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1
-                file:sm:mr-6 file:sm:px-4
-                hover:bg-violet-100
+            className="block max-w-52 text-gray-500 overflow-hidden text-ellipsis
+                py-1 px-0 rounded-lg border-0 
+                text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1 file:sm:px-4
               "
             onChange={(e) => {
               const file = e.target.files[0];
@@ -223,12 +263,12 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
     <div className="absolute z-10 w-full min-h-[70dvh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
       <form
         className="grid grid-cols-3 gap-2 items-center"
-        onSubmit={(e) => submitbtn(e, newItem)}
+        onSubmit={handleSubmit}
       >
         {items.map((item) => inputFields[item])}
-
-        <br />
         <div className="h-16 col-span-3"></div>
+
+        {/* btns div */}
         <div className="col-span-3 h-10 flex justify-center gap-8">
           <button
             type="button"
