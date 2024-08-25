@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { FaCar, FaLaughBeam } from "react-icons/fa";
 import { GiMedicalPack } from "react-icons/gi";
 import { IoGiftSharp, IoHome } from "react-icons/io5";
@@ -91,6 +91,12 @@ const CategoryInput = ({ setNew }) => {
 const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
   const [amountInput, setAmountInput] = useState("");
   const [dateInput, setDateInput] = useState("");
+  const [maxDate, setMaxDate] = useState("");
+
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("en-CA");
+    setMaxDate(today);
+  }, []);
 
   const handleChange = useCallback(
     (e) => {
@@ -219,6 +225,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           type="date"
           id="dateAdded"
           name="dateAdded"
+          max={maxDate}
           className={inputStyle}
           value={dateInput}
           onChange={handleChange}
@@ -268,7 +275,9 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
         className="grid grid-cols-3 gap-2 items-center"
         onSubmit={handleSubmit}
       >
-        {items.map((item) => inputFields[item])}
+        {items.map((item, i) => (
+          <Fragment key={i}> {inputFields[item]}</Fragment>
+        ))}
         <div className="h-16 col-span-3"></div>
 
         {/* btns div */}

@@ -38,15 +38,14 @@ export const DropDownWallet = ({ el, i, data }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isOpenOld, setIsOpenOld] = useState(false);
 
-  //sum the amounts of the month // should be in the main data array
-  const accumlator = () => {
+  //sum the amounts of the month
+  const accumlator = (key) => {
     let sum = 0;
-    data.forEach((el) => {
+    data[key].map((el) => {
       sum += Math.abs(Number(el.amount));
     });
     return sum;
   };
-  const totalAmount = accumlator();
 
   return (
     <div>
@@ -57,15 +56,15 @@ export const DropDownWallet = ({ el, i, data }) => {
               isOpen &&
               "border-b-2 border-b-greentea text-green-600 font-medium"
             } text-xs sm:text-sm p-1 mx-5 flex items-center justify-between`}
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={() => setIsOpen(!isOpen)}
           >
-            <div>{el.date}</div>
+            <div>{el}</div>
 
             <div>
               <div className="text-darkapricot flex items-center gap-1">
                 {!isOpen ? (
                   <>
-                    <p>{numberWithCommas(totalAmount)} </p>
+                    <p>{numberWithCommas(accumlator(el))} </p>
                     <FiChevronDown className="static" />
                   </>
                 ) : (
@@ -76,7 +75,7 @@ export const DropDownWallet = ({ el, i, data }) => {
           </div>
           {isOpen && (
             <div className=" relative top-18 flex flex-col items-start  rounded-lg p-1 w-full ">
-              {data.map((element, i) => (
+              {data[el].map((element, i) => (
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>
@@ -110,13 +109,13 @@ export const DropDownWallet = ({ el, i, data }) => {
             className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between"
             onClick={() => setIsOpenOld((prev) => !prev)}
           >
-            <div>{el.date}</div>
+            <div>{el}</div>
 
             <div>
               <div className="text-darkapricot flex items-center gap-1">
                 {!isOpenOld ? (
                   <>
-                    <p>{numberWithCommas(totalAmount)} </p>
+                    <p>{numberWithCommas(accumlator(el))} </p>
                     <FiChevronDown className="static" />
                   </>
                 ) : (
@@ -127,7 +126,7 @@ export const DropDownWallet = ({ el, i, data }) => {
           </div>
           {isOpenOld && (
             <div className=" relative top-18 flex flex-col items-start  rounded-lg p-1 w-full ">
-              {data.map((element, i) => (
+              {data[el].map((element, i) => (
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>

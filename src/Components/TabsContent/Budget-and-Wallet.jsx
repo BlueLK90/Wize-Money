@@ -3,7 +3,7 @@ import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
 import { useContext, useState } from "react";
-import { formattedDate } from "../../Utils";
+import { formattedDate, formattedMonthYear } from "../../Utils";
 import {
   Dialog,
   DialogBody,
@@ -44,7 +44,11 @@ export const Budget = ({ screenSize }) => {
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
-    addData(newBudget);
+    if (newBudget.dateAdded === dateSubmitted) {
+      addData(newBudget, monthYear);
+    } else {
+      addData(newBudget, formattedMonthYear(newBudget.dateAdded));
+    }
     setNewBudget({
       title: "",
       category: "",
@@ -237,7 +241,7 @@ export const Budget = ({ screenSize }) => {
             items={fields}
           />
         )}
-        <DetailsCard windowView="budget" />
+        <DetailsCard windowView="budget" keys={monthYear} />
       </div>
     </div>
   );
@@ -378,10 +382,10 @@ const mainSec =
   "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
 const budgetMeter = "flex justify-around items-center";
 const spendingDetails = "flex justify-between";
-const SecondarySec =
-  "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
-const one =
-  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
-const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
-const three =
-  "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
+// const SecondarySec =
+//   "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
+// const one =
+//   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
+// const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
+// const three =
+//   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";

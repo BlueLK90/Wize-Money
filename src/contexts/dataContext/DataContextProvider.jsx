@@ -6,45 +6,116 @@ import { MdPets, MdSportsBasketball } from "react-icons/md";
 import { FaCar } from "react-icons/fa";
 
 function DataContextProvider({ children }) {
-  const [data, setData] = useState([
-    {
-      dateAdded: "June, 10, 2024",
-      amount: 1000,
-      title: "Something",
-      details: "some details here",
-      category: "home",
-      icon: <IoHome />,
-    },
-    {
-      dateAdded: "June, 9, 2024",
-      amount: 1000,
-      title: "Something",
-      details: "some details here",
-      category: "car",
-      icon: <FaCar />,
-    },
-    {
-      dateAdded: "June, 8, 2024",
-      amount: 3000,
-      title: "Something",
-      details: "some details here",
-      category: "pet",
-      icon: <MdPets />,
-    },
-    {
-      dateAdded: "June, 7, 2024",
-      amount: 1000,
-      title: "Something",
-      details: "some details here",
-      category: "sports",
-      icon: <MdSportsBasketball />,
-    },
-  ]);
+  const [data, setData] = useState({
+    "Aug. 2024": [
+      {
+        dateAdded: "Aug. 10, 2024",
+        amount: 4000,
+        title: "Something Aug.",
+        details: "some details here",
+        category: "home",
+        icon: <IoHome />,
+      },
+      {
+        dateAdded: "Aug. 9, 2024",
+        amount: 1000,
+        title: "Something Aug.",
+        details: "some details here",
+        category: "car",
+        icon: <FaCar />,
+      },
+      {
+        dateAdded: "Aug. 8, 2024",
+        amount: 3000,
+        title: "Something Aug.",
+        details: "some details here",
+        category: "pet",
+        icon: <MdPets />,
+      },
+      {
+        dateAdded: "Aug. 7, 2024",
+        amount: 1000,
+        title: "Something Aug.",
+        details: "some details here",
+        category: "sports",
+        icon: <MdSportsBasketball />,
+      },
+    ],
+    "July 2024": [
+      {
+        dateAdded: "July 10, 2024",
+        amount: 1000,
+        title: "Something July",
+        details: "some details here",
+        category: "home",
+        icon: <IoHome />,
+      },
+      {
+        dateAdded: "July 9, 2024",
+        amount: 1000,
+        title: "Something July",
+        details: "some details here",
+        category: "car",
+        icon: <FaCar />,
+      },
+      {
+        dateAdded: "July 8, 2024",
+        amount: 3000,
+        title: "Something July",
+        details: "some details here",
+        category: "pet",
+        icon: <MdPets />,
+      },
+      {
+        dateAdded: "July 7, 2024",
+        amount: 1000,
+        title: "Something July",
+        details: "some details here",
+        category: "sports",
+        icon: <MdSportsBasketball />,
+      },
+    ],
+    "June 2024": [
+      {
+        dateAdded: "June 10, 2024",
+        amount: 2000,
+        title: "Something June",
+        details: "some details here",
+        category: "home",
+        icon: <IoHome />,
+      },
+      {
+        dateAdded: "June 9, 2024",
+        amount: 1000,
+        title: "Something June",
+        details: "some details here",
+        category: "car",
+        icon: <FaCar />,
+      },
+      {
+        dateAdded: "June 8, 2024",
+        amount: 3000,
+        title: "Something June",
+        details: "some details here",
+        category: "pet",
+        icon: <MdPets />,
+      },
+      {
+        dateAdded: "June 7, 2024",
+        amount: 1000,
+        title: "Something June",
+        details: "some details here",
+        category: "sports",
+        icon: <MdSportsBasketball />,
+      },
+    ],
+  });
 
-  const reversedData = data.slice().reverse();
-
-  const addData = (newData) => {
-    setData((prevData) => [...prevData, newData]);
+  const addData = (newData, monthYear) => {
+    setData((prevData) => ({
+      ...prevData,
+      [monthYear]: [newData, ...(prevData[monthYear] || [])],
+    }));
   }; // add data
 
   const totalIncome = () => {
@@ -64,7 +135,7 @@ function DataContextProvider({ children }) {
   }; // calculate total balance (incomes - expenses)
 
   const DataValues = {
-    reversedData,
+    data,
     addData,
     totalIncome,
     totalExpenses,

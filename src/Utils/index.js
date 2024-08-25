@@ -22,18 +22,22 @@ const months = [
   "Dec.",
 ];
 export const formattedDate = () => {
-  let date = new Date().toISOString().split("T")[0];
+  let date = new Date().toLocaleDateString("en-CA");
   const [year, month, day] = date.split("-");
   const monthFormatted = months[month - 1];
 
   const fullDate = `${monthFormatted} ${day}, ${year}`;
-  const monthYear = `${monthFormatted}, ${year}`;
+  const monthYear = `${monthFormatted} ${year}`;
   return { fullDate, monthYear };
 };
 export const formattedSubmittedDate = (date) => {
   const [year, month, day] = date.split("-");
   let monthFormatted = months[month - 1];
   return `${monthFormatted} ${day}, ${year}`;
+};
+export const formattedMonthYear = (date) => {
+  const [month, day, year] = date.split(" ");
+  return `${month} ${year}`;
 };
 
 //
