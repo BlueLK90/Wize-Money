@@ -71,6 +71,7 @@ const Calculator = () => {
           <input
             type="text"
             id="text"
+            aria-label="text"
             className="w-full p-2 text-right text-2xl text-green-700 border border-gray-300 rounded outline outline-0 focus:outline-0"
             value={numberWithCommas(input) || "0"}
             readOnly

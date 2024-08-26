@@ -8,15 +8,21 @@ const detailsCard =
 
 const DetailsCard = ({ windowView, keys }) => {
   const { data } = useContext(DataContext);
+
+  //after setting a function to calculate the duration
+  //data[keys] becomes data.filter(el.dateAdded) to filter the data
+  //to only show the data of the specific duration
   return (
     <div>
       <div className="pt-2">
         {windowView === "budget"
-          ? data[keys].map((el, i) => (
-              <div className={detailsCard} key={i}>
-                <DropDownBudget el={el} />
-              </div>
-            ))
+          ? data[keys]
+              .filter((el) => el.amount < 0)
+              .map((el, i) => (
+                <div className={detailsCard} key={i}>
+                  <DropDownBudget el={el} />
+                </div>
+              ))
           : Object.keys(data).map((el, i) => (
               <div className={detailsCard} key={i}>
                 <DropDownWallet el={el} i={i} data={data} />

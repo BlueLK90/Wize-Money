@@ -14,7 +14,7 @@ const WishCard = ({ element, deleteCard, editCard }) => {
     <div>
       <div className="border border-gray-300 bg-gray-100 w-full my-2 rounded-md p-2 shadow-sm">
         <section className="grid" onClick={toggleOpen}>
-          <p className="text-xs lg:text-sm text-green-500 pl-1">
+          <p className="text-xs lg:text-sm text-green-600 pl-1">
             {element.dateAdded}
           </p>
           <div className="flex items-center gap-2 px-2">

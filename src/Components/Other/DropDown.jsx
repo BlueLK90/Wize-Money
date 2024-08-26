@@ -15,12 +15,12 @@ export const DropDownBudget = ({ el }) => {
         <PopoverHandler>
           <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
             <div className="flex gap-6 items-center">
-              <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
+              <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-red-100 text-black text-sm flex justify-center items-center">
                 {el.icon}
               </p>
               <p>{el.title}</p>
             </div>
-            <p className="text-darkapricot">
+            <p className="text-red-400">
               {numberWithCommas(Math.abs(el.amount))} IQD
             </p>
           </div>
@@ -39,11 +39,22 @@ export const DropDownWallet = ({ el, i, data }) => {
   const [isOpenOld, setIsOpenOld] = useState(false);
 
   //sum the amounts of the month
-  const accumlator = (key) => {
+  const accumlatorIncome = (key) => {
     let sum = 0;
-    data[key].map((el) => {
-      sum += Math.abs(Number(el.amount));
-    });
+    data[key]
+      .filter((el) => el.amount > 0)
+      .map((el) => {
+        sum += Number(el.amount);
+      });
+    return sum;
+  };
+  const accumlatorExpense = (key) => {
+    let sum = 0;
+    data[key]
+      .filter((el) => el.amount < 0)
+      .map((el) => {
+        sum += Math.abs(Number(el.amount));
+      });
     return sum;
   };
 
@@ -61,10 +72,19 @@ export const DropDownWallet = ({ el, i, data }) => {
             <div>{el}</div>
 
             <div>
-              <div className="text-darkapricot flex items-center gap-1">
+              <div className="flex justify-end items-center gap-2">
                 {!isOpen ? (
                   <>
-                    <p>{numberWithCommas(accumlator(el))} </p>
+                    <div className="grid grid-cols-2">
+                      <p className="text-green-600">Incomes:</p>
+                      <p className="text-green-600 text-end">
+                        {numberWithCommas(accumlatorIncome(el))}
+                      </p>
+                      <p className="text-red-400">Expenses:</p>
+                      <p className="text-red-400 text-end">
+                        {numberWithCommas(accumlatorExpense(el))}
+                      </p>
+                    </div>
                     <FiChevronDown className="static" />
                   </>
                 ) : (
@@ -74,20 +94,30 @@ export const DropDownWallet = ({ el, i, data }) => {
             </div>
           </div>
           {isOpen && (
-            <div className=" relative top-18 flex flex-col items-start  rounded-lg p-1 w-full ">
+            <div className=" relative top-18 flex flex-col items-start rounded-lg p-1 w-full ">
               {data[el].map((element, i) => (
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
-                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
+                          <p
+                            className={`h-6 w-6 md:w-8 md:h-8 rounded-full text-black text-sm lg:text-sm flex justify-center items-center ${
+                              element.amount > 0 ? "bg-greentea" : "bg-red-100"
+                            }`}
+                          >
                             {element.icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
-                        <p className="text-darkapricot">
-                          {numberWithCommas(Math.abs(element.amount))} IQD
+                        <p
+                          className={
+                            element.amount > 0
+                              ? "text-green-600"
+                              : "text-red-400"
+                          }
+                        >
+                          {numberWithCommas(element.amount)} IQD
                         </p>
                       </div>
                     </PopoverHandler>
@@ -112,10 +142,19 @@ export const DropDownWallet = ({ el, i, data }) => {
             <div>{el}</div>
 
             <div>
-              <div className="text-darkapricot flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 {!isOpenOld ? (
                   <>
-                    <p>{numberWithCommas(accumlator(el))} </p>
+                    <div className="grid grid-cols-2">
+                      <p className="text-green-600">Incomes:</p>
+                      <p className="text-green-600 text-end">
+                        {numberWithCommas(accumlatorIncome(el))}
+                      </p>
+                      <p className="text-red-400">Expenses:</p>
+                      <p className="text-red-400 text-end">
+                        {numberWithCommas(accumlatorExpense(el))}
+                      </p>
+                    </div>
                     <FiChevronDown className="static" />
                   </>
                 ) : (
@@ -132,13 +171,23 @@ export const DropDownWallet = ({ el, i, data }) => {
                     <PopoverHandler>
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
-                          <p className="h-6 w-6 md:w-8 md:h-8 rounded-full bg-greentea text-sm lg:text-sm flex justify-center items-center">
+                          <p
+                            className={`h-6 w-6 md:w-8 md:h-8 rounded-full text-black text-sm lg:text-sm flex justify-center items-center ${
+                              element.amount > 0 ? "bg-greentea" : "bg-red-100"
+                            }`}
+                          >
                             {element.icon}
                           </p>
                           <p>{element.title}</p>
                         </div>
-                        <p className="text-darkapricot">
-                          {numberWithCommas(Math.abs(element.amount))} IQD
+                        <p
+                          className={
+                            element.amount > 0
+                              ? "text-green-600"
+                              : "text-red-400"
+                          }
+                        >
+                          {numberWithCommas(element.amount)} IQD
                         </p>
                       </div>
                     </PopoverHandler>

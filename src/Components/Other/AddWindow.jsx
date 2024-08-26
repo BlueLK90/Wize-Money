@@ -1,41 +1,11 @@
 /* eslint-disable react/prop-types */
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { FaCar, FaLaughBeam } from "react-icons/fa";
-import { GiMedicalPack } from "react-icons/gi";
-import { IoGiftSharp, IoHome } from "react-icons/io5";
-import {
-  MdCategory,
-  MdChildCare,
-  MdFaceRetouchingNatural,
-  MdPets,
-  MdPhoneAndroid,
-  MdRestaurant,
-  MdSportsBasketball,
-  MdWork,
-} from "react-icons/md";
-import { PiPottedPlantFill } from "react-icons/pi";
 import { formattedSubmittedDate } from "../../Utils";
 
-const categoryIcons = [
-  { value: "home", icon: <IoHome /> },
-  { value: "work", icon: <MdWork /> },
-  { value: "pets", icon: <MdPets /> },
-  { value: "car", icon: <FaCar /> },
-  { value: "phone", icon: <MdPhoneAndroid /> },
-  { value: "food", icon: <MdRestaurant /> },
-  { value: "health", icon: <GiMedicalPack /> },
-  { value: "fun", icon: <FaLaughBeam /> },
-  { value: "selfcare", icon: <MdFaceRetouchingNatural /> },
-  { value: "sports", icon: <MdSportsBasketball /> },
-  { value: "kids", icon: <MdChildCare /> },
-  { value: "gifts", icon: <IoGiftSharp /> },
-  { value: "plants", icon: <PiPottedPlantFill /> },
-  { value: "others", icon: <MdCategory /> },
-];
 const inputStyle =
   "col-span-2 bg-blue-gray-50 rounded-md px-3 py-1 outline outline-0 focus:outline-0 shadow-sm";
 
-const CategoryInput = ({ setNew }) => {
+const CategoryInput = ({ setNew, icons }) => {
   const [open, setOpen] = useState(false);
   const [categ, setCateg] = useState("");
 
@@ -55,6 +25,7 @@ const CategoryInput = ({ setNew }) => {
         id="category"
         name="category"
         placeholder="--Choose a Category--"
+        aria-label={categ.value || ""}
         value={categ.value || ""}
         readOnly
         className={`w-full ${inputStyle}`}
@@ -64,7 +35,7 @@ const CategoryInput = ({ setNew }) => {
       {open && (
         <div className="absolute z-30 top-full min-w-[180px] overflow-auto rounded-md border-t-0 border border-deep-orange-50 bg-gray-100 p-3 text-sm shadow-md shadow-blue-gray-500/10">
           <ul className="grid grid-cols-3 gap-x-4 gap-y-1 outline-none outline-0">
-            {categoryIcons.map((el) => (
+            {icons.map((el) => (
               <div
                 key={el.value}
                 className="flex flex-col justify-center items-center"
@@ -88,7 +59,7 @@ const CategoryInput = ({ setNew }) => {
   );
 };
 
-const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
+const AddWindow = ({ newItem, setNewItem, submitbtn, open, items, icons }) => {
   const [amountInput, setAmountInput] = useState("");
   const [dateInput, setDateInput] = useState("");
   const [maxDate, setMaxDate] = useState("");
@@ -191,7 +162,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
         </label>
         <input
           type="number"
-          id="amountIn"
+          id="amount"
           name="amount"
           className={inputStyle}
           value={amountInput}
@@ -207,7 +178,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
         </label>
         <input
           type="number"
-          id="amountOut"
+          id="amount"
           name="amount"
           className={inputStyle}
           value={amountInput}
@@ -237,7 +208,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
         <label htmlFor="category" className="text-gray-900">
           Category:
         </label>
-        <CategoryInput setNew={handleCategoryChange} />
+        <CategoryInput setNew={handleCategoryChange} icons={icons} />
       </>
     ),
     Image: (
@@ -249,8 +220,9 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items }) => {
           <input
             type="file"
             id="img"
+            name="img"
             className="block max-w-52 text-gray-500 overflow-hidden text-ellipsis
-                py-1 px-0 rounded-lg border-0 
+                py-1 px-0 rounded-lg border-0
                 text-sm file:rounded-lg file:px-2.5 file:py-1.5 file:mr-1 file:sm:px-4
               "
             onChange={(e) => {

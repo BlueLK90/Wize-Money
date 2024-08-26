@@ -4,13 +4,14 @@ import DataContext from "./DataContext";
 import { IoHome } from "react-icons/io5";
 import { MdPets, MdSportsBasketball } from "react-icons/md";
 import { FaCar } from "react-icons/fa";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
 
 function DataContextProvider({ children }) {
   const [data, setData] = useState({
     "Aug. 2024": [
       {
         dateAdded: "Aug. 10, 2024",
-        amount: 4000,
+        amount: -4000,
         title: "Something Aug.",
         details: "some details here",
         category: "home",
@@ -18,7 +19,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "Aug. 9, 2024",
-        amount: 1000,
+        amount: -2000,
         title: "Something Aug.",
         details: "some details here",
         category: "car",
@@ -26,7 +27,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "Aug. 8, 2024",
-        amount: 3000,
+        amount: -3000,
         title: "Something Aug.",
         details: "some details here",
         category: "pet",
@@ -34,17 +35,25 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "Aug. 7, 2024",
-        amount: 1000,
+        amount: -1000,
         title: "Something Aug.",
         details: "some details here",
         category: "sports",
         icon: <MdSportsBasketball />,
       },
+      {
+        dateAdded: "Aug. 6, 2024",
+        amount: 10000,
+        title: "Something Aug.",
+        details: "some details here",
+        category: "Salary",
+        icon: <FaMoneyCheckDollar />,
+      },
     ],
     "July 2024": [
       {
         dateAdded: "July 10, 2024",
-        amount: 1000,
+        amount: -1000,
         title: "Something July",
         details: "some details here",
         category: "home",
@@ -52,7 +61,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "July 9, 2024",
-        amount: 1000,
+        amount: -2000,
         title: "Something July",
         details: "some details here",
         category: "car",
@@ -60,7 +69,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "July 8, 2024",
-        amount: 3000,
+        amount: -3000,
         title: "Something July",
         details: "some details here",
         category: "pet",
@@ -68,17 +77,25 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "July 7, 2024",
-        amount: 1000,
+        amount: -1000,
         title: "Something July",
         details: "some details here",
         category: "sports",
         icon: <MdSportsBasketball />,
       },
+      {
+        dateAdded: "July 6, 2024",
+        amount: 10000,
+        title: "Something July.",
+        details: "some details here",
+        category: "Salary",
+        icon: <FaMoneyCheckDollar />,
+      },
     ],
     "June 2024": [
       {
         dateAdded: "June 10, 2024",
-        amount: 2000,
+        amount: -2000,
         title: "Something June",
         details: "some details here",
         category: "home",
@@ -86,7 +103,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "June 9, 2024",
-        amount: 1000,
+        amount: -1000,
         title: "Something June",
         details: "some details here",
         category: "car",
@@ -94,7 +111,7 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "June 8, 2024",
-        amount: 3000,
+        amount: -3000,
         title: "Something June",
         details: "some details here",
         category: "pet",
@@ -102,11 +119,19 @@ function DataContextProvider({ children }) {
       },
       {
         dateAdded: "June 7, 2024",
-        amount: 1000,
+        amount: -2000,
         title: "Something June",
         details: "some details here",
         category: "sports",
         icon: <MdSportsBasketball />,
+      },
+      {
+        dateAdded: "June 6, 2024",
+        amount: 10000,
+        title: "Something June.",
+        details: "some details here",
+        category: "Salary",
+        icon: <FaMoneyCheckDollar />,
       },
     ],
   });

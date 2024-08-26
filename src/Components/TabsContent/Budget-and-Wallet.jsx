@@ -15,15 +15,28 @@ import {
   SpeedDialAction,
   Typography,
 } from "@material-tailwind/react";
-import { PiPlusBold } from "react-icons/pi";
-import { GiMoneyStack } from "react-icons/gi";
 import DataContext from "../../contexts/dataContext/DataContext";
+import { PiMoneyWavyFill, PiPlusBold, PiPottedPlantFill } from "react-icons/pi";
+import { GiMoneyStack, GiMedicalPack } from "react-icons/gi";
 import { BiEdit } from "react-icons/bi";
+import { FaCar, FaLaughBeam } from "react-icons/fa";
+import { IoGiftSharp, IoHome } from "react-icons/io5";
+import {
+  MdCategory,
+  MdChildCare,
+  MdFaceRetouchingNatural,
+  MdPayments,
+  MdPets,
+  MdPhoneAndroid,
+  MdRestaurant,
+  MdSportsBasketball,
+  MdWork,
+} from "react-icons/md";
+import { FaMoneyBills, FaMoneyCheckDollar } from "react-icons/fa6";
 
 export const Budget = ({ screenSize }) => {
   //data context
-  const { addData, totalIncome, totalExpenses, totalBalance } =
-    useContext(DataContext);
+  const { addData } = useContext(DataContext);
 
   const [open, setOpen] = useState(false); //state for open/close dialog
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
@@ -59,7 +72,6 @@ export const Budget = ({ screenSize }) => {
     });
     setOpnAdd(false);
   }; //submit form
-  const fields = ["Category", "Title", "AmountOut", "Date", "Details"];
 
   return (
     <div
@@ -76,7 +88,8 @@ export const Budget = ({ screenSize }) => {
           setNewItem={setNewBudget}
           submitbtn={submitbtn}
           open={() => setOpnAdd(!opnAdd)}
-          items={fields}
+          items={fieldsExpense}
+          icons={categoryIconsExpense}
         />
       )}
       <div>
@@ -150,56 +163,6 @@ export const Budget = ({ screenSize }) => {
             </Dialog>
           </div>
         </div>
-        {/* <div className={SecondarySec}>
-          <div className={`${one} col-span-4`}>
-            <p>maintained Budget</p>
-            <p>0 Days</p>
-          </div>
-          {/* edit budget btn 
-          <div
-            className={`${two} col-span-2 md:text-sm lg:text-sm`}
-            role="button"
-            style={{ cursor: "pointer" }}
-            onClick={() => setOpen(!open)}
-          >
-            Edit <br />
-            My Budget
-          </div>
-          <Dialog
-            open={open}
-            size="xs"
-            handler={() => setOpen(!open)}
-            className="py-4 px-2 md:py-8 md:px-4"
-          >
-            <DialogBody className="flex justify-between items-center text-xs md:text-sm">
-              <label htmlFor="setBudget">Enter Amount:</label>
-              <input
-                type="number"
-                id="setBudget"
-                className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
-              />
-            </DialogBody>
-            <DialogFooter className="mt-2 md:mt-4">
-              <button
-                className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
-                onClick={() => setOpen(!open)}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setOpen(!open)}
-                className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
-              >
-                Confirm
-              </button>
-            </DialogFooter>
-          </Dialog>
-          {/* end of edit budget btn
-          <div className={`${three} col-span-4`}>
-            <p>Exceeded Budget</p>
-            <p>0 Days</p>
-          </div>
-        </div> */}
       </div>
 
       {/* add and details section */}
@@ -238,7 +201,8 @@ export const Budget = ({ screenSize }) => {
             setNewItem={setNewBudget}
             submitbtn={submitbtn}
             open={() => setOpnAdd(!opnAdd)}
-            items={fields}
+            items={fieldsExpense}
+            icons={categoryIconsExpense}
           />
         )}
         <DetailsCard windowView="budget" keys={monthYear} />
@@ -248,10 +212,44 @@ export const Budget = ({ screenSize }) => {
 };
 
 export const Wallet = ({ screenSize }) => {
-  const [opnAdd, setOpnAdd] = useState(false);
+  //data context
+  const { addData, totalIncome, totalExpenses, totalBalance } =
+    useContext(DataContext);
 
+  const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
+  const [iconsArr, setIconsArr] = useState(""); //setting the icon array to pass to AddWindow
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
+
+  const { fullDate, monthYear } = formattedDate();
+  const dateSubmitted = fullDate; //default date
+
+  const [newBudget, setNewBudget] = useState({
+    title: "",
+    category: "",
+    icon: "",
+    details: "",
+    amount: "",
+    dateAdded: dateSubmitted,
+  }); // sec data state
+
+  const submitbtn = (e, newBudget) => {
+    e.preventDefault();
+    if (newBudget.dateAdded === dateSubmitted) {
+      addData(newBudget, monthYear);
+    } else {
+      addData(newBudget, formattedMonthYear(newBudget.dateAdded));
+    }
+    setNewBudget({
+      title: "",
+      category: "",
+      icon: "",
+      details: "",
+      amount: "",
+      dateAdded: dateSubmitted,
+    });
+    setOpnAdd(false);
+  }; //submit form
 
   return (
     <div
@@ -263,15 +261,16 @@ export const Wallet = ({ screenSize }) => {
     >
       {/* add section for phone and tablet */}
       {opnAddScreenSmall && (
-        <div className="absolute z-10 w-full min-h-[70vh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
-          Hello
-          <button
-            onClick={() => setOpnAdd(!opnAdd)}
-            className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
-          >
-            close
-          </button>
-        </div>
+        <AddWindow
+          newItem={newBudget}
+          setNewItem={setNewBudget}
+          submitbtn={submitbtn}
+          open={() => setOpnAdd(!opnAdd)}
+          items={iconsArr === "Expense" ? fieldsExpense : fieldsIncome}
+          icons={
+            iconsArr === "Expense" ? categoryIconsExpense : categoryIconsIncome
+          }
+        />
       )}
       <div>
         <div className={mainSec}>
@@ -301,20 +300,6 @@ export const Wallet = ({ screenSize }) => {
             </div>
           </div>
         </div>
-        {/* <div className={SecondarySec}>
-          <div className={`${one} col-span-4`}>
-            <p>This Month Income:</p>
-            <p>0 IQD</p>
-          </div>
-          <div className={`${two} col-span-3`}>
-            <p>Debts:</p>
-            <p>0 IQD</p>
-          </div>
-          <div className={`${three} col-span-3`}>
-            <p>Due Payments:</p>
-            <p>0 IQD</p>
-          </div>
-        </div> */}
       </div>
       {/* add and detail section */}
       <div
@@ -336,14 +321,22 @@ export const Wallet = ({ screenSize }) => {
             <SpeedDialContent>
               <SpeedDialAction
                 className="bg-greentea"
-                onClick={() => setOpnAdd(!opnAdd)}
+                onClick={() => {
+                  setOpnAdd(!opnAdd);
+                  let value = "Income";
+                  setIconsArr(value);
+                }}
               >
                 <GiMoneyStack className="h-5 w-5" />
                 <Typography {...labelProps}>Income</Typography>
               </SpeedDialAction>
               <SpeedDialAction
                 className="bg-red-100"
-                onClick={() => setOpnAdd(!opnAdd)}
+                onClick={() => {
+                  setOpnAdd(!opnAdd);
+                  let value = "Expense";
+                  setIconsArr(value);
+                }}
               >
                 <GiMoneyStack className="h-5 w-5" />
                 <Typography {...labelProps}>Expenses</Typography>
@@ -353,15 +346,18 @@ export const Wallet = ({ screenSize }) => {
         </div>
         {/* add section for desktop */}
         {opnAddScreenLarge && (
-          <div className="absolute z-10 w-full min-h-[70vh] border border-gray-200 bg-gray-50 rounded-md p-8 shadow-md">
-            Hello
-            <button
-              onClick={() => setOpnAdd(!opnAdd)}
-              className="rounded-full p-1 mx-2 border border-apricot bg-apricot shadow-sm text-center text-brown-800 font-extrabold text-lg cursor-pointer"
-            >
-              close
-            </button>
-          </div>
+          <AddWindow
+            newItem={newBudget}
+            setNewItem={setNewBudget}
+            submitbtn={submitbtn}
+            open={() => setOpnAdd(!opnAdd)}
+            items={iconsArr === "Expense" ? fieldsExpense : fieldsIncome}
+            icons={
+              iconsArr === "Expense"
+                ? categoryIconsExpense
+                : categoryIconsIncome
+            }
+          />
         )}
         <DetailsCard windowView="wallet" />
       </div>
@@ -382,10 +378,29 @@ const mainSec =
   "grid gap-y-4 text-center text-xs md:text-sm lg:text-base bg-gray-50 border border-gray-300 rounded-lg shadow-sm py-4 my-2";
 const budgetMeter = "flex justify-around items-center";
 const spendingDetails = "flex justify-between";
-// const SecondarySec =
-//   "grid grid-cols-10 gap-1 text-center text-xs md:text-sm lg:text-base";
-// const one =
-//   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-lg rounded-r-sm";
-// const two = "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-sm";
-// const three =
-//   "bg-gray-50 shadow-sm py-2 my-2 border border-gray-300 rounded-l-sm rounded-r-lg";
+
+//AddWindow props
+const fieldsExpense = ["Category", "Title", "AmountOut", "Date", "Details"];
+const fieldsIncome = ["Category", "Title", "AmountIn", "Date", "Details"];
+const categoryIconsExpense = [
+  { value: "home", icon: <IoHome /> },
+  { value: "work", icon: <MdWork /> },
+  { value: "pets", icon: <MdPets /> },
+  { value: "car", icon: <FaCar /> },
+  { value: "phone", icon: <MdPhoneAndroid /> },
+  { value: "food", icon: <MdRestaurant /> },
+  { value: "health", icon: <GiMedicalPack /> },
+  { value: "fun", icon: <FaLaughBeam /> },
+  { value: "selfcare", icon: <MdFaceRetouchingNatural /> },
+  { value: "sports", icon: <MdSportsBasketball /> },
+  { value: "kids", icon: <MdChildCare /> },
+  { value: "gifts", icon: <IoGiftSharp /> },
+  { value: "plants", icon: <PiPottedPlantFill /> },
+  { value: "others", icon: <MdCategory /> },
+];
+const categoryIconsIncome = [
+  { value: "Salary", icon: <FaMoneyCheckDollar /> },
+  { value: "Paycheck", icon: <PiMoneyWavyFill /> },
+  { value: "Bounus", icon: <FaMoneyBills /> },
+  { value: "Others", icon: <MdPayments /> },
+];
