@@ -43,7 +43,7 @@ export const DropDownWallet = ({ el, i, data }) => {
   //sum the amounts of the month
   const accumlatorIncome = (key) => {
     let sum = 0;
-    data[key]
+    data.transactionData[key]
       .filter((el) => el.amount > 0)
       .map((el) => {
         sum += Number(el.amount);
@@ -52,7 +52,7 @@ export const DropDownWallet = ({ el, i, data }) => {
   };
   const accumlatorExpense = (key) => {
     let sum = 0;
-    data[key]
+    data.transactionData[key]
       .filter((el) => el.amount < 0)
       .map((el) => {
         sum += Math.abs(Number(el.amount));
@@ -97,7 +97,7 @@ export const DropDownWallet = ({ el, i, data }) => {
           </div>
           {isOpen && (
             <div className=" relative top-18 flex flex-col items-start rounded-lg p-1 w-full ">
-              {data[el].map((element, i) => (
+              {data.transactionData[el].map((element, i) => (
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>
@@ -167,7 +167,7 @@ export const DropDownWallet = ({ el, i, data }) => {
           </div>
           {isOpenOld && (
             <div className=" relative top-18 flex flex-col items-start  rounded-lg p-1 w-full ">
-              {data[el].map((element, i) => (
+              {data.transactionData[el].map((element, i) => (
                 <div key={i} className="w-full">
                   <Popover placement="top-end">
                     <PopoverHandler>

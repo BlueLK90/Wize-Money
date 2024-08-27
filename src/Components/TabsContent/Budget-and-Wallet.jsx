@@ -3,7 +3,7 @@ import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
 import { useContext, useState, useMemo } from "react";
-import { formattedDate, formattedMonthYear, today } from "../../Utils";
+import { formattedDate, today } from "../../Utils";
 import {
   Dialog,
   DialogBody,
@@ -36,7 +36,7 @@ import { FaMoneyBills, FaMoneyCheckDollar } from "react-icons/fa6";
 
 export const Budget = ({ screenSize }) => {
   //data context
-  const { addData } = useContext(DataContext);
+  const { addDataTransaction } = useContext(DataContext);
 
   //state for dialog and stats
   const [open, setOpen] = useState(false);
@@ -91,9 +91,12 @@ export const Budget = ({ screenSize }) => {
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
     if (newBudget.dateAdded === today) {
-      addData(newBudget, monthYear);
+      addDataTransaction(newBudget, monthYear);
     } else {
-      addData(newBudget, formattedDate(newBudget.dateAdded).monthYear);
+      addDataTransaction(
+        newBudget,
+        formattedDate(newBudget.dateAdded).monthYear
+      );
     }
     setNewBudget({
       title: "",
@@ -290,7 +293,7 @@ export const Budget = ({ screenSize }) => {
 
 export const Wallet = ({ screenSize }) => {
   //data context
-  const { addData, totalIncome, totalExpenses, totalBalance } =
+  const { addDataTransaction, totalIncome, totalExpenses, totalBalance } =
     useContext(DataContext);
 
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
@@ -312,9 +315,12 @@ export const Wallet = ({ screenSize }) => {
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
     if (newBudget.dateAdded === today) {
-      addData(newBudget, monthYear);
+      addDataTransaction(newBudget, monthYear);
     } else {
-      addData(newBudget, formattedDate(newBudget.dateAdded).monthYear);
+      addDataTransaction(
+        newBudget,
+        formattedDate(newBudget.dateAdded).monthYear
+      );
     }
     setNewBudget({
       title: "",

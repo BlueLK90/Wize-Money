@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Collapse, Button, Card, CardBody } from "@material-tailwind/react";
 import { FiEdit, FiEdit3, FiX } from "react-icons/fi";
-import monitor from "../../assets/monitor.jpg";
 import { formattedDate, numberWithCommas } from "../../Utils/index";
 import AddWindow from "../Other/AddWindow";
+import DataContext from "../../contexts/dataContext/DataContext";
 
 const WishCard = ({ element, deleteCard, editCard }) => {
   const [open, setOpen] = useState(false);
@@ -37,7 +37,9 @@ const WishCard = ({ element, deleteCard, editCard }) => {
           </div>
           {element.price && (
             <p className="text-xs lg:text-sm text-darkapricot pt-1 pl-1">
-              {numberWithCommas(element.price)} IQD
+              {!isNaN(element.price)
+                ? `${numberWithCommas(element.price)} IQD`
+                : element.price}
             </p>
           )}
         </section>
@@ -76,41 +78,14 @@ const WishCard = ({ element, deleteCard, editCard }) => {
 };
 
 const Wishlist = () => {
+  const { data, addDataWishList, deleteWishCard } = useContext(DataContext);
+
   const [openAdd, setOpenAdd] = useState(false); //state for open/close add screen
   const [editIndex, setEditIndex] = useState(null); //edit item index
 
   //date formatting
   const { fullDate } = formattedDate();
   const dateSubmitted = fullDate; //default date
-
-  // main data arr
-  const [WishListData, setWishListData] = useState([
-    {
-      title:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-      img: "",
-      details: "",
-      price: "",
-      dateAdded: "Aug. 1, 2024",
-    },
-    {
-      title: "Lorem ipsum dolor sit amet",
-      img: "",
-      details:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-      price: "200000",
-      dateAdded: "Aug. 2, 2024",
-    },
-    {
-      title: "Lorem ipsum dolor sit amet",
-      img: monitor,
-      details:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-      price: "100000",
-      dateAdded: "Aug. 3, 2024",
-    },
-  ]);
-  const reversedWishListData = [...WishListData].reverse();
 
   const [newWish, setNewWish] = useState({
     title: "",
@@ -132,29 +107,18 @@ const Wishlist = () => {
   }; //open/close add screen
 
   const deleteCard = (i) => {
-    const RealIndex = WishListData.length - 1 - i;
-    const arr = [...WishListData];
-    arr.splice(RealIndex, 1);
-    setWishListData(arr);
+    deleteWishCard(i);
   }; //delete card
 
   const editCard = (i) => {
     setOpenAdd(true);
-    setNewWish(WishListData[i]);
+    setNewWish(data.wishList[i]);
     setEditIndex(i);
   };
 
-  const submitbtn = (e, newWish) => {
+  const submitbtn = (e, newWish, editIndex) => {
     e.preventDefault();
-    if (editIndex !== null) {
-      // Edit item
-      const updatedWishlist = [...WishListData];
-      updatedWishlist[editIndex] = newWish;
-      setWishListData(updatedWishlist);
-    } else {
-      // Adding a new item
-      setWishListData([...WishListData, newWish]);
-    }
+    addDataWishList(newWish, editIndex);
     setNewWish({
       title: "",
       img: "",
@@ -193,7 +157,7 @@ const Wishlist = () => {
       </Button>
 
       {/* main list */}
-      {reversedWishListData.map((el, i) => (
+      {data.wishList.map((el, i) => (
         <WishCard
           element={el}
           key={i}
