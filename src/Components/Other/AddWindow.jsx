@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { formattedSubmittedDate } from "../../Utils";
+import { today } from "../../Utils";
 
 const inputStyle =
   "col-span-2 bg-blue-gray-50 rounded-md px-3 py-1 outline outline-0 focus:outline-0 shadow-sm";
@@ -65,7 +65,6 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items, icons }) => {
   const [maxDate, setMaxDate] = useState("");
 
   useEffect(() => {
-    const today = new Date().toLocaleDateString("en-CA");
     setMaxDate(today);
   }, []);
 
@@ -76,7 +75,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items, icons }) => {
         setDateInput(dateS);
         setNewItem((prev) => ({
           ...prev,
-          dateAdded: formattedSubmittedDate(dateS),
+          dateAdded: dateS,
         }));
       } else {
         setNewItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));

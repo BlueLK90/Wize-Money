@@ -3,7 +3,7 @@ import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
 import { useContext, useState, useMemo } from "react";
-import { formattedDate, formattedMonthYear } from "../../Utils";
+import { formattedDate, formattedMonthYear, today } from "../../Utils";
 import {
   Dialog,
   DialogBody,
@@ -77,8 +77,7 @@ export const Budget = ({ screenSize }) => {
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const { fullDate, monthYear } = formattedDate();
-  const dateSubmitted = fullDate; //default date
+  const { monthYear } = formattedDate(); //default data object's key
 
   const [newBudget, setNewBudget] = useState({
     title: "",
@@ -86,15 +85,15 @@ export const Budget = ({ screenSize }) => {
     icon: "",
     details: "",
     amount: "",
-    dateAdded: dateSubmitted,
+    dateAdded: today,
   }); // sec data state
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
-    if (newBudget.dateAdded === dateSubmitted) {
+    if (newBudget.dateAdded === today) {
       addData(newBudget, monthYear);
     } else {
-      addData(newBudget, formattedMonthYear(newBudget.dateAdded));
+      addData(newBudget, formattedDate(newBudget.dateAdded).monthYear);
     }
     setNewBudget({
       title: "",
@@ -102,7 +101,7 @@ export const Budget = ({ screenSize }) => {
       icon: "",
       details: "",
       amount: "",
-      dateAdded: dateSubmitted,
+      dateAdded: today,
     });
     setOpnAdd(false);
   }; //submit form
@@ -299,8 +298,7 @@ export const Wallet = ({ screenSize }) => {
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const { fullDate, monthYear } = formattedDate();
-  const dateSubmitted = fullDate; //default date
+  const { monthYear } = formattedDate(); //default data object's key
 
   const [newBudget, setNewBudget] = useState({
     title: "",
@@ -308,15 +306,15 @@ export const Wallet = ({ screenSize }) => {
     icon: "",
     details: "",
     amount: "",
-    dateAdded: dateSubmitted,
+    dateAdded: today,
   }); // sec data state
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
-    if (newBudget.dateAdded === dateSubmitted) {
+    if (newBudget.dateAdded === today) {
       addData(newBudget, monthYear);
     } else {
-      addData(newBudget, formattedMonthYear(newBudget.dateAdded));
+      addData(newBudget, formattedDate(newBudget.dateAdded).monthYear);
     }
     setNewBudget({
       title: "",
@@ -324,7 +322,7 @@ export const Wallet = ({ screenSize }) => {
       icon: "",
       details: "",
       amount: "",
-      dateAdded: dateSubmitted,
+      dateAdded: today,
     });
     setOpnAdd(false);
   }; //submit form
@@ -367,7 +365,7 @@ export const Wallet = ({ screenSize }) => {
               <div className={spendingDetails}>
                 <p>Total Expenses:</p>
                 <p>
-                  {totalExpenses || 0}
+                  {Math.abs(totalExpenses) || 0}
                   <b>IQD</b>
                 </p>
               </div>

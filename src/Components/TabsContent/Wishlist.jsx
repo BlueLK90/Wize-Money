@@ -80,7 +80,8 @@ const Wishlist = () => {
   const [editIndex, setEditIndex] = useState(null); //edit item index
 
   //date formatting
-  const dateSubmitted = formattedDate(); //default date
+  const { fullDate } = formattedDate();
+  const dateSubmitted = fullDate; //default date
 
   // main data arr
   const [WishListData, setWishListData] = useState([

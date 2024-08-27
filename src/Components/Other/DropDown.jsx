@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { numberWithCommas } from "./../../Utils/index";
+import { formattedDate, numberWithCommas } from "./../../Utils/index";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
   Popover,
@@ -26,7 +26,9 @@ export const DropDownBudget = ({ el }) => {
           </div>
         </PopoverHandler>
         <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-5 shadow-md shadow-[#f0dcd174]">
-          <p className="text-darkapricot mb-1">{el.dateAdded}</p>
+          <p className="text-darkapricot mb-1">
+            {formattedDate(el.dateAdded).fullDate}
+          </p>
           <p>{el.details}</p>
         </PopoverContent>
       </Popover>
@@ -123,7 +125,7 @@ export const DropDownWallet = ({ el, i, data }) => {
                     </PopoverHandler>
                     <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-2 shadow-md shadow-[#f0dcd174]">
                       <p className="text-darkapricot mb-1">
-                        {element.dateAdded}
+                        {formattedDate(element.dateAdded).fullDate}
                       </p>
                       <p>{element.details}</p>
                     </PopoverContent>
@@ -193,7 +195,7 @@ export const DropDownWallet = ({ el, i, data }) => {
                     </PopoverHandler>
                     <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-2 shadow-md shadow-[#f0dcd174]">
                       <p className="text-darkapricot mb-1">
-                        {element.dateAdded}
+                        {formattedDate(element.dateAdded).fullDate}
                       </p>
                       <p>{element.details}</p>
                     </PopoverContent>

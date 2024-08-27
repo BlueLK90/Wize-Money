@@ -7,6 +7,7 @@ export const numberWithCommas = (x) => {
 };
 
 //date formatting
+export const today = new Date().toLocaleDateString("en-CA");
 const months = [
   "Jan.",
   "Feb.",
@@ -21,8 +22,9 @@ const months = [
   "Nov.",
   "Dec.",
 ];
-export const formattedDate = () => {
-  let date = new Date().toLocaleDateString("en-CA");
+export const formattedDate = (
+  date = new Date().toLocaleDateString("en-CA")
+) => {
   const [year, month, day] = date.split("-");
   const monthFormatted = months[month - 1];
 

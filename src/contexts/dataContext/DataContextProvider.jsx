@@ -10,7 +10,7 @@ function DataContextProvider({ children }) {
   const [data, setData] = useState({
     "Aug. 2024": [
       {
-        dateAdded: "Aug. 10, 2024",
+        dateAdded: "2024-08-10",
         amount: -4000,
         title: "Something Aug.",
         details: "some details here",
@@ -18,7 +18,7 @@ function DataContextProvider({ children }) {
         icon: <IoHome />,
       },
       {
-        dateAdded: "Aug. 9, 2024",
+        dateAdded: "2024-08-09",
         amount: -2000,
         title: "Something Aug.",
         details: "some details here",
@@ -26,7 +26,7 @@ function DataContextProvider({ children }) {
         icon: <FaCar />,
       },
       {
-        dateAdded: "Aug. 8, 2024",
+        dateAdded: "2024-08-08",
         amount: -3000,
         title: "Something Aug.",
         details: "some details here",
@@ -34,7 +34,7 @@ function DataContextProvider({ children }) {
         icon: <MdPets />,
       },
       {
-        dateAdded: "Aug. 7, 2024",
+        dateAdded: "2024-08-07",
         amount: -1000,
         title: "Something Aug.",
         details: "some details here",
@@ -42,7 +42,7 @@ function DataContextProvider({ children }) {
         icon: <MdSportsBasketball />,
       },
       {
-        dateAdded: "Aug. 6, 2024",
+        dateAdded: "2024-08-06",
         amount: 10000,
         title: "Something Aug.",
         details: "some details here",
@@ -52,7 +52,7 @@ function DataContextProvider({ children }) {
     ],
     "July 2024": [
       {
-        dateAdded: "July 10, 2024",
+        dateAdded: "2024-07-10",
         amount: -1000,
         title: "Something July",
         details: "some details here",
@@ -60,7 +60,7 @@ function DataContextProvider({ children }) {
         icon: <IoHome />,
       },
       {
-        dateAdded: "July 9, 2024",
+        dateAdded: "2024-07-09",
         amount: -2000,
         title: "Something July",
         details: "some details here",
@@ -68,7 +68,7 @@ function DataContextProvider({ children }) {
         icon: <FaCar />,
       },
       {
-        dateAdded: "July 8, 2024",
+        dateAdded: "2024-07-08",
         amount: -3000,
         title: "Something July",
         details: "some details here",
@@ -76,7 +76,7 @@ function DataContextProvider({ children }) {
         icon: <MdPets />,
       },
       {
-        dateAdded: "July 7, 2024",
+        dateAdded: "2024-07-07",
         amount: -1000,
         title: "Something July",
         details: "some details here",
@@ -84,7 +84,7 @@ function DataContextProvider({ children }) {
         icon: <MdSportsBasketball />,
       },
       {
-        dateAdded: "July 6, 2024",
+        dateAdded: "2024-07-06",
         amount: 10000,
         title: "Something July.",
         details: "some details here",
@@ -94,7 +94,7 @@ function DataContextProvider({ children }) {
     ],
     "June 2024": [
       {
-        dateAdded: "June 10, 2024",
+        dateAdded: "2024-06-10",
         amount: -2000,
         title: "Something June",
         details: "some details here",
@@ -102,7 +102,7 @@ function DataContextProvider({ children }) {
         icon: <IoHome />,
       },
       {
-        dateAdded: "June 9, 2024",
+        dateAdded: "2024-06-09",
         amount: -1000,
         title: "Something June",
         details: "some details here",
@@ -110,7 +110,7 @@ function DataContextProvider({ children }) {
         icon: <FaCar />,
       },
       {
-        dateAdded: "June 8, 2024",
+        dateAdded: "2024-06-08",
         amount: -3000,
         title: "Something June",
         details: "some details here",
@@ -118,7 +118,7 @@ function DataContextProvider({ children }) {
         icon: <MdPets />,
       },
       {
-        dateAdded: "June 7, 2024",
+        dateAdded: "2024-06-07",
         amount: -2000,
         title: "Something June",
         details: "some details here",
@@ -126,7 +126,7 @@ function DataContextProvider({ children }) {
         icon: <MdSportsBasketball />,
       },
       {
-        dateAdded: "June 6, 2024",
+        dateAdded: "2024-06-06",
         amount: 10000,
         title: "Something June.",
         details: "some details here",
