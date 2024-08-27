@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import DataContext from "./DataContext";
 import { IoHome } from "react-icons/io5";
 import { MdPets, MdSportsBasketball } from "react-icons/md";
@@ -143,21 +143,23 @@ function DataContextProvider({ children }) {
     }));
   }; // add data
 
-  const totalIncome = () => {
-    return data
+  const totalIncome = useMemo(() => {
+    return Object.values(data)
+      .flat()
       .filter((item) => item.amount > 0)
       .reduce((total, item) => total + parseFloat(item.amount), 0);
-  }; // calculate total income
+  }, [data]); // Memoize & recalculate when data changes
 
-  const totalExpenses = () => {
-    return data
+  const totalExpenses = useMemo(() => {
+    return Object.values(data)
+      .flat()
       .filter((item) => item.amount < 0)
-      .reduce((total, item) => total + Math.abs(parseFloat(item.amount)), 0);
-  }; // calculate total expense
+      .reduce((total, item) => total + parseFloat(item.amount), 0);
+  }, [data]);
 
-  const totalBalance = () => {
-    return totalIncome() - totalExpenses();
-  }; // calculate total balance (incomes - expenses)
+  const totalBalance = useMemo(() => {
+    return totalIncome + totalExpenses;
+  }, [totalIncome, totalExpenses]);
 
   const DataValues = {
     data,

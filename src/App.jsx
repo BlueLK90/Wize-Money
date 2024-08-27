@@ -3,6 +3,7 @@ import Header from "./Components/Header";
 import { useMediaQuery } from "react-responsive";
 import { TabsSecLarge, TabsSecMedium, TabsSecSmall } from "./Components/Tabs";
 import DataContextProvider from "./contexts/dataContext/DataContextProvider";
+//import TesterComponent from "./TesterCom";
 
 export default function App() {
   const isSmall = useMediaQuery({ query: "(max-width: 749px)" });
@@ -21,6 +22,7 @@ export default function App() {
         ) : (
           <TabsSecLarge />
         )}
+        {/*<TesterComponent />*/}
       </DataContextProvider>
     </div>
   );

@@ -2,7 +2,7 @@
 import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import { formattedDate, formattedMonthYear } from "../../Utils";
 import {
   Dialog,
@@ -38,7 +38,41 @@ export const Budget = ({ screenSize }) => {
   //data context
   const { addData } = useContext(DataContext);
 
-  const [open, setOpen] = useState(false); //state for open/close dialog
+  //state for dialog and stats
+  const [open, setOpen] = useState(false);
+  const DialogOpen = () => {
+    setOpen(!open);
+  };
+
+  const [budgetStats, setBudgetStats] = useState({
+    budgetAmount: 0,
+    budgetExpenses: 0,
+    dateStart: new Date(),
+    dateEnd: "",
+  });
+
+  const budgetDuration = useMemo(() => {
+    const { dateEnd } = budgetStats;
+    const startDay = new Date();
+    const endDay = new Date(dateEnd);
+
+    if (!isNaN(endDay)) {
+      const timeDiff = Math.abs(endDay - startDay);
+      return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    }
+    return null;
+  }, [budgetStats]);
+
+  //setStats log data in mainData component
+  const setStats = () => {
+    setOpen(false);
+  };
+
+  const duration = budgetDuration;
+  const remaining = budgetStats.budgetAmount - budgetStats.budgetExpenses;
+  const dailyBudget = remaining / (duration || 1);
+  //when inputing an expense => budgetStats.budgetExpenses(prev => prev + item.amount) (amount is negative)
+
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
@@ -96,69 +130,113 @@ export const Budget = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining="0" />
+              <ProgressBar remaining={remaining} />
             </div>
             <div className="details">
               <h4>Your Budget for this month:</h4>
               <div className={spendingDetails}>
                 <p>Started at:</p>
                 <p>
-                  0
-                  <em>
-                    <b>IQD</b>
-                  </em>
+                  {budgetStats.budgetAmount} <b>IQD</b>
                 </p>
               </div>
               <div className={spendingDetails}>
-                <p>days remaining:</p>
+                <p>Days remaining:</p>
                 <p>
-                  0
-                  <em>
-                    <b>IQD</b>
-                  </em>
+                  {(duration >= 0 && duration) || 0} <b>days</b>
                 </p>
               </div>
             </div>
           </div>
           <div className="flex justify-center items-center gap-6">
-            <p>
-              Keep a rate of 00000 /day to maintain
-              <br /> your budget goal!
-            </p>
+            {duration > 0 ? (
+              <p>
+                Keep a rate of{" "}
+                <b className="text-green-500">{Math.floor(dailyBudget)} /day</b>{" "}
+                to maintain
+                <br /> your budget goal!
+              </p>
+            ) : (
+              <p className="text-darkapricot">Please reset your Budget</p>
+            )}
             {/* edit budget btn */}
             <button
               className="cursor-pointer bg-greentea border border-gray-200 w-fit p-2 shadow-lg shadow-green-50 rounded-xl"
-              onClick={() => setOpen(!open)}
+              onClick={DialogOpen}
             >
               <BiEdit className="text-sm md:text-base" />
             </button>
             <Dialog
               open={open}
-              size="xs"
-              handler={() => setOpen(!open)}
+              size="sm"
+              handler={DialogOpen}
               className="py-4 px-2 md:py-8 md:px-4"
             >
-              <DialogBody className="flex justify-between items-center text-xs md:text-sm">
+              <DialogBody className="grid grid-cols-2 justify-between items-center text-xs md:text-sm">
                 <label htmlFor="setBudget">Enter Amount:</label>
                 <input
                   type="number"
                   id="setBudget"
+                  name="setBudget"
+                  value={budgetStats.budgetAmount || ""}
+                  aria-label="setBudget"
+                  onChange={(e) =>
+                    setBudgetStats({
+                      ...budgetStats,
+                      budgetAmount: e.target.value,
+                    })
+                  }
+                  className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
+                  required
+                />
+
+                <label htmlFor="setStartDay">From:</label>
+                <input
+                  type="text"
+                  id="setStartDay"
+                  name="setStartDay"
+                  aria-label="StartDay"
+                  value="Today"
+                  className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
+                  readOnly
+                />
+
+                <label htmlFor="setEndtDay">To:</label>
+                <input
+                  type="date"
+                  id="setEndtDay"
+                  name="setEndtDay"
+                  aria-label="EndtDay"
+                  value={budgetStats.dateEnd}
+                  onChange={(e) =>
+                    setBudgetStats({
+                      ...budgetStats,
+                      dateEnd: e.target.value,
+                    })
+                  }
                   className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
                 />
               </DialogBody>
-              <DialogFooter className="mt-2 md:mt-4">
-                <button
-                  className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
-                  onClick={() => setOpen(!open)}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setOpen(!open)}
-                  className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
-                >
-                  Confirm
-                </button>
+
+              <DialogFooter className="grid justify-center mt-2 md:mt-4 ">
+                <div className="mx-auto">
+                  <button
+                    className="bg-blue-gray-900 text-xs sm:text-sm w-20 h-6 sm:w-28 sm:h-8 rounded-full text-white font-semibold"
+                    onClick={DialogOpen}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={setStats}
+                    className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
+                  >
+                    Confirm
+                  </button>
+                </div>
+                <p className="text-red-500 text-xs sm:text-sm mt-2">
+                  **Please note that changing the &apos;End Date&apos; will
+                  reset your Budget stats.
+                </p>
               </DialogFooter>
             </Dialog>
           </div>
@@ -276,25 +354,21 @@ export const Wallet = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining="0" />
+              <ProgressBar remaining={totalBalance} />
             </div>
             <div className="details">
               <div className={spendingDetails}>
-                <p>Incomes this Month</p>
+                <p>Total Income:</p>
                 <p>
-                  0
-                  <em>
-                    <b>IQD</b>
-                  </em>
+                  {totalIncome || 0}
+                  <b>IQD</b>
                 </p>
               </div>
               <div className={spendingDetails}>
-                <p>Expenses This month:</p>
+                <p>Total Expenses:</p>
                 <p>
-                  0
-                  <em>
-                    <b>IQD</b>
-                  </em>
+                  {totalExpenses || 0}
+                  <b>IQD</b>
                 </p>
               </div>
             </div>
