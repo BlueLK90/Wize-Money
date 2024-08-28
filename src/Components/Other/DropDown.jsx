@@ -174,7 +174,7 @@ export const DropDownWallet = ({ el, i, data }) => {
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
                           <p
-                            className={`h-6 w-6 md:w-8 md:h-8 rounded-full text-black text-sm lg:text-sm flex justify-center items-center ${
+                            className={`h-6 w-6 md:w-8 md:h-8 rounded-full text-black text-sm flex justify-center items-center ${
                               element.amount > 0 ? "bg-greentea" : "bg-red-100"
                             }`}
                           >
@@ -206,6 +206,38 @@ export const DropDownWallet = ({ el, i, data }) => {
           )}
         </>
       )}
+    </div>
+  );
+};
+
+export const DropDownCalendar = ({ el }) => {
+  return (
+    <div>
+      <Popover placement="top-end">
+        <PopoverHandler>
+          <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
+            <div className="flex gap-6 items-center">
+              <p
+                className={`h-6 w-6 md:w-8 md:h-8 rounded-full text-black text-sm flex justify-center items-center ${
+                  el.amount > 0 ? "bg-greentea" : "bg-red-100"
+                }`}
+              >
+                {el.icon}
+              </p>
+              <p>{el.title}</p>
+            </div>
+            <p className={el.amount > 0 ? "text-green-600" : "text-red-400"}>
+              {numberWithCommas(el.amount)} IQD
+            </p>
+          </div>
+        </PopoverHandler>
+        <PopoverContent className="w-80 z-10 bg-gray-50 border border-gray-200 text-xs ml-5 shadow-md shadow-[#f0dcd174]">
+          <p className="text-darkapricot mb-1">
+            {formattedDate(el.dateAdded).fullDate}
+          </p>
+          <p>{el.details}</p>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
