@@ -2,7 +2,7 @@
 import ProgressBar from "./../Other/RadialBar";
 import DetailsCard from "./../Other/DetailsCard";
 import AddWindow from "../Other/AddWindow";
-import { useContext, useState, useMemo } from "react";
+import { useContext, useState, useMemo, useEffect } from "react";
 import { formattedDate, today } from "../../Utils";
 import {
   Dialog,
@@ -36,50 +36,55 @@ import { FaMoneyBills, FaMoneyCheckDollar } from "react-icons/fa6";
 
 export const Budget = ({ screenSize }) => {
   //data context
-  const { addDataTransaction } = useContext(DataContext);
+  const { data, setBudget, remainingBudgetAmount, addDataTransaction } =
+    useContext(DataContext);
 
-  //state for dialog and stats
+  //state for dialog and stats-------
   const [open, setOpen] = useState(false);
-  const DialogOpen = () => {
-    setOpen(!open);
-  };
-
+  const [minDate, setMinDate] = useState("");
+  const [expenseBudget, setExpenseBudget] = useState(0);
   const [budgetStats, setBudgetStats] = useState({
     budgetAmount: 0,
-    budgetExpenses: 0,
     dateStart: new Date(),
     dateEnd: "",
   });
-
   const budgetDuration = useMemo(() => {
-    const { dateEnd } = budgetStats;
     const startDay = new Date();
-    const endDay = new Date(dateEnd);
+    const endDay = new Date(data.budgetData.dateEnd);
 
     if (!isNaN(endDay)) {
       const timeDiff = Math.abs(endDay - startDay);
       return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     }
     return null;
-  }, [budgetStats]);
+  }, [data.budgetData.dateEnd]);
 
-  //setStats log data in mainData component
-  const setStats = () => {
-    setOpen(false);
+  useEffect(() => {
+    setMinDate(today);
+  }, []);
+
+  const DialogOpen = () => {
+    setOpen(!open);
   };
 
-  const duration = budgetDuration;
-  const remaining = budgetStats.budgetAmount - budgetStats.budgetExpenses;
-  const dailyBudget = remaining / (duration || 1);
-  //when inputing an expense => budgetStats.budgetExpenses(prev => prev + item.amount) (amount is negative)
+  const submitStats = () => {
+    setBudget(budgetStats);
+    setOpen(false);
+  }; //submit Stats data to mainData component
 
+  const duration = budgetDuration;
+  const remaining = remainingBudgetAmount(Number(expenseBudget));
+  const dailyBudget = remaining / (duration || 1);
+
+  //transactions-------------
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
   const opnAddScreenLarge = screenSize === "isLarge" && opnAdd; //condition for add window for Desktop
   const opnAddScreenSmall = screenSize !== "isLarge" && opnAdd; //condition for add window for phone and tablet
 
-  const { monthYear } = formattedDate(); //default data object's key
+  const { monthYear } = formattedDate(); //default data object key
 
   const [newBudget, setNewBudget] = useState({
+    type: "budget",
     title: "",
     category: "",
     icon: "",
@@ -98,7 +103,9 @@ export const Budget = ({ screenSize }) => {
         formattedDate(newBudget.dateAdded).monthYear
       );
     }
+    setExpenseBudget((prev) => prev - newBudget.amount);
     setNewBudget({
+      type: "budget",
       title: "",
       category: "",
       icon: "",
@@ -126,6 +133,7 @@ export const Budget = ({ screenSize }) => {
           open={() => setOpnAdd(!opnAdd)}
           items={fieldsExpense}
           icons={categoryIconsExpense}
+          startDate={data.budgetData.dateStart}
         />
       )}
       <div>
@@ -139,7 +147,7 @@ export const Budget = ({ screenSize }) => {
               <div className={spendingDetails}>
                 <p>Started at:</p>
                 <p>
-                  {budgetStats.budgetAmount} <b>IQD</b>
+                  {data.budgetData.budgetAmount} <b>IQD</b>
                 </p>
               </div>
               <div className={spendingDetails}>
@@ -170,7 +178,7 @@ export const Budget = ({ screenSize }) => {
             </button>
             <Dialog
               open={open}
-              size="sm"
+              size="md"
               handler={DialogOpen}
               className="py-4 px-2 md:py-8 md:px-4"
             >
@@ -185,7 +193,7 @@ export const Budget = ({ screenSize }) => {
                   onChange={(e) =>
                     setBudgetStats({
                       ...budgetStats,
-                      budgetAmount: e.target.value,
+                      budgetAmount: Number(e.target.value),
                     })
                   }
                   className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
@@ -209,6 +217,7 @@ export const Budget = ({ screenSize }) => {
                   id="setEndtDay"
                   name="setEndtDay"
                   aria-label="EndtDay"
+                  min={minDate}
                   value={budgetStats.dateEnd}
                   onChange={(e) =>
                     setBudgetStats({
@@ -229,7 +238,7 @@ export const Budget = ({ screenSize }) => {
                     Cancel
                   </button>
                   <button
-                    onClick={setStats}
+                    onClick={submitStats}
                     className="bg-pale text-xs sm:text-base w-20 h-6 sm:w-28 sm:h-8 mx-2 rounded-full text-darkapricot font-semibold"
                   >
                     Confirm
@@ -283,9 +292,14 @@ export const Budget = ({ screenSize }) => {
             open={() => setOpnAdd(!opnAdd)}
             items={fieldsExpense}
             icons={categoryIconsExpense}
+            startDate={data.budgetData.dateStart}
           />
         )}
-        <DetailsCard windowView="budget" keys={monthYear} />
+        <DetailsCard
+          windowView="budget"
+          startDate={data.budgetData.dateStart}
+          endDate={data.budgetData.dateEnd}
+        />
       </div>
     </div>
   );

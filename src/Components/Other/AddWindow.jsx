@@ -59,10 +59,19 @@ const CategoryInput = ({ setNew, icons }) => {
   );
 };
 
-const AddWindow = ({ newItem, setNewItem, submitbtn, open, items, icons }) => {
+const AddWindow = ({
+  newItem,
+  setNewItem,
+  submitbtn,
+  open,
+  items,
+  icons,
+  startDate = null,
+}) => {
   const [amountInput, setAmountInput] = useState("");
   const [dateInput, setDateInput] = useState("");
   const [maxDate, setMaxDate] = useState("");
+  const minDate = startDate;
 
   useEffect(() => {
     setMaxDate(today);
@@ -195,6 +204,7 @@ const AddWindow = ({ newItem, setNewItem, submitbtn, open, items, icons }) => {
           type="date"
           id="dateAdded"
           name="dateAdded"
+          min={minDate}
           max={maxDate}
           className={inputStyle}
           value={dateInput}

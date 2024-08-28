@@ -35,10 +35,15 @@ function DataContextProvider({ children }) {
         dateAdded: "Aug. 1, 2024",
       },
     ],
-    budgetData: {},
+    budgetData: {
+      budgetAmount: 200000,
+      dateStart: "2024-08-02",
+      dateEnd: "2024-09-04",
+    },
     transactionData: {
       "Aug. 2024": [
         {
+          type: "budget",
           dateAdded: "2024-08-10",
           amount: -4000,
           title: "Something Aug.",
@@ -47,6 +52,7 @@ function DataContextProvider({ children }) {
           icon: <IoHome />,
         },
         {
+          type: "budget",
           dateAdded: "2024-08-09",
           amount: -2000,
           title: "Something Aug.",
@@ -81,6 +87,7 @@ function DataContextProvider({ children }) {
       ],
       "July 2024": [
         {
+          type: "budget",
           dateAdded: "2024-07-10",
           amount: -1000,
           title: "Something July",
@@ -89,6 +96,7 @@ function DataContextProvider({ children }) {
           icon: <IoHome />,
         },
         {
+          type: "budget",
           dateAdded: "2024-07-09",
           amount: -2000,
           title: "Something July",
@@ -123,6 +131,7 @@ function DataContextProvider({ children }) {
       ],
       "June 2024": [
         {
+          type: "budget",
           dateAdded: "2024-06-10",
           amount: -2000,
           title: "Something June",
@@ -131,6 +140,7 @@ function DataContextProvider({ children }) {
           icon: <IoHome />,
         },
         {
+          type: "budget",
           dateAdded: "2024-06-09",
           amount: -1000,
           title: "Something June",
@@ -165,6 +175,17 @@ function DataContextProvider({ children }) {
       ],
     },
   });
+  //budget data
+  const setBudget = (newbudget) => {
+    setData((prevData) => ({
+      ...prevData,
+      budgetData: newbudget,
+    }));
+  };
+  const remainingBudgetAmount = (expense) => {
+    let remaining = data.budgetData.budgetAmount - expense;
+    return remaining;
+  };
 
   // transactions data
   const addDataTransaction = (newData, monthYear) => {
@@ -225,6 +246,8 @@ function DataContextProvider({ children }) {
   const DataValues = {
     data,
     addDataTransaction,
+    setBudget,
+    remainingBudgetAmount,
     totalIncome,
     totalExpenses,
     totalBalance,
