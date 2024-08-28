@@ -1,13 +1,22 @@
 /* eslint-disable react/no-unknown-property */
+import DataContext from "../../contexts/dataContext/DataContext";
 import "./RadialBar.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // eslint-disable-next-line react/prop-types
-const ProgressBar = ({ remaining }) => {
+const ProgressBar = ({ remaining, type }) => {
+  const { data, totalIncome } = useContext(DataContext);
   const [counter, setCounter] = useState(0);
-  const [amount, setAmount] = useState(65);
+  const [amount, setAmount] = useState(0);
   useEffect(() => {
-    //put actual amount instead of 65
+    if (type === "budget") {
+      const start = data.budgetData.budgetAmount;
+      const percantage = (remaining / start) * 100;
+      setAmount(Math.round(percantage));
+    } else {
+      const percantage = ((totalIncome - remaining) / totalIncome) * 100;
+      setAmount(Math.round(percantage));
+    }
     setTimeout(() => {
       setCounter((prev) => {
         if (prev < { amount }) {
@@ -17,7 +26,14 @@ const ProgressBar = ({ remaining }) => {
         }
       });
     }, 30);
-  }, [counter, amount]);
+  }, [
+    counter,
+    amount,
+    remaining,
+    type,
+    data.budgetData.budgetAmount,
+    totalIncome,
+  ]);
   return (
     <div className="relative grid justify-center items-center h-[20vw] w-[20vw] sm:h-32 sm:w-32 rounded-full drop-shadow-lg">
       <svg className="h-full w-full" viewBox="0 0 100 100">
@@ -41,7 +57,7 @@ const ProgressBar = ({ remaining }) => {
           r="40"
           fill="transparent"
           strokeDasharray="251.2"
-          strokeDashoffset={`calc(251.2px - (251.2px * 70) / 100)`}
+          strokeDashoffset={`calc(251.2px - (251.2px * ${amount}) / 100)`}
         />
         <defs>
           <linearGradient id="Gradient-color" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -82,8 +98,7 @@ const ProgressBar = ({ remaining }) => {
       {/* Center text */}
       <div className="absolute w-full text-center text-[.6rem] sm:text-sm">
         <p>Remaining:</p>
-        <p>{remaining} IQD</p>
-        {/* {amount} current: 70% */}
+        <p>{type === "budget" ? remaining : totalIncome - remaining} IQD</p>
       </div>
     </div>
   );

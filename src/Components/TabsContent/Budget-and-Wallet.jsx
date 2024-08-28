@@ -45,7 +45,7 @@ export const Budget = ({ screenSize }) => {
   const [expenseBudget, setExpenseBudget] = useState(0);
   const [budgetStats, setBudgetStats] = useState({
     budgetAmount: 0,
-    dateStart: new Date(),
+    dateStart: today,
     dateEnd: "",
   });
   const budgetDuration = useMemo(() => {
@@ -140,7 +140,7 @@ export const Budget = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining={remaining} />
+              <ProgressBar remaining={remaining} type="budget" />
             </div>
             <div className="details">
               <h4>Your Budget for this month:</h4>
@@ -307,7 +307,7 @@ export const Budget = ({ screenSize }) => {
 
 export const Wallet = ({ screenSize }) => {
   //data context
-  const { addDataTransaction, totalIncome, totalExpenses, totalBalance } =
+  const { addDataTransaction, totalIncome, totalExpenses } =
     useContext(DataContext);
 
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
@@ -372,7 +372,7 @@ export const Wallet = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining={totalBalance} />
+              <ProgressBar remaining={Math.abs(totalExpenses)} type="wallet" />
             </div>
             <div className="details">
               <div className={spendingDetails}>

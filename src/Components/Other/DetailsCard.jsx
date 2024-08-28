@@ -22,10 +22,6 @@ const DetailsCard = ({ windowView, startDate, endDate }) => {
     return transactions;
   };
   const filteredTransactions = budgetDurationFilter(startDate, endDate) || [];
-
-  //after setting a function to calculate the duration
-  //data[keys] becomes data.filter(el.dateAdded) to filter the data
-  //to only show the data of the specific duration
   return (
     <div>
       <div className="pt-2">

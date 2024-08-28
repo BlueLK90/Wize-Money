@@ -212,10 +212,6 @@ function DataContextProvider({ children }) {
       .reduce((total, item) => total + parseFloat(item.amount), 0);
   }, [data]);
 
-  const totalBalance = useMemo(() => {
-    return totalIncome + totalExpenses;
-  }, [totalIncome, totalExpenses]);
-
   //add wishList data
   const addDataWishList = (newData, editIndex) => {
     if (editIndex !== null) {
@@ -250,7 +246,6 @@ function DataContextProvider({ children }) {
     remainingBudgetAmount,
     totalIncome,
     totalExpenses,
-    totalBalance,
     addDataWishList,
     deleteWishCard,
   };
