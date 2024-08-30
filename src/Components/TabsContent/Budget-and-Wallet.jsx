@@ -42,7 +42,7 @@ export const Budget = ({ screenSize }) => {
   //state for dialog and stats-------
   const [open, setOpen] = useState(false);
   const [minDate, setMinDate] = useState("");
-  const [expenseBudget, setExpenseBudget] = useState(0);
+  const [expenseBudget, setExpenseBudget] = useState(6000); //change to 0 when clearing data
   const [budgetStats, setBudgetStats] = useState({
     budgetAmount: 0,
     dateStart: today,

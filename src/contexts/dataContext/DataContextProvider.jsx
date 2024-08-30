@@ -239,16 +239,19 @@ function DataContextProvider({ children }) {
     }));
   };
 
-  const DataValues = {
-    data,
-    addDataTransaction,
-    setBudget,
-    remainingBudgetAmount,
-    totalIncome,
-    totalExpenses,
-    addDataWishList,
-    deleteWishCard,
-  };
+  const DataValues = useMemo(
+    () => ({
+      data,
+      addDataTransaction,
+      setBudget,
+      remainingBudgetAmount,
+      totalIncome,
+      totalExpenses,
+      addDataWishList,
+      deleteWishCard,
+    }),
+    [data]
+  );
 
   return (
     <DataContext.Provider value={DataValues}>{children}</DataContext.Provider>

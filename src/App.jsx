@@ -3,7 +3,8 @@ import Header from "./Components/Header";
 import { useMediaQuery } from "react-responsive";
 import { TabsSecLarge, TabsSecMedium, TabsSecSmall } from "./Components/Tabs";
 import DataContextProvider from "./contexts/dataContext/DataContextProvider";
-//import TesterComponent from "./TesterCom";
+import { AuthProvider } from "./contexts/firebaseContext/AuthContextProvider";
+import { FirestoreProvider } from "./contexts/FirestoreContext/FirestoreProvider";
 
 export default function App() {
   const isSmall = useMediaQuery({ query: "(max-width: 749px)" });
@@ -12,18 +13,21 @@ export default function App() {
   });
 
   return (
-    <div className="grid justify-center gap-2 min-h-[100vh] px-5">
-      <Header />
-      <DataContextProvider>
-        {isSmall ? (
-          <TabsSecSmall />
-        ) : isMedium ? (
-          <TabsSecMedium />
-        ) : (
-          <TabsSecLarge />
-        )}
-        {/*<TesterComponent />*/}
-      </DataContextProvider>
-    </div>
+    <AuthProvider>
+      <FirestoreProvider>
+        <DataContextProvider>
+          <div className="grid justify-center gap-2 min-h-[100vh] px-5">
+            <Header />
+            {isSmall ? (
+              <TabsSecSmall />
+            ) : isMedium ? (
+              <TabsSecMedium />
+            ) : (
+              <TabsSecLarge />
+            )}
+          </div>
+        </DataContextProvider>
+      </FirestoreProvider>
+    </AuthProvider>
   );
 }

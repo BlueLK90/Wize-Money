@@ -11,7 +11,13 @@ import {
 export const DropDownBudget = ({ el }) => {
   return (
     <div>
-      <Popover placement="top-end">
+      <Popover
+        placement="top-end"
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0, y: 25 },
+        }}
+      >
         <PopoverHandler>
           <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
             <div className="flex gap-6 items-center">
@@ -99,7 +105,13 @@ export const DropDownWallet = ({ el, i, data }) => {
             <div className=" relative top-18 flex flex-col items-start rounded-lg p-1 w-full ">
               {data.transactionData[el].map((element, i) => (
                 <div key={i} className="w-full">
-                  <Popover placement="top-end">
+                  <Popover
+                    placement="top-end"
+                    animate={{
+                      mount: { scale: 1, y: 0 },
+                      unmount: { scale: 0, y: 25 },
+                    }}
+                  >
                     <PopoverHandler>
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
@@ -169,7 +181,13 @@ export const DropDownWallet = ({ el, i, data }) => {
             <div className=" relative top-18 flex flex-col items-start  rounded-lg p-1 w-full ">
               {data.transactionData[el].map((element, i) => (
                 <div key={i} className="w-full">
-                  <Popover placement="top-end">
+                  <Popover
+                    placement="top-end"
+                    animate={{
+                      mount: { scale: 1, y: 0 },
+                      unmount: { scale: 0, y: 25 },
+                    }}
+                  >
                     <PopoverHandler>
                       <div className="flex w-full justify-between items-center hover:bg-yellow-50 hover:ml-2 cursor-pointer border-l-transparent border-l-8 border-b-2 border-b-gray-200 p-2">
                         <div className="flex gap-6 items-center">
@@ -213,7 +231,13 @@ export const DropDownWallet = ({ el, i, data }) => {
 export const DropDownCalendar = ({ el }) => {
   return (
     <div>
-      <Popover placement="top-end">
+      <Popover
+        placement="top-end"
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0, y: 25 },
+        }}
+      >
         <PopoverHandler>
           <div className="text-xs sm:text-sm p-1 mx-5 flex items-center justify-between cursor-pointer">
             <div className="flex gap-6 items-center">

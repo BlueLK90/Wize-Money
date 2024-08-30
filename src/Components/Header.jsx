@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LogoImg from "../assets/LogoImg.png";
 import UserIcon from "../assets/UserIcon.png";
 import { FcAbout } from "react-icons/fc";
@@ -16,9 +16,12 @@ import {
   Drawer,
   Card,
 } from "@material-tailwind/react";
-import { FiChevronDown, FiChevronRight } from "react-icons/fi";
+import { FiAlertOctagon, FiChevronDown, FiChevronRight } from "react-icons/fi";
+import AuthContext from "../contexts/firebaseContext/AuthContext";
+import { GrGithub, GrLinkedin, GrMail } from "react-icons/gr";
 
 function Header() {
+  const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const openDrawer = () => setIsDrawerOpen(true);
@@ -26,45 +29,62 @@ function Header() {
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
-
+  const userImg = currentUser ? currentUser.photoURL : UserIcon;
+  const altDescription = currentUser
+    ? currentUser.displayName
+    : "emptyUserIcon";
   const menuItems = [
     {
-      title: "Profile",
-      icon: <CgProfile className="static text-orange-700 text-lg" />,
-      options: "User 1",
-    },
-    {
-      title: "Theme",
-      icon: <MdOutlineColorLens className="static text-orange-700 text-lg" />,
-      options: "-----",
-    },
-    {
-      title: "Settings",
-      icon: <LuSettings className="static text-orange-700 text-lg" />,
-      options: "-----",
+      title: currentUser ? currentUser.displayName : "Profile",
+      icon: currentUser ? (
+        <img
+          src={userImg}
+          alt={altDescription}
+          className="h-8 w-8 object-cover border border-blue-50 rounded-full cursor-pointer shadow-md"
+        />
+      ) : (
+        <CgProfile className="static text-orange-700 text-lg" />
+      ),
+      options: currentUser ? <SignOut /> : <SignIn />,
     },
     {
       title: "About",
-      icon: <FcAbout className="static text-orange-700 text-lg" />,
-      options: "-----",
+      icon: (
+        <FcAbout
+          className={`static text-lg ${currentUser ? "mx-2 my-1.5" : "m-0"}`}
+        />
+      ),
+      options: <AboutSec />,
     },
   ];
 
   return (
-    <header className="flex justify-between items-center mt-4 mb-2 sm:mb-4 md:mb-8">
-      <div>
+    <header className="relative mt-5 md:mt-6">
+      <div className="flex justify-between items-center mb-1 mx-1">
+        {/* Logo Img */}
         <img
           src={LogoImg}
           alt="Logo"
-          className="h-10 md:h-10 drop-shadow-[1px_2px_3px_rgba(0,0,0,0.75)]"
+          className="h-8 md:h-11 lg:h-10 drop-shadow-[1px_2px_3px_rgba(0,0,0,0.75)]"
+        />
+        <img
+          onClick={openDrawer}
+          src={userImg}
+          alt={altDescription}
+          className="h-8 w-8 md:h-11 md:w-11 object-cover border border-blue-50 rounded-full cursor-pointer shadow-md"
         />
       </div>
-      <img
-        onClick={openDrawer}
-        src={UserIcon}
-        alt="user icon and options"
-        className="h-9 w-9 md:h-11 md:w-11 object-cover border-2 border-orange-100 rounded-full cursor-pointer shadow-md"
-      />
+      {currentUser ? null : (
+        <p className="flex items-center gap-2 text-sm mx-4 p-2 max-w-fit ml-auto bg-red-50 border border-red-400 text-red-500 rounded">
+          <i>
+            <FiAlertOctagon />
+          </i>
+          <em>
+            Please note that if you don&apos;t sign up or log in, any data will
+            be lost when you reload or leave the page.
+          </em>
+        </p>
+      )}
 
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>
         <Card
@@ -73,7 +93,11 @@ function Header() {
           className="h-[calc(100vh-2rem)] w-full p-4"
         >
           <div className="mb-2 p-4 text-center">
-            <Typography variant="h5" color="blue-gray">
+            <Typography
+              variant="h5"
+              color="blue-gray"
+              className="tracking-widest text-darkapricot"
+            >
               WizeMoney
             </Typography>
           </div>
@@ -95,23 +119,15 @@ function Header() {
                 >
                   <AccordionHeader
                     onClick={() => handleOpen(i + 1)}
-                    className="justify-start gap-4 border-b-0 p-3 text-sm font-normal place-items-start"
+                    className="justify-start gap-6 border-b-0 p-3 text-sm font-normal place-items-start"
                   >
                     <ListItemPrefix>{el.icon}</ListItemPrefix>
-                    {el.title}
+                    <p className="mr-auto">{el.title}</p>
                   </AccordionHeader>
                 </ListItem>
-                <AccordionBody className="py-1">
-                  <List className="p-0 pl-10">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <FiChevronRight
-                          className="
-                          static
-                          text-orange-700
-                          text-lg"
-                        />
-                      </ListItemPrefix>
+                <AccordionBody className="py-1 ">
+                  <List>
+                    <ListItem className="p-0 hover:bg-transparent">
                       {el.options}
                     </ListItem>
                   </List>
@@ -128,45 +144,70 @@ function Header() {
 
 export default Header;
 
-{
-  /*<div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
-  <div className="mb-2 p-4">
-    <h5 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">WizeMoney</h5>
-  </div>
-  <nav className="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>
-      Blocks
+const SignOut = () => {
+  const { logout } = useContext(AuthContext);
+
+  const handleSignOut = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleSignOut}
+      className="bg-red-400 ml-[10%] text-white font-medium text-sm py-1.5 px-20 rounded"
+    >
+      Sign Out
+    </button>
+  );
+};
+const SignIn = () => {
+  const { signInWithGoogle } = useContext(AuthContext);
+
+  const handleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleSignIn}
+      className="bg-blue-400 ml-[10%] text-white font-medium text-sm py-1.5 px-10 rounded"
+    >
+      Sign in with Google
+    </button>
+  );
+};
+const AboutSec = () => {
+  return (
+    <div className="flex gap-6 text-xl mx-auto">
+      <a
+        href="https://github.com/BlueLK90"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <GrGithub className="hover:drop-shadow-lg text-black" />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/nehad-jm"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <GrLinkedin className="hover:drop-shadow-lg text-blue-800" />
+      </a>
+      <a
+        href="mailto:nehad.jassim.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <GrMail className="hover:drop-shadow-lg text-red-800" />
+      </a>
     </div>
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>Books
-    </div>
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>Example Pages
-      </div>
-    </div>
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>Profile
-    </div>
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>Settings
-    </div>
-    <div role="button" tabindex="0" className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus:text-blue-900 active:text-blue-900 outline-none">
-      <div className="grid place-items-center mr-4">
-        <svg  className="h-5 w-5"></svg>
-      </div>Log Out
-    </div>
-  </nav>
-</div>
-*/
-}
+  );
+};

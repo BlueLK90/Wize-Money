@@ -1,7 +1,7 @@
 import Wishlist from "./TabsContent/Wishlist";
 import CalendarComponent from "./TabsContent/Calendar";
 import Calculator from "./TabsContent/Calculator";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Budget, Wallet } from "./TabsContent/Budget-and-Wallet";
 import {
   Tabs,
@@ -10,9 +10,14 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
+import DataContext from "../contexts/dataContext/DataContext";
 
+//{data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"}
 export const TabsSecLarge = () => {
-  const [activeTabOne, setActiveTabOne] = useState("Budget");
+  const { data } = useContext(DataContext);
+  const [activeTabOne, setActiveTabOne] = useState(
+    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+  );
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
     { id: 1, value: "Budget", content: <Budget screenSize="isLarge" /> },
@@ -114,7 +119,10 @@ export const TabsSecLarge = () => {
 };
 
 export const TabsSecMedium = () => {
-  const [activeTabOne, setActiveTabOne] = useState("Budget");
+  const { data } = useContext(DataContext);
+  const [activeTabOne, setActiveTabOne] = useState(
+    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+  );
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
     { id: 1, value: "Budget", content: <Budget screenSize="isMedium" /> },
@@ -216,7 +224,10 @@ export const TabsSecMedium = () => {
 };
 
 export const TabsSecSmall = () => {
-  const [activeTab, setActiveTab] = useState("Budget");
+  const { data } = useContext(DataContext);
+  const [activeTab, setActiveTab] = useState(
+    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+  );
   const tabs = [
     { id: 1, value: "Budget", content: <Budget screenSize="isSmall" /> },
     { id: 2, value: "Wallet", content: <Wallet screenSize="isSmall" /> },
