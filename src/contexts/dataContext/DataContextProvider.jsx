@@ -1,190 +1,43 @@
 /* eslint-disable react/prop-types */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import DataContext from "./DataContext";
-import monitor from "../../assets/monitor.jpg";
-import { IoHome } from "react-icons/io5";
-import { MdPets, MdSportsBasketball } from "react-icons/md";
-import { FaCar } from "react-icons/fa";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
+//import monitor from "../../assets/monitor.jpg";
+//import { IoHome } from "react-icons/io5";
+//import { MdPets, MdSportsBasketball } from "react-icons/md";
+//import { FaCar } from "react-icons/fa";
+//import { FaMoneyCheckDollar } from "react-icons/fa6";
 
 function DataContextProvider({ children }) {
-  const [data, setData] = useState({
-    wishList: [
-      {
-        title: "Lorem ipsum dolor sit amet",
-        img: monitor,
-        details:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-        price: "100000",
-        dateAdded: "Aug. 3, 2024",
-      },
-      {
-        title: "Lorem ipsum dolor sit amet",
-        img: "",
-        details:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-        price: "200000",
-        dateAdded: "Aug. 2, 2024",
-      },
-      {
-        title:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
-        img: "",
-        details: "",
-        price: "",
-        dateAdded: "Aug. 1, 2024",
-      },
-    ],
-    budgetData: {
-      budgetAmount: 200000,
-      dateStart: "2024-08-02",
-      dateEnd: "2024-09-04",
-    },
-    transactionData: {
-      "Aug. 2024": [
-        {
-          type: "budget",
-          dateAdded: "2024-08-10",
-          amount: -4000,
-          title: "Something Aug.",
-          details: "some details here",
-          category: "home",
-          icon: <IoHome />,
-        },
-        {
-          type: "budget",
-          dateAdded: "2024-08-09",
-          amount: -2000,
-          title: "Something Aug.",
-          details: "some details here",
-          category: "car",
-          icon: <FaCar />,
-        },
-        {
-          dateAdded: "2024-08-08",
-          amount: -3000,
-          title: "Something Aug.",
-          details: "some details here",
-          category: "pet",
-          icon: <MdPets />,
-        },
-        {
-          dateAdded: "2024-08-07",
-          amount: -1000,
-          title: "Something Aug.",
-          details: "some details here",
-          category: "sports",
-          icon: <MdSportsBasketball />,
-        },
-        {
-          dateAdded: "2024-08-06",
-          amount: 10000,
-          title: "Something Aug.",
-          details: "some details here",
-          category: "Salary",
-          icon: <FaMoneyCheckDollar />,
-        },
-      ],
-      "July 2024": [
-        {
-          type: "budget",
-          dateAdded: "2024-07-10",
-          amount: -1000,
-          title: "Something July",
-          details: "some details here",
-          category: "home",
-          icon: <IoHome />,
-        },
-        {
-          type: "budget",
-          dateAdded: "2024-07-09",
-          amount: -2000,
-          title: "Something July",
-          details: "some details here",
-          category: "car",
-          icon: <FaCar />,
-        },
-        {
-          dateAdded: "2024-07-08",
-          amount: -3000,
-          title: "Something July",
-          details: "some details here",
-          category: "pet",
-          icon: <MdPets />,
-        },
-        {
-          dateAdded: "2024-07-07",
-          amount: -1000,
-          title: "Something July",
-          details: "some details here",
-          category: "sports",
-          icon: <MdSportsBasketball />,
-        },
-        {
-          dateAdded: "2024-07-06",
-          amount: 10000,
-          title: "Something July.",
-          details: "some details here",
-          category: "Salary",
-          icon: <FaMoneyCheckDollar />,
-        },
-      ],
-      "June 2024": [
-        {
-          type: "budget",
-          dateAdded: "2024-06-10",
-          amount: -2000,
-          title: "Something June",
-          details: "some details here",
-          category: "home",
-          icon: <IoHome />,
-        },
-        {
-          type: "budget",
-          dateAdded: "2024-06-09",
-          amount: -1000,
-          title: "Something June",
-          details: "some details here",
-          category: "car",
-          icon: <FaCar />,
-        },
-        {
-          dateAdded: "2024-06-08",
-          amount: -3000,
-          title: "Something June",
-          details: "some details here",
-          category: "pet",
-          icon: <MdPets />,
-        },
-        {
-          dateAdded: "2024-06-07",
-          amount: -2000,
-          title: "Something June",
-          details: "some details here",
-          category: "sports",
-          icon: <MdSportsBasketball />,
-        },
-        {
-          dateAdded: "2024-06-06",
-          amount: 10000,
-          title: "Something June.",
-          details: "some details here",
-          category: "Salary",
-          icon: <FaMoneyCheckDollar />,
-        },
-      ],
-    },
-  });
+  const dataLS = localStorage.getItem("userData");
+  const [data, setData] = useState(
+    dataLS
+      ? JSON.parse(dataLS)
+      : {
+          wishList: [],
+          budgetData: {
+            budgetAmount: 0,
+            remaining: 0,
+            dateStart: "",
+            dateEnd: "",
+          },
+          transactionData: {},
+        }
+  );
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("userData", JSON.stringify(data));
+    } catch (error) {
+      console.error("Failed to save data to local storage:", error);
+    }
+  }, [data]);
+
   //budget data
   const setBudget = (newbudget) => {
     setData((prevData) => ({
       ...prevData,
       budgetData: newbudget,
     }));
-  };
-  const remainingBudgetAmount = (expense) => {
-    let remaining = data.budgetData.budgetAmount - expense;
-    return remaining;
   };
 
   // transactions data
@@ -242,9 +95,9 @@ function DataContextProvider({ children }) {
   const DataValues = useMemo(
     () => ({
       data,
+      setData,
       addDataTransaction,
       setBudget,
-      remainingBudgetAmount,
       totalIncome,
       totalExpenses,
       addDataWishList,
@@ -259,3 +112,172 @@ function DataContextProvider({ children }) {
 }
 
 export default DataContextProvider;
+
+// const originalData = {
+//   wishList: [
+//     {
+//       title: "Lorem ipsum dolor sit amet",
+//       img: monitor,
+//       details:
+//         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+//       price: "100000",
+//       dateAdded: "Aug. 3, 2024",
+//     },
+//     {
+//       title: "Lorem ipsum dolor sit amet",
+//       img: "",
+//       details:
+//         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+//       price: "200000",
+//       dateAdded: "Aug. 2, 2024",
+//     },
+//     {
+//       title:
+//         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidkeyunt",
+//       img: "",
+//       details: "",
+//       price: "",
+//       dateAdded: "Aug. 1, 2024",
+//     },
+//   ],
+//   budgetData: {
+//     budgetAmount: 200000,
+//     remaining: 194000,
+//     dateStart: "2024-08-02",
+//     dateEnd: "2024-09-04",
+//   },
+//   transactionData: {
+//     "Aug. 2024": [
+//       {
+//         type: "budget",
+//         dateAdded: "2024-08-10",
+//         amount: -4000,
+//         title: "Something Aug.",
+//         details: "some details here",
+//         category: "home",
+//         icon: <IoHome />,
+//       },
+//       {
+//         type: "budget",
+//         dateAdded: "2024-08-09",
+//         amount: -2000,
+//         title: "Something Aug.",
+//         details: "some details here",
+//         category: "car",
+//         icon: <FaCar />,
+//       },
+//       {
+//         dateAdded: "2024-08-08",
+//         amount: -3000,
+//         title: "Something Aug.",
+//         details: "some details here",
+//         category: "pet",
+//         icon: <MdPets />,
+//       },
+//       {
+//         dateAdded: "2024-08-07",
+//         amount: -1000,
+//         title: "Something Aug.",
+//         details: "some details here",
+//         category: "sports",
+//         icon: <MdSportsBasketball />,
+//       },
+//       {
+//         dateAdded: "2024-08-06",
+//         amount: 10000,
+//         title: "Something Aug.",
+//         details: "some details here",
+//         category: "Salary",
+//         icon: <FaMoneyCheckDollar />,
+//       },
+//     ],
+//     "July 2024": [
+//       {
+//         type: "budget",
+//         dateAdded: "2024-07-10",
+//         amount: -1000,
+//         title: "Something July",
+//         details: "some details here",
+//         category: "home",
+//         icon: <IoHome />,
+//       },
+//       {
+//         type: "budget",
+//         dateAdded: "2024-07-09",
+//         amount: -2000,
+//         title: "Something July",
+//         details: "some details here",
+//         category: "car",
+//         icon: <FaCar />,
+//       },
+//       {
+//         dateAdded: "2024-07-08",
+//         amount: -3000,
+//         title: "Something July",
+//         details: "some details here",
+//         category: "pet",
+//         icon: <MdPets />,
+//       },
+//       {
+//         dateAdded: "2024-07-07",
+//         amount: -1000,
+//         title: "Something July",
+//         details: "some details here",
+//         category: "sports",
+//         icon: <MdSportsBasketball />,
+//       },
+//       {
+//         dateAdded: "2024-07-06",
+//         amount: 10000,
+//         title: "Something July.",
+//         details: "some details here",
+//         category: "Salary",
+//         icon: <FaMoneyCheckDollar />,
+//       },
+//     ],
+//     "June 2024": [
+//       {
+//         type: "budget",
+//         dateAdded: "2024-06-10",
+//         amount: -2000,
+//         title: "Something June",
+//         details: "some details here",
+//         category: "home",
+//         icon: <IoHome />,
+//       },
+//       {
+//         type: "budget",
+//         dateAdded: "2024-06-09",
+//         amount: -1000,
+//         title: "Something June",
+//         details: "some details here",
+//         category: "car",
+//         icon: <FaCar />,
+//       },
+//       {
+//         dateAdded: "2024-06-08",
+//         amount: -3000,
+//         title: "Something June",
+//         details: "some details here",
+//         category: "pet",
+//         icon: <MdPets />,
+//       },
+//       {
+//         dateAdded: "2024-06-07",
+//         amount: -2000,
+//         title: "Something June",
+//         details: "some details here",
+//         category: "sports",
+//         icon: <MdSportsBasketball />,
+//       },
+//       {
+//         dateAdded: "2024-06-06",
+//         amount: 10000,
+//         title: "Something June.",
+//         details: "some details here",
+//         category: "Salary",
+//         icon: <FaMoneyCheckDollar />,
+//       },
+//     ],
+//   },
+// };

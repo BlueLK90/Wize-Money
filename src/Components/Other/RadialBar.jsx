@@ -11,7 +11,7 @@ const ProgressBar = ({ remaining, type }) => {
   useEffect(() => {
     if (type === "budget") {
       const start = data.budgetData.budgetAmount;
-      const percantage = (remaining / start) * 100;
+      const percantage = (0 / start) * 100;
       setAmount(Math.round(percantage));
     } else {
       const percantage = ((totalIncome - remaining) / totalIncome) * 100;

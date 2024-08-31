@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getFirestore,
   collection,
@@ -7,6 +7,9 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  setDoc,
+  onSnapshot,
+  getDoc,
 } from "firebase/firestore";
 import { app, db } from "../../Firebase"; // Ensure you import your Firebase app
 import { FirestoreContext } from "./FirestoreContext";
@@ -15,103 +18,134 @@ import { FirestoreContext } from "./FirestoreContext";
 
 // eslint-disable-next-line react/prop-types
 export function FirestoreProvider({ children }) {
-  const [transactions, setTransactions] = useState([]);
-  const [wishList, setWishList] = useState([]);
-  const [budget, setBudget] = useState(null);
-
-  const db = getFirestore(app);
+  const [fsData, setFsData] = useState([null]);
+  //   const [transactions, setTransactions] = useState([]);
+  //   const [wishList, setWishList] = useState([]);
+  //   const [budget, setBudget] = useState({
+  //     budgetAmount: 0,
+  //     remaining: 0,
+  //     dateStart: "",
+  //     dateEnd: "",
+  //   });
 
   // Fetch all data from Firestore on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const transactionsSnapshot = await getDocs(
-          collection(db, "transactions")
-        );
-        const wishListSnapshot = await getDocs(collection(db, "wishList"));
-        const budgetDoc = await getDocs(collection(db, "budget"));
-
-        setTransactions(
-          transactionsSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        );
-        setWishList(
-          wishListSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
-        setBudget(budgetDoc.docs[0]?.data() || null);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
+  const FetchData = (docId) => {
+    const docRef = doc(db, "userData", docId);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setFsData(docSnap.data());
+      } else {
+        console.log("No such document!");
       }
-    };
+    });
 
-    fetchData();
-  }, [db]);
+    return unsubscribe; // return the unsubscribe function to stop listening when the component unmounts
+  };
 
-  const addTransaction = async (newTransaction) => {
+  const fsAddTransaction = async (docId, month, transaction) => {
     try {
-      const docRef = await addDoc(
-        collection(db, "transactions"),
-        newTransaction
-      );
-      setTransactions([...transactions, { id: docRef.id, ...newTransaction }]);
+      const docRef = doc(db, "userData", docId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        // Document exists, update the transaction data
+        const currentData = docSnap.data();
+        const updatedTransactions = currentData.transactionData?.[month] || [];
+        updatedTransactions.push(transaction);
+
+        await updateDoc(docRef, {
+          [`transactionData.${month}`]: updatedTransactions,
+        });
+        console.log("Transaction added successfully.");
+      } else {
+        // Document does not exist, create it with the transaction data
+        const newTransactionData = {
+          transactionData: {
+            [month]: [transaction],
+          },
+        };
+
+        await setDoc(docRef, newTransactionData);
+        console.log("Document created and transaction added successfully.");
+      }
     } catch (error) {
       console.error("Error adding transaction: ", error);
     }
   };
 
-  const addWishListItem = async (newWishListItem) => {
-    try {
-      const docRef = await addDoc(collection(db, "wishList"), newWishListItem);
-      setWishList([...wishList, { id: docRef.id, ...newWishListItem }]);
-    } catch (error) {
-      console.error("Error adding wish list item: ", error);
+  const fsAddBudget = async (docId, budgetData) => {
+    const docRef = doc(db, "userData", docId);
+    await updateDoc(docRef, {
+      budgetData,
+    });
+  };
+
+  // Add a new wish card
+  const fsAddWishcard = async (docId, wishCard) => {
+    const docRef = doc(db, "userData", docId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const currentData = docSnap.data();
+      const updatedWishList = currentData.wishList || [];
+      updatedWishList.push(wishCard);
+      await updateDoc(docRef, {
+        wishList: updatedWishList,
+      });
     }
   };
 
-  const updateWishListItem = async (id, updatedWishListItem) => {
-    try {
-      const docRef = doc(db, "wishList", id);
-      await updateDoc(docRef, updatedWishListItem);
-      setWishList(
-        wishList.map((item) =>
-          item.id === id ? { ...item, ...updatedWishListItem } : item
-        )
-      );
-    } catch (error) {
-      console.error("Error updating wish list item: ", error);
+  // Edit an existing wish card
+  const fsEditWishcard = async (docId, index, updatedWishCard) => {
+    const docRef = doc(db, "userData", docId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const currentData = docSnap.data();
+      const updatedWishList = currentData.wishList || [];
+      updatedWishList[index] = updatedWishCard;
+      await updateDoc(docRef, {
+        wishList: updatedWishList,
+      });
     }
   };
 
-  const deleteWishListItem = async (id) => {
-    try {
-      await deleteDoc(doc(db, "wishList", id));
-      setWishList(wishList.filter((item) => item.id !== id));
-    } catch (error) {
-      console.error("Error deleting wish list item: ", error);
+  // Delete an existing wish card
+  const fsDeleteWishcard = async (docId, index) => {
+    const docRef = doc(db, "userData", docId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const currentData = docSnap.data();
+      const updatedWishList = currentData.wishList || [];
+      updatedWishList.splice(index, 1);
+      await updateDoc(docRef, {
+        wishList: updatedWishList,
+      });
     }
   };
 
-  const updateBudget = async (newBudget) => {
-    try {
-      const docRef = doc(db, "budget", "budgetId");
-      await updateDoc(docRef, newBudget);
-      setBudget(newBudget);
-    } catch (error) {
-      console.error("Error updating budget: ", error);
-    }
+  // Calculate total income
+  const fsTotalIncome = (transactions) => {
+    return transactions.reduce((acc, transaction) => {
+      return transaction.amount > 0 ? acc + transaction.amount : acc;
+    }, 0);
+  };
+
+  // Calculate total expenses
+  const fsTotalExpense = (transactions) => {
+    return transactions.reduce((acc, transaction) => {
+      return transaction.amount < 0 ? acc + transaction.amount : acc;
+    }, 0);
   };
 
   const FirestoreValues = {
-    transactions,
-    wishList,
-    budget,
-    addTransaction,
-    addWishListItem,
-    updateWishListItem,
-    deleteWishListItem,
-    updateBudget,
+    fsData,
+    FetchData,
+    fsAddTransaction,
+    fsAddBudget,
+    fsAddWishcard,
+    fsEditWishcard,
+    fsDeleteWishcard,
+    fsTotalIncome,
+    fsTotalExpense,
   };
 
   return (
@@ -120,6 +154,88 @@ export function FirestoreProvider({ children }) {
     </FirestoreContext.Provider>
   );
 }
+
+// const addTransaction = async (newTransaction, monthYear) => {
+//     try {
+//       // Add the transaction to Firestore and get the document reference
+//       const transactionsRef = collection(db, "transactions");
+//       const docRef = await addDoc(transactionsRef, newTransaction);
+
+//       // Include the Firestore document ID with the transaction data
+//       const transactionWithId = { id: docRef.id, ...newTransaction };
+
+//       // Update the transactions state, grouping by monthYear
+//       setTransactions((prevTransactions) => ({
+//         ...prevTransactions,
+//         [monthYear]: [
+//           transactionWithId,
+//           ...(prevTransactions[monthYear] || []),
+//         ],
+//       }));
+//       console.log("Transaction added to local state for monthYear:", monthYear);
+//     } catch (error) {
+//       console.error("Error adding transaction: ", error);
+//     }
+//   };
+//   const updateBudget = async (newBudget) => {
+//     try {
+//       const docRef = doc(db, "budget", "budgetId");
+//       await setDoc(docRef, newBudget);
+//       setBudget(newBudget);
+//     } catch (error) {
+//       console.error("Error updating budget: ", error);
+//     }
+//   };
+//   const addWishListItem = async (newWishListItem) => {
+//     try {
+//       const docRef = await addDoc(collection(db, "wishList"), newWishListItem);
+//       setWishList([...wishList, { id: docRef.id, ...newWishListItem }]);
+//     } catch (error) {
+//       console.error("Error adding wish list item: ", error);
+//     }
+//   };
+
+//   const updateWishListItem = async (id, updatedWishListItem) => {
+//     try {
+//       const docRef = doc(db, "wishList", id);
+//       await updateDoc(docRef, updatedWishListItem);
+//       setWishList(
+//         wishList.map((item) =>
+//           item.id === id ? { ...item, ...updatedWishListItem } : item
+//         )
+//       );
+//     } catch (error) {
+//       console.error("Error updating wish list item: ", error);
+//     }
+//   };
+
+//   const deleteWishListItem = async (id) => {
+//     try {
+//       await deleteDoc(doc(db, "wishList", id));
+//       setWishList(wishList.filter((item) => item.id !== id));
+//     } catch (error) {
+//       console.error("Error deleting wish list item: ", error);
+//     }
+//   };
+
+//   const fsTotalExpenses = useMemo(() => {
+//     return transactions
+//       .filter((transaction) => transaction.amount < 0)
+//       .reduce(
+//         (total, transaction) => total + parseFloat(transaction.amount),
+//         0
+//       );
+//   }, [transactions]);
+
+//   const fsTotalIncome = useMemo(() => {
+//     return transactions
+//       .filter((transaction) => transaction.amount > 0)
+//       .reduce(
+//         (total, transaction) => total + parseFloat(transaction.amount),
+//         0
+//       );
+//   }, [transactions]);
+
 //import { collection, onSnapshot } from "firebase/firestore";
 
 //   useEffect(() => {

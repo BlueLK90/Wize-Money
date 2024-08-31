@@ -33,31 +33,42 @@ import {
   MdWork,
 } from "react-icons/md";
 import { FaMoneyBills, FaMoneyCheckDollar } from "react-icons/fa6";
+//import AuthContext from "../../contexts/firebaseContext/AuthContext";
+//import { FirestoreContext } from "../../contexts/FirestoreContext/FirestoreContext";
 
 export const Budget = ({ screenSize }) => {
   //data context
-  const { data, setBudget, remainingBudgetAmount, addDataTransaction } =
+  const { data, setData, setBudget, addDataTransaction } =
     useContext(DataContext);
+  // const { currentUser } = useContext(AuthContext);
+  // const { budget, updateBudget, addTransaction } = useContext(FirestoreContext);
 
   //state for dialog and stats-------
   const [open, setOpen] = useState(false);
   const [minDate, setMinDate] = useState("");
-  const [expenseBudget, setExpenseBudget] = useState(6000); //change to 0 when clearing data
   const [budgetStats, setBudgetStats] = useState({
     budgetAmount: 0,
+    remaining: 0,
     dateStart: today,
     dateEnd: "",
   });
   const budgetDuration = useMemo(() => {
     const startDay = new Date();
-    const endDay = new Date(data.budgetData.dateEnd);
+    //let endDay;
+    // if (currentUser) {
+    //   endDay = budget && budget.dateEnd ? new Date(budget.dateEnd) : endDay;
+    // } else {
+    //   endDay = new Date(data.budgetData.dateEnd)
+    // }
 
-    if (!isNaN(endDay)) {
+    const endDay = new Date(data.budgetData.dateEnd);
+    //if (!isNaN(endDay))
+    if (endDay) {
       const timeDiff = Math.abs(endDay - startDay);
       return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     }
     return null;
-  }, [data.budgetData.dateEnd]);
+  }, [data]);
 
   useEffect(() => {
     setMinDate(today);
@@ -68,13 +79,20 @@ export const Budget = ({ screenSize }) => {
   };
 
   const submitStats = () => {
+    // if (currentUser) {
+    //   updateBudget(budgetStats);
+    // } else {
+    //   setBudget(budgetStats);
+    // }
     setBudget(budgetStats);
     setOpen(false);
   }; //submit Stats data to mainData component
 
-  const duration = budgetDuration;
-  const remaining = remainingBudgetAmount(Number(expenseBudget));
-  const dailyBudget = remaining / (duration || 1);
+  // const remaining = currentUser
+  //   ? budget?.remaining || 0
+  //   : data.budgetData?.remaining || 0;
+  const remaining = data.budgetData?.remaining || 0;
+  const dailyBudget = remaining / (budgetDuration || 1);
 
   //transactions-------------
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
@@ -95,6 +113,13 @@ export const Budget = ({ screenSize }) => {
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
+    // if (currentUser) {
+    //   if (newBudget.dateAdded === today) {
+    //     addTransaction(newBudget, monthYear);
+    //   } else {
+    //     addTransaction(newBudget, formattedDate(newBudget.dateAdded).monthYear);
+    //   }
+    // } else {}
     if (newBudget.dateAdded === today) {
       addDataTransaction(newBudget, monthYear);
     } else {
@@ -103,7 +128,14 @@ export const Budget = ({ screenSize }) => {
         formattedDate(newBudget.dateAdded).monthYear
       );
     }
-    setExpenseBudget((prev) => prev - newBudget.amount);
+
+    setData((prevData) => ({
+      ...prevData,
+      budgetData: {
+        ...prevData.budgetData,
+        remaining: prevData.budgetData.remaining + newBudget.amount,
+      },
+    }));
     setNewBudget({
       type: "budget",
       title: "",
@@ -140,7 +172,10 @@ export const Budget = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining={remaining} type="budget" />
+              <ProgressBar
+                remaining={data.budgetData.remaining}
+                type="budget"
+              />
             </div>
             <div className="details">
               <h4>Your Budget for this month:</h4>
@@ -153,13 +188,13 @@ export const Budget = ({ screenSize }) => {
               <div className={spendingDetails}>
                 <p>Days remaining:</p>
                 <p>
-                  {(duration >= 0 && duration) || 0} <b>days</b>
+                  {(budgetDuration >= 0 && budgetDuration) || 0} <b>days</b>
                 </p>
               </div>
             </div>
           </div>
           <div className="flex justify-center items-center gap-6">
-            {duration > 0 ? (
+            {budgetDuration > 0 ? (
               <p>
                 Keep a rate of{" "}
                 <b className="text-green-500">{Math.floor(dailyBudget)} /day</b>{" "}
@@ -194,6 +229,7 @@ export const Budget = ({ screenSize }) => {
                     setBudgetStats({
                       ...budgetStats,
                       budgetAmount: Number(e.target.value),
+                      remaining: Number(e.target.value),
                     })
                   }
                   className="border border-gray-300 bg-gray-50 rounded-md p-1 md:p-1.5 sm:w-64"
@@ -309,6 +345,9 @@ export const Wallet = ({ screenSize }) => {
   //data context
   const { addDataTransaction, totalIncome, totalExpenses } =
     useContext(DataContext);
+  // const { currentUser } = useContext(AuthContext);
+  // const { addTransaction, fsTotalExpenses, fsTotalIncome } =
+  //   useContext(FirestoreContext);
 
   const [opnAdd, setOpnAdd] = useState(false); //state for open/close add screen
   const [iconsArr, setIconsArr] = useState(""); //setting the icon array to pass to AddWindow
@@ -328,6 +367,13 @@ export const Wallet = ({ screenSize }) => {
 
   const submitbtn = (e, newBudget) => {
     e.preventDefault();
+    // if (currentUser) {
+    //   if (newBudget.dateAdded === today) {
+    //     addTransaction(newBudget, monthYear);
+    //   } else {
+    //     addTransaction(newBudget, formattedDate(newBudget.dateAdded).monthYear);
+    //   }
+    // } else {}
     if (newBudget.dateAdded === today) {
       addDataTransaction(newBudget, monthYear);
     } else {
@@ -336,6 +382,7 @@ export const Wallet = ({ screenSize }) => {
         formattedDate(newBudget.dateAdded).monthYear
       );
     }
+
     setNewBudget({
       title: "",
       category: "",
@@ -372,21 +419,33 @@ export const Wallet = ({ screenSize }) => {
         <div className={mainSec}>
           <div className={budgetMeter}>
             <div className="meter">
-              <ProgressBar remaining={Math.abs(totalExpenses)} type="wallet" />
+              <ProgressBar
+                // remaining={
+                //   currentUser
+                //     ? Math.abs(fsTotalExpenses)
+                //     : Math.abs(totalExpenses)
+                // }
+                remaining={Math.abs(totalExpenses)}
+                type="wallet"
+              />
             </div>
-            <div className="details">
+            <div className="details flex-grow max-w-[40%]">
               <div className={spendingDetails}>
-                <p>Total Income:</p>
+                <p>Income:</p>
                 <p>
+                  {/* {currentUser ? fsTotalIncome : totalIncome || 0} */}
                   {totalIncome || 0}
-                  <b>IQD</b>
+                  <b> IQD</b>
                 </p>
               </div>
               <div className={spendingDetails}>
-                <p>Total Expenses:</p>
+                <p>Expenses:</p>
                 <p>
-                  {Math.abs(totalExpenses) || 0}
-                  <b>IQD</b>
+                  {/* {currentUser
+                    ? Math.abs(fsTotalExpenses)
+                    : Math.abs(totalExpenses) || 0} */}
+                  {Math.abs(totalExpenses)}
+                  <b> IQD</b>
                 </p>
               </div>
             </div>

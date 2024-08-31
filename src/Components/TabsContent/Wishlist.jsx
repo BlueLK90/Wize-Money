@@ -155,6 +155,25 @@ const Wishlist = () => {
         <FiEdit3 className="static" />
         add new wish
       </Button>
+      {data.wishList.length == 0 && (
+        <div className="w-full h-[50vh] py-10 text-sm md:text:base">
+          <div className=" bg-gray-50 flex flex-col gap-2 justify-center px-4 py-14 rounded-md text-gray-900 border border-gray-300 shadow-sm">
+            <p>
+              <i className="text-green-500 font-extrabold mr-2">**</i> To add a
+              new card press the Add New Wish button above.
+            </p>
+
+            <p>
+              <i className="text-green-500 font-extrabold mr-2">**</i>
+              You must add a Title to your card.
+            </p>
+            <p>
+              <i className="text-green-500 font-extrabold mr-2">**</i> but
+              Price, Image and Details are optionary.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* main list */}
       {data.wishList.map((el, i) => (

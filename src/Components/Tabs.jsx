@@ -11,8 +11,9 @@ import {
   TabPanel,
 } from "@material-tailwind/react";
 import DataContext from "../contexts/dataContext/DataContext";
+//import { FirestoreContext } from "../contexts/FirestoreContext/FirestoreContext";
+//import AuthContext from "../contexts/firebaseContext/AuthContext";
 
-//{data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"}
 export const TabsSecLarge = () => {
   const { data } = useContext(DataContext);
   const [activeTabOne, setActiveTabOne] = useState(
@@ -225,6 +226,11 @@ export const TabsSecMedium = () => {
 
 export const TabsSecSmall = () => {
   const { data } = useContext(DataContext);
+  // const { currentUser } = useContext(AuthContext);
+  // const { budget } = useContext(FirestoreContext);
+  // const BAmount = currentUser
+  //   ? budget.budgetAmount
+  //   : data.budgetData.budgetAmount;
   const [activeTab, setActiveTab] = useState(
     data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
   );

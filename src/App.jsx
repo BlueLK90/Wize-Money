@@ -5,6 +5,7 @@ import { TabsSecLarge, TabsSecMedium, TabsSecSmall } from "./Components/Tabs";
 import DataContextProvider from "./contexts/dataContext/DataContextProvider";
 import { AuthProvider } from "./contexts/firebaseContext/AuthContextProvider";
 import { FirestoreProvider } from "./contexts/FirestoreContext/FirestoreProvider";
+//import { TesterCom } from "./TesterCom";
 
 export default function App() {
   const isSmall = useMediaQuery({ query: "(max-width: 749px)" });
@@ -26,6 +27,7 @@ export default function App() {
               <TabsSecLarge />
             )}
           </div>
+          {/*<TesterCom />*/}
         </DataContextProvider>
       </FirestoreProvider>
     </AuthProvider>
