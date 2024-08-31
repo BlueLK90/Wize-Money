@@ -32,11 +32,7 @@ rgb(201, 229, 171)
   display: none; /* Safari and Chrome */
 }
 body {
-  background: linear-gradient(
-    180deg,
-    rgb(23, 40, 65) 40%,
-    rgba(243, 244, 246, 1) 40%
-  );
+  background: linear-gradient(60deg, #172841 60%, #263f63 60%);
 }
 
 .bg-white-0 {
