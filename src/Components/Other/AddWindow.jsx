@@ -95,7 +95,7 @@ const AddWindow = ({
 
   const handleChangeNumber = useCallback(
     (e, multiplier) => {
-      let inputValue = e.target.value;
+      let inputValue = e.target.value.replace(/[^0-9]/g, "");
       setAmountInput(inputValue);
       setNewItem((prev) => ({
         ...prev,
@@ -157,6 +157,7 @@ const AddWindow = ({
           type="text"
           id="price"
           name="price"
+          min={0}
           className={inputStyle}
           value={newItem.price}
           onChange={handleChange}
@@ -172,6 +173,7 @@ const AddWindow = ({
           type="number"
           id="amount"
           name="amount"
+          min={0}
           className={inputStyle}
           value={amountInput}
           onChange={(e) => handleChangeNumber(e, 1)}
@@ -188,6 +190,7 @@ const AddWindow = ({
           type="number"
           id="amount"
           name="amount"
+          min={0}
           className={inputStyle}
           value={amountInput}
           onChange={(e) => handleChangeNumber(e, -1)}
