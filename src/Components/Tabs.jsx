@@ -17,7 +17,9 @@ import DataContext from "../contexts/dataContext/DataContext";
 export const TabsSecLarge = () => {
   const { data } = useContext(DataContext);
   const [activeTabOne, setActiveTabOne] = useState(
-    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+    data.budgetData.budgetAmount != null || data.budgetData.budgetAmount <= 0
+      ? "Wallet"
+      : "Budget"
   );
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
@@ -122,7 +124,9 @@ export const TabsSecLarge = () => {
 export const TabsSecMedium = () => {
   const { data } = useContext(DataContext);
   const [activeTabOne, setActiveTabOne] = useState(
-    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+    data.budgetData.budgetAmount != null || data.budgetData.budgetAmount <= 0
+      ? "Wallet"
+      : "Budget"
   );
   const [activeTabTwo, setActiveTabTwo] = useState("Wishlist");
   const tabs = [
@@ -232,7 +236,9 @@ export const TabsSecSmall = () => {
   //   ? budget.budgetAmount
   //   : data.budgetData.budgetAmount;
   const [activeTab, setActiveTab] = useState(
-    data.budgetData.budgetAmount <= 0 ? "Wallet" : "Budget"
+    data.budgetData.budgetAmount != null || data.budgetData.budgetAmount <= 0
+      ? "Wallet"
+      : "Budget"
   );
   const tabs = [
     { id: 1, value: "Budget", content: <Budget screenSize="isSmall" /> },
